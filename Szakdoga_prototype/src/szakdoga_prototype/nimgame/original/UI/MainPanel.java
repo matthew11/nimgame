@@ -63,7 +63,11 @@ public class MainPanel extends javax.swing.JPanel {
         try {
             ((NimPlayer) nimGame.getCurrentPlayer()).doNextStep(panelID, value);
             updatePanels();
-            this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
+            if(nimGame.isInEndState()){
+                JOptionPane.showMessageDialog(this, "Game ended. Winning player is: " + nimGame.getWiningPlayer().getName());
+            }else{
+                this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
+            }
 
         } catch (GameException ex) {
             JOptionPane.showMessageDialog(this, "The requested opration cannot be processed: " + ex.getMessage());

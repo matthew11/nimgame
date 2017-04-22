@@ -35,7 +35,7 @@ public abstract class GameCore {
 
     public abstract boolean isInEndState();
 
-    public abstract void nextStep(final NimStepObject step) throws PlayerOrderException, GameException;
+    public abstract void nextStep(final StepObject step) throws PlayerOrderException, GameException;
 
     public abstract Player getWiningPlayer();
 

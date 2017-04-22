@@ -84,16 +84,14 @@ public class NimGameCore extends TurnBasedGame {
     }
 
     @Override
-    public void nextStep(final NimStepObject step) throws PlayerOrderException, GameException {
-        validatePlayer(step.getOriginatingPlayer());
-        decreaseEntityBy(step.getHeapID(), step.getAmount());
-        nextTurn(currentPlayer);
-    }
-
-    @Override
     public void nextStep(final StepObject step) throws PlayerOrderException, GameException {
-        nextStep((NimStepObject) step);
-        nextTurn(step.getOriginatingPlayer());
+        if (!(step instanceof NimStepObject)) {
+            throw new GameException("Invalid step object. This step object " + step.getClass().getName() + "is not belongs to Nim game!");
+        }
+        NimStepObject nimStep = (NimStepObject) step;
+        validatePlayer(step.getOriginatingPlayer());
+        decreaseEntityBy(nimStep.getHeapID(), nimStep.getAmount());
+        nextTurn(currentPlayer);
     }
 
     public int getHeapCount() {
@@ -114,7 +112,12 @@ public class NimGameCore extends TurnBasedGame {
 
     @Override
     public boolean isInEndState() {
-        return heapConfiguration.isEmpty();
+        for (Integer i : heapConfiguration) {
+            if (i > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
