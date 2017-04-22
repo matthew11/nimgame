@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
-import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegistered;
-import szakdoga_prototype.gameengine.exceptions.PlayerListFull;
+import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
+import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 import szakdoga_prototype.nimgame.core.NimPlayer;
 import szakdoga_prototype.nimgame.core.NimStepObject;
@@ -28,7 +28,7 @@ public abstract class GameCore {
         this.players = new ArrayList<>();
     }
 
-    public void registerPlayer(NimPlayer player) throws PlayerAlreadyRegistered, PlayerListFull {
+    public void registerPlayer(NimPlayer player) throws PlayerAlreadyRegisteredException, PlayerListFullException {
         players.add(player);
     }
 

@@ -11,9 +11,9 @@ import szakdoga_prototype.gameengine.exceptions.GameException;
  *
  * @author matthew
  */
-public class PlayerAlreadyRegistered extends GameException{
+public class PlayerAlreadyRegisteredException extends GameException{
     
-    public PlayerAlreadyRegistered(String message) {
+    public PlayerAlreadyRegisteredException(String message) {
         super(message);
     }
     

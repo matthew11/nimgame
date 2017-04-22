@@ -7,14 +7,16 @@ package szakdoga_prototype.nimgame.core;
 
 import szakdoga_prototype.nimgame.core.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import szakdoga_prototype.gameengine.Player;
 import szakdoga_prototype.gameengine.StepObject;
 import szakdoga_prototype.gameengine.exceptions.GameException;
+import szakdoga_prototype.gameengine.exceptions.GameSettingInvalidException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
-import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegistered;
-import szakdoga_prototype.gameengine.exceptions.PlayerListFull;
+import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
+import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.gameengine.turnbased.TurnBasedGame;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 
@@ -24,26 +26,30 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
  */
 public class NimGameCore extends TurnBasedGame {
 
-    private static final int MAX_PLAYER_COUNT = 2;
-    private static final int MIN_PLAYER_COUNT = 2;
-    private static final int MAX_HEAP_COUNT = 6;
-    private static final int MIN_HEAP_COUNT = 2;
-    private static final int MAX_ENTITY_COUNT = 20;
-    private static final int MIN_ENTITY_COUNT = 5;
+    public static final int MAX_PLAYER_COUNT = 2;
+    public static final int MIN_PLAYER_COUNT = 2;
+    public static final int MAX_HEAP_COUNT = 10;
+    public static final int MIN_HEAP_COUNT = 1;
+    public static final int MAX_ENTITY_COUNT = 100000;
+    public static final int MIN_ENTITY_COUNT = 1;
 
-    private List<Integer> heapConfiguration;
+    private static final int MAX_RANDOM_HEAP_COUNT = 6;
+    private static final int MIN_RANDOM_HEAP_COUNT = 2;
+    private static final int MAX_RANDOM_ENTITY_COUNT = 20;
+    private static final int MIN_RANDOM_ENTITY_COUNT = 5;
 
-    private final Random random;
+    private List<Integer> heapConfiguration = new ArrayList<>();
+    ;
+
+    private final Random random = new Random();
 
     private int getIntBetween(final int min, final int max) {
         return random.nextInt(max - min) + min;
     }
 
     public NimGameCore(int heapCount, final int minEntity, final int maxEntity) {
-        this.random = new Random();
-        heapConfiguration = new ArrayList<>();
         if (heapCount == 0) {
-            heapCount = getIntBetween(MIN_HEAP_COUNT, MAX_HEAP_COUNT);
+            heapCount = getIntBetween(MIN_RANDOM_HEAP_COUNT, MAX_RANDOM_HEAP_COUNT);
         }
         for (int i = 0; i < heapCount; i++) {
             heapConfiguration.add(getIntBetween(minEntity, maxEntity));
@@ -51,16 +57,28 @@ public class NimGameCore extends TurnBasedGame {
     }
 
     public NimGameCore() {
-        this(0, NimGameCore.MIN_ENTITY_COUNT, NimGameCore.MAX_ENTITY_COUNT);
+        this(0, NimGameCore.MIN_RANDOM_ENTITY_COUNT, NimGameCore.MAX_RANDOM_ENTITY_COUNT);
+    }
+
+    public NimGameCore(List<Integer> heapConfiguration) throws GameSettingInvalidException {
+        if (heapConfiguration.size() < MIN_HEAP_COUNT || heapConfiguration.size() > MAX_HEAP_COUNT) {
+            throw new GameSettingInvalidException("Heap count does not satisfy heap count rules: " + MIN_HEAP_COUNT + " <= " + heapConfiguration.size() + " <= " + MAX_HEAP_COUNT);
+        }
+        for (int i : heapConfiguration) {
+            if (i < MIN_ENTITY_COUNT || i > MAX_ENTITY_COUNT) {
+                throw new GameSettingInvalidException("Number '" + i + "' does not satisfy entity count rules: " + MIN_ENTITY_COUNT + " <= " + i + " <= " + MAX_ENTITY_COUNT);
+            }
+        }
+        this.heapConfiguration = new ArrayList<>(heapConfiguration); // Faster to working on a provisioned array.
     }
 
     @Override
-    public void registerPlayer(NimPlayer player) throws PlayerAlreadyRegistered, PlayerListFull {
+    public void registerPlayer(NimPlayer player) throws PlayerAlreadyRegisteredException, PlayerListFullException {
         if (players.contains(player)) {
-            throw new PlayerAlreadyRegistered("Player " + player.getName() + "already joined to the game");
+            throw new PlayerAlreadyRegisteredException("Player " + player.getName() + "already joined to the game");
         }
         if (players.size() > NimGameCore.MAX_PLAYER_COUNT) {
-            throw new PlayerListFull("No more room for other players. Player " + player.getName() + " was unable to join to the game. Maximum allowed number of players: " + NimGameCore.MIN_PLAYER_COUNT);
+            throw new PlayerListFullException("No more room for other players. Player " + player.getName() + " was unable to join to the game. Maximum allowed number of players: " + NimGameCore.MIN_PLAYER_COUNT);
         }
         super.registerPlayer(player);
     }
@@ -112,7 +130,7 @@ public class NimGameCore extends TurnBasedGame {
     @Override
     public void startGame() throws GameSetupIncompleteException {
         if (players.size() != NimGameCore.MIN_PLAYER_COUNT) {
-            throw new GameSetupIncompleteException("Not enough player joined to the game. Current player count: " + players.size() + " Minimum player count: " + NimGameCore.MIN_HEAP_COUNT);
+            throw new GameSetupIncompleteException("Not enough player joined to the game. Current player count: " + players.size() + " Minimum player count: " + NimGameCore.MIN_PLAYER_COUNT);
         }
         currentPlayer = players.get(0);
     }

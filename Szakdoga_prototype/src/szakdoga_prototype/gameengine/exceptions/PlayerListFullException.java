@@ -11,9 +11,9 @@ import szakdoga_prototype.gameengine.exceptions.GameException;
  *
  * @author matthew
  */
-public class PlayerListFull extends GameException{
+public class PlayerListFullException extends GameException{
     
-    public PlayerListFull(String message) {
+    public PlayerListFullException(String message) {
         super(message);
     }
     
