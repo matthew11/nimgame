@@ -5,12 +5,17 @@
  */
 package szakdoga_prototype;
 
+import java.util.List;
 import szakdoga_prototype.gameengine.Player;
+import szakdoga_prototype.gameengine.StepObject;
 
 /**
  *
  * @author matthew
  */
 public interface GameStatusDisplayer {
+
     public void setCurrentPlayer(Player currentPlayer);
+
+    public void setStepHistory(List<StepObject> stepHistory);
 }

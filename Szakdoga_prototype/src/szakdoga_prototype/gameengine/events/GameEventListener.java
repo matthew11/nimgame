@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype.gameengine.events;
 
 /**
  *
  * @author matthew
  */
-public class NimHumanPlayer extends NimPlayer{
-    
-    public NimHumanPlayer(String name) {
-        super(name);
-    }
-    
+public interface GameEventListener {
+    public void eventReceived(GameEvent event);
 }

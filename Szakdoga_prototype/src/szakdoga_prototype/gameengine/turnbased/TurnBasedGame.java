@@ -7,8 +7,6 @@ package szakdoga_prototype.gameengine.turnbased;
 
 import szakdoga_prototype.gameengine.GameCore;
 import szakdoga_prototype.gameengine.Player;
-import szakdoga_prototype.gameengine.StepObject;
-import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 
 /**
@@ -18,8 +16,6 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 public abstract class TurnBasedGame extends GameCore {
 
     protected Player currentPlayer;
-
-    public abstract void nextStep(final StepObject step) throws PlayerOrderException, GameException;
 
     public void nextTurn(final Player originatingPlayer) throws PlayerOrderException {
         validatePlayer(originatingPlayer);
@@ -34,11 +30,28 @@ public abstract class TurnBasedGame extends GameCore {
     }
 
     public Player getNextPlayer() {
-        int nextPlayerIndex = players.indexOf(currentPlayer) + 1;
+        return getNextPlayer(currentPlayer);
+    }
+
+    public Player getNextPlayer(Player player) {
+        int nextPlayerIndex = players.indexOf(player) + 1;
         if (nextPlayerIndex < players.size()) {
             return players.get(nextPlayerIndex);
         } else {
             return players.get(0);
+        }
+    }
+
+    public Player getPreviousPlayer() {
+        return getPreviousPlayer(currentPlayer);
+    }
+
+    public Player getPreviousPlayer(Player player) {
+        int previousPlayerIndex = players.indexOf(player) - 1;
+        if (previousPlayerIndex < 0) {
+            return players.get(players.size() - 1);
+        } else {
+            return players.get(previousPlayerIndex);
         }
     }
 

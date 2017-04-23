@@ -7,13 +7,14 @@ package szakdoga_prototype.gameengine;
 
 import java.util.ArrayList;
 import java.util.List;
+import szakdoga_prototype.AbstractGameSettings;
+import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.exceptions.GameException;
+import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
 import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
 import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
-import szakdoga_prototype.nimgame.core.NimPlayer;
-import szakdoga_prototype.nimgame.core.NimStepObject;
 
 /**
  *
@@ -22,20 +23,33 @@ import szakdoga_prototype.nimgame.core.NimStepObject;
 public abstract class GameCore {
 
     protected final List<Player> players;
-    protected int PROBA=0;
+    protected final List<StepObject> stepHistory = new ArrayList<>();
+    protected final EventHandler eventHandler = new EventHandler();
 
     public GameCore() {
         this.players = new ArrayList<>();
     }
 
-    public void registerPlayer(NimPlayer player) throws PlayerAlreadyRegisteredException, PlayerListFullException {
+    public void registerPlayer(Player player) throws PlayerAlreadyRegisteredException, PlayerListFullException {
+        for (Player i : players) {
+            if (i.getName().equals(player.getName())) {
+                throw new PlayerAlreadyRegisteredException("Name '" + player.getName() + "' is already taken");
+            }
+        }
         players.add(player);
     }
 
+    public abstract void loadGameSettings(AbstractGameSettings gameSettings) throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException;
 
     public abstract boolean isInEndState();
 
     public abstract void nextStep(final StepObject step) throws PlayerOrderException, GameException;
+
+    public abstract void undoStep();
+
+    public List<StepObject> getStepHistory() {
+        return new ArrayList<>(stepHistory);
+    }
 
     public abstract Player getWiningPlayer();
 
@@ -45,6 +59,16 @@ public abstract class GameCore {
 
     public abstract int getMaxPlayers();
 
-    public abstract void startGame() throws GameSetupIncompleteException;
+    public void startGame() throws GameSetupIncompleteException {
+        eventHandler.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
+    }
+
+    public void stopGame() {
+        eventHandler.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
+    }
+
+    public EventHandler getEventHandler() {
+        return eventHandler;
+    }
 
 }

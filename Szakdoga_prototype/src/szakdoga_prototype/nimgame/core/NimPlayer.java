@@ -15,20 +15,8 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
  */
 public class NimPlayer extends Player{
 
-    private NimGameCore controller;
-
-    public NimPlayer(String name, NimGameCore controller) {
+    public NimPlayer(String name) {
         super(name);
-        this.controller = controller;
-    }
-
-
-    public void doNextStep(int heapID, int amount) throws PlayerOrderException, GameException{
-        controller.nextStep(new NimStepObject(heapID, amount, this));
-    }
-
-    public void setController(NimGameCore controller) {
-        this.controller = controller;
     }
     
 }

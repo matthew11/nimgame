@@ -11,8 +11,8 @@ package szakdoga_prototype.nimgame.core;
  */
 public class NimAIPlayer extends NimPlayer {
 
-    public NimAIPlayer(String name, NimGameCore controller) {
-        super(name, controller);
+    public NimAIPlayer(String name) {
+        super(name);
     }
 
 }

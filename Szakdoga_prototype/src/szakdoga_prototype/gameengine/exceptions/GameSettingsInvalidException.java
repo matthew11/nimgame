@@ -9,9 +9,9 @@ package szakdoga_prototype.gameengine.exceptions;
  *
  * @author matthew
  */
-public class GameSettingInvalidException extends GameException{
+public class GameSettingsInvalidException extends GameException{
     
-    public GameSettingInvalidException(String message) {
+    public GameSettingsInvalidException(String message) {
         super("Game configuration invalid: " + message);
     }
     

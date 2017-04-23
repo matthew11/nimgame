@@ -12,9 +12,10 @@ import szakdoga_prototype.gameengine.StepObject;
  * @author matthew
  */
 public class NimStepObject extends StepObject {
-    private int heapID;
-    private int amount;
-    
+
+    protected int heapID;
+    protected int amount;
+
     public NimStepObject(int heapID, int amount, NimPlayer originatingPlayer) {
         super(originatingPlayer);
         this.heapID = heapID;
@@ -28,5 +29,10 @@ public class NimStepObject extends StepObject {
     public int getHeapID() {
         return heapID;
     }
-    
+
+    @Override
+    public String toString() {
+        return originatingPlayer.getName() + ": [" + heapID + "]-" + amount;
+    }
+
 }

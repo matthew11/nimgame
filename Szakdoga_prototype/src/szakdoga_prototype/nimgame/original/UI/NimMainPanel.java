@@ -8,16 +8,19 @@ package szakdoga_prototype.nimgame.original.UI;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import szakdoga_prototype.GameStatusDisplayer;
-import szakdoga_prototype.gameengine.Player;
+import szakdoga_prototype.gameengine.events.GameEvent;
+import szakdoga_prototype.gameengine.events.GameEventListener;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.nimgame.core.NimGameCore;
+import szakdoga_prototype.nimgame.core.NimGameEvent;
 import szakdoga_prototype.nimgame.core.NimPlayer;
+import szakdoga_prototype.nimgame.core.NimStepObject;
 
 /**
  *
  * @author matthew
  */
-public class MainPanel extends javax.swing.JPanel {
+public class NimMainPanel extends javax.swing.JPanel implements GameEventListener {
 
     private final NimGameCore nimGame;
     private final GameStatusDisplayer statusDisplayer;
@@ -27,14 +30,18 @@ public class MainPanel extends javax.swing.JPanel {
      *
      * @param nimGame
      */
-    public MainPanel(final NimGameCore nimGame, final GameStatusDisplayer statusDisplayer) {
+    public NimMainPanel(final NimGameCore nimGame, final GameStatusDisplayer statusDisplayer) {
         this.nimGame = nimGame;
+        this.statusDisplayer = statusDisplayer;
+        this.nimGame.getEventHandler().subscribeForEvent(this);
         initComponents();
+    }
+
+    public void startGame() {
         for (int i = 0; i < nimGame.getHeapCount(); i++) {
             this.add(new HeapPanel(this, i, nimGame.getHeapValue(i)));
         }
-        this.statusDisplayer = statusDisplayer;
-        this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
+        statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
         this.revalidate();
     }
 
@@ -61,16 +68,40 @@ public class MainPanel extends javax.swing.JPanel {
 
     void heapChanged(int panelID, int value) {
         try {
-            ((NimPlayer) nimGame.getCurrentPlayer()).doNextStep(panelID, value);
-            updatePanels();
-            if(nimGame.isInEndState()){
-                JOptionPane.showMessageDialog(this, "Game ended. Winning player is: " + nimGame.getWiningPlayer().getName());
-            }else{
-                this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
-            }
-
+            nimGame.nextStep(new NimStepObject(panelID, value, (NimPlayer) nimGame.getCurrentPlayer()));
         } catch (GameException ex) {
             JOptionPane.showMessageDialog(this, "The requested opration cannot be processed: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public void eventReceived(GameEvent event) {
+        switch (event.getEventType()) {
+            case GameEvent.EVENT_GAME_STARTED: {
+                startGame();
+                break;
+            }
+            case GameEvent.EVENT_GAME_STOPED:{
+                this.removeAll();
+                JOptionPane.showMessageDialog(this, "Game aborted.");
+                break;
+                
+            }
+            case GameEvent.EVENT_GAME_ENDED: {
+                this.removeAll();
+                JOptionPane.showMessageDialog(this, "The game is normally ended by a winning player: " + nimGame.getWiningPlayer());
+                break;
+            }
+            case NimGameEvent.EVENT_NEXT_TURN: {
+                updatePanels();
+                this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
+                this.statusDisplayer.setStepHistory(nimGame.getStepHistory());
+                break;
+            }
+            default: {
+                JOptionPane.showMessageDialog(this, "Error: Unhandled event. Type: " + event.getEventType());
+            }
+
         }
     }
 

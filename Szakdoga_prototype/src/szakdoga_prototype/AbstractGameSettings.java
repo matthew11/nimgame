@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype;
 
 /**
  *
  * @author matthew
  */
-public class NimHumanPlayer extends NimPlayer{
-    
-    public NimHumanPlayer(String name) {
-        super(name);
-    }
+public abstract class AbstractGameSettings {
     
 }

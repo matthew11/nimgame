@@ -12,12 +12,12 @@ package szakdoga_prototype.nimgame.original.UI;
 public final class HeapPanel extends javax.swing.JPanel {
 
     private final int panelID;
-    private final MainPanel parent;
+    private final NimMainPanel parent;
 
     /**
      * Creates new form heapPanel
      */
-    public HeapPanel(final MainPanel parent, final int panelID, final int panelValue) {
+    public HeapPanel(final NimMainPanel parent, final int panelID, final int panelValue) {
         initComponents();
         this.panelID = panelID;
         setPanelValue(panelValue);

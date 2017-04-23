@@ -9,10 +9,6 @@ package szakdoga_prototype.nimgame.core;
  *
  * @author matthew
  */
-public class NimHumanPlayer extends NimPlayer{
-    
-    public NimHumanPlayer(String name) {
-        super(name);
-    }
+interface EventRegistry {
     
 }

@@ -5,14 +5,18 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import szakdoga_prototype.gameengine.events.GameEvent;
+
 /**
  *
  * @author matthew
  */
-public class NimHumanPlayer extends NimPlayer{
-    
-    public NimHumanPlayer(String name) {
-        super(name);
+public class NimGameEvent extends GameEvent {
+
+    public static final int EVENT_NEXT_TURN = 100;
+
+    public NimGameEvent(Object origin, int eventType) {
+        super(origin, eventType);
     }
-    
+
 }
