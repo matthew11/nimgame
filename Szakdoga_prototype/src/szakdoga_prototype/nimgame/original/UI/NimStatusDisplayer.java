@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype;
+package szakdoga_prototype.nimgame.original.UI;
 
 import java.util.List;
 import szakdoga_prototype.gameengine.Player;
@@ -13,7 +13,7 @@ import szakdoga_prototype.gameengine.StepObject;
  *
  * @author matthew
  */
-public interface GameStatusDisplayer {
+public interface NimStatusDisplayer {
 
     public void setCurrentPlayer(Player currentPlayer);
 

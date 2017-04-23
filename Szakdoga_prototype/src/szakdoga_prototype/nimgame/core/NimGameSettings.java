@@ -7,7 +7,6 @@ package szakdoga_prototype.nimgame.core;
 
 import java.util.List;
 import szakdoga_prototype.AbstractGameSettings;
-import szakdoga_prototype.gameengine.Player;
 
 /**
  *
@@ -21,8 +20,8 @@ public class NimGameSettings extends AbstractGameSettings {
 
     private List<Integer> heapConfiguration;
     private ConfigurationType configType;
-    private List<Player> players;
-    private Player startingPlayer;
+    private List<NimPlayerSettings> players;
+    private boolean inverseNimGame;
     private int minHeapCount, maxHeapCount, minEntityCount, maxEntityCount;
 
     public List<Integer> getHeapConfiguration() {
@@ -41,20 +40,12 @@ public class NimGameSettings extends AbstractGameSettings {
         this.configType = configType;
     }
 
-    public List<Player> getPlayers() {
+    public List<NimPlayerSettings> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(List<NimPlayerSettings> players) {
         this.players = players;
-    }
-
-    public Player getStartingPlayer() {
-        return startingPlayer;
-    }
-
-    public void setStartingPlayer(Player startingPlayer) {
-        this.startingPlayer = startingPlayer;
     }
 
     public int getMinHeapCount() {
@@ -87,6 +78,14 @@ public class NimGameSettings extends AbstractGameSettings {
 
     public void setMaxEntityCount(int maxEntityCount) {
         this.maxEntityCount = maxEntityCount;
+    }
+
+    public boolean isInverseNimGame() {
+        return inverseNimGame;
+    }
+
+    public void setInverseNimGame(boolean inverseNimGame) {
+        this.inverseNimGame = inverseNimGame;
     }
 
 }

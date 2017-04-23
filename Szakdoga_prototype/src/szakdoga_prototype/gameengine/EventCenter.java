@@ -14,7 +14,7 @@ import szakdoga_prototype.gameengine.events.GameEventListener;
  *
  * @author matthew
  */
-public class EventHandler {
+public class EventCenter {
 
     List<GameEventListener> listeners = new ArrayList<>();
 

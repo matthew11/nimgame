@@ -5,6 +5,9 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import java.util.List;
+import szakdoga_prototype.gameengine.StepObject;
+
 /**
  *
  * @author matthew
@@ -23,6 +26,10 @@ public class NimGameAI {
 
     public void setStrategyInUse(AI_Stategies strategyInUse) {
         this.strategyInUse = strategyInUse;
+    }
+
+    public StepObject getNextStep(List heapConfiguration) {
+        return null;
     }
 
 }

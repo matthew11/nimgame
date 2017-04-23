@@ -5,6 +5,8 @@
  */
 package szakdoga_prototype.nimgame.original.UI;
 
+import javax.swing.SpinnerNumberModel;
+
 /**
  *
  * @author matthew
@@ -13,17 +15,19 @@ public final class HeapPanel extends javax.swing.JPanel {
 
     private final int panelID;
     private final NimMainPanel parent;
+    private final SpinnerNumberModel spinnerModel;
 
     /**
      * Creates new form heapPanel
      */
     public HeapPanel(final NimMainPanel parent, final int panelID, final int panelValue) {
-        initComponents();
         this.panelID = panelID;
-        setPanelValue(panelValue);
         this.parent = parent;
+        spinnerModel = new SpinnerNumberModel(1, 1, panelValue, 1);
+        initComponents();
         this.heapName.setText(Integer.toString(panelID + 1));
         this.heapValue.setText(Integer.toString(panelValue));
+        setPanelValue(panelValue);
     }
 
     public int getPanelID() {
@@ -50,6 +54,8 @@ public final class HeapPanel extends javax.swing.JPanel {
         alterSpinner = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
 
+        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         jLabel1.setText("Amount in heap:");
 
         heapValue.setEditable(false);
@@ -67,7 +73,7 @@ public final class HeapPanel extends javax.swing.JPanel {
             }
         });
 
-        alterSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        alterSpinner.setModel(spinnerModel);
 
         jLabel2.setText("Remove:");
 
@@ -89,7 +95,7 @@ public final class HeapPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -112,7 +118,7 @@ public final class HeapPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        
+
         parent.heapChanged(panelID, (int) alterSpinner.getValue());
     }//GEN-LAST:event_removeButtonActionPerformed
 
@@ -127,9 +133,13 @@ public final class HeapPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     void setPanelValue(int panelValue) {
-        heapValue.setText(Integer.toString(panelValue));        
-        if(panelValue == 0){
+        heapValue.setText(Integer.toString(panelValue));
+        if (panelValue == 0) {
             this.setVisible(false);
+        }
+        spinnerModel.setMaximum(panelValue);
+        if (spinnerModel.getMaximum().compareTo(spinnerModel.getNumber()) < 0) {
+            spinnerModel.setValue(spinnerModel.getMaximum());
         }
     }
 }

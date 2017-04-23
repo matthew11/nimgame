@@ -7,7 +7,7 @@ package szakdoga_prototype.nimgame.original.UI;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
-import szakdoga_prototype.GameStatusDisplayer;
+import szakdoga_prototype.GameSettingsProvider;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.events.GameEventListener;
 import szakdoga_prototype.gameengine.exceptions.GameException;
@@ -15,34 +15,35 @@ import szakdoga_prototype.nimgame.core.NimGameCore;
 import szakdoga_prototype.nimgame.core.NimGameEvent;
 import szakdoga_prototype.nimgame.core.NimPlayer;
 import szakdoga_prototype.nimgame.core.NimStepObject;
+import szakdoga_prototype.providers.GameEntityProvider;
 
 /**
  *
  * @author matthew
  */
-public class NimMainPanel extends javax.swing.JPanel implements GameEventListener {
+public class NimMainPanel extends javax.swing.JPanel implements GameEventListener, GameEntityProvider {
 
     private final NimGameCore nimGame;
-    private final GameStatusDisplayer statusDisplayer;
+    private final NimSettingsPanel settingsPanel = new NimSettingsPanel();
+    private final NimStatusPanel statusPanel = new NimStatusPanel();
 
     /**
      * Creates new form mainPanel
      *
      * @param nimGame
      */
-    public NimMainPanel(final NimGameCore nimGame, final GameStatusDisplayer statusDisplayer) {
+    public NimMainPanel(final NimGameCore nimGame) {
         this.nimGame = nimGame;
-        this.statusDisplayer = statusDisplayer;
-        this.nimGame.getEventHandler().subscribeForEvent(this);
+        this.nimGame.getEventCenter().subscribeForEvent(this);
         initComponents();
     }
 
     public void startGame() {
         for (int i = 0; i < nimGame.getHeapCount(); i++) {
-            this.add(new HeapPanel(this, i, nimGame.getHeapValue(i)));
+            gameSpace.add(new HeapPanel(this, i, nimGame.getHeapValue(i)));
         }
-        statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
-        this.revalidate();
+        statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
+        gameSpace.revalidate();
     }
 
     /**
@@ -54,11 +55,26 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setLayout(new java.awt.GridBagLayout());
+        scrollPane = new javax.swing.JScrollPane();
+        gameSpace = new javax.swing.JPanel();
+
+        gameSpace.setLayout(new java.awt.GridBagLayout());
+        scrollPane.setViewportView(gameSpace);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void updatePanels() {
-        for (Component component : this.getComponents()) {
+        for (Component component : gameSpace.getComponents()) {
             if (component instanceof HeapPanel) {
                 HeapPanel panel = (HeapPanel) component;
                 panel.setPanelValue(nimGame.getHeapValue(panel.getPanelID()));
@@ -81,21 +97,23 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
                 startGame();
                 break;
             }
-            case GameEvent.EVENT_GAME_STOPED:{
-                this.removeAll();
-                JOptionPane.showMessageDialog(this, "Game aborted.");
+            case GameEvent.EVENT_GAME_STOPED: {
+                gameSpace.removeAll();
+                gameSpace.revalidate();
                 break;
-                
+
             }
             case GameEvent.EVENT_GAME_ENDED: {
-                this.removeAll();
-                JOptionPane.showMessageDialog(this, "The game is normally ended by a winning player: " + nimGame.getWiningPlayer());
+                gameSpace.removeAll();
+                gameSpace.revalidate();
+                gameSpace.repaint();
+                JOptionPane.showMessageDialog(this, "The game is normally ended. Player '" + nimGame.getWiningPlayer() + "' won the game.");
                 break;
             }
             case NimGameEvent.EVENT_NEXT_TURN: {
                 updatePanels();
-                this.statusDisplayer.setCurrentPlayer(nimGame.getCurrentPlayer());
-                this.statusDisplayer.setStepHistory(nimGame.getStepHistory());
+                this.statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
+                this.statusPanel.setStepHistory(nimGame.getStepHistory());
                 break;
             }
             default: {
@@ -105,7 +123,29 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
         }
     }
 
+    @Override
+    public Component getMainUIComponent() {
+        return this;
+    }
+
+    @Override
+    public Component getSettingsUIComponent() {
+        return settingsPanel;
+    }
+
+    @Override
+    public Component getStatusUIComponent() {
+        return statusPanel;
+    }
+
+    @Override
+    public GameSettingsProvider getSettingsProvider() {
+        return settingsPanel;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel gameSpace;
+    private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }

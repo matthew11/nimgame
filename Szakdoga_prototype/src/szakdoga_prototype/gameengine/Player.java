@@ -9,12 +9,14 @@ package szakdoga_prototype.gameengine;
  *
  * @author matthew
  */
-public class Player {
+public abstract class Player implements ControllerPlayerInterface {
 
-    private String name;
+    protected String name;
+    protected PlayerControllerInterface controller;
 
-    public Player(String name) {
+    public Player(String name, PlayerControllerInterface controller) {
         this.name = name;
+        this.controller = controller;
     }
 
     public String getName() {
@@ -29,5 +31,4 @@ public class Player {
         return name;
     }
 
-        
 }

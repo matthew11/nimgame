@@ -24,7 +24,7 @@ public abstract class GameCore {
 
     protected final List<Player> players;
     protected final List<StepObject> stepHistory = new ArrayList<>();
-    protected final EventHandler eventHandler = new EventHandler();
+    protected final EventCenter eventCenter = new EventCenter();
 
     public GameCore() {
         this.players = new ArrayList<>();
@@ -60,15 +60,15 @@ public abstract class GameCore {
     public abstract int getMaxPlayers();
 
     public void startGame() throws GameSetupIncompleteException {
-        eventHandler.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
+        eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
     }
 
     public void stopGame() {
-        eventHandler.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
+        eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
     }
 
-    public EventHandler getEventHandler() {
-        return eventHandler;
+    public EventCenter getEventCenter() {
+        return eventCenter;
     }
 
 }

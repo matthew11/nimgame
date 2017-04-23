@@ -25,13 +25,13 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
  *
  * @author matthew
  */
-public class NimGameCore extends TurnBasedGame {
+public class NimGameCore extends TurnBasedGame implements NimPlayerController{
 
     public static final int MAX_PLAYER_COUNT = 2;
     public static final int MIN_PLAYER_COUNT = 2;
-    public static final int MAX_HEAP_COUNT = 10;
+    public static final int MAX_HEAP_COUNT = 100;
     public static final int MIN_HEAP_COUNT = 1;
-    public static final int MAX_ENTITY_COUNT = 100000;
+    public static final int MAX_ENTITY_COUNT = 999;
     public static final int MIN_ENTITY_COUNT = 1;
     public static final int MAX_RANDOM_HEAP_COUNT = 6;
     public static final int MIN_RANDOM_HEAP_COUNT = 2;
@@ -41,8 +41,12 @@ public class NimGameCore extends TurnBasedGame {
     private List<Integer> heapConfiguration = new ArrayList<>();
 
     private final Random random = new Random();
+    private boolean inverseNimGame = false;
 
     private int getIntBetween(int boundaryA, int boundaryB) {
+        if (boundaryA == boundaryB) {
+            return boundaryA;
+        }
         if (boundaryA > boundaryB) {
             int temp = boundaryB;
             boundaryB = boundaryA;
@@ -58,15 +62,28 @@ public class NimGameCore extends TurnBasedGame {
         }
     }
 
+    private NimPlayer instantiatePlayer(NimPlayerSettings playerSettings){
+        NimPlayer player;
+        if(playerSettings.isIsAI()){
+            player = new NimAIPlayer(playerSettings.getPlayerName(), this);
+        }else{
+            player = new NimHumanPlayer(playerSettings.getPlayerName(), this);
+        }
+        if(playerSettings.isStarter()){
+            this.currentPlayer = player;
+        }
+        return player;
+    }
+    
     @Override
     public void loadGameSettings(AbstractGameSettings gameSettings) throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException {
         int heapCount, minHeapCount = 0, maxHeapCount = 0, minEntityCount = 0, maxEntityCount = 0;
         NimGameSettings nimGameSettings = (NimGameSettings) gameSettings;
+        this.inverseNimGame = nimGameSettings.isInverseNimGame();
         this.players.clear();
-        for (Player player : nimGameSettings.getPlayers()) {
-            registerPlayer(player);
+        for (NimPlayerSettings playerSettings : nimGameSettings.getPlayers()) {
+            registerPlayer(instantiatePlayer(playerSettings));
         }
-        currentPlayer = nimGameSettings.getStartingPlayer();
         switch (nimGameSettings.getConfigType()) {
             case CONFIG_TYPE_CUSTOM: {
                 List<Integer> heapConfiguration = nimGameSettings.getHeapConfiguration();
@@ -123,8 +140,8 @@ public class NimGameCore extends TurnBasedGame {
         NimStepObject nimStep = (NimStepObject) step;
         validatePlayer(step.getOriginatingPlayer());
         decreaseEntityBy(nimStep.getHeapID(), nimStep.getAmount());
-        if(isInEndState()){
-            eventHandler.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
+        if (isInEndState()) {
+            eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
             return;
         }
         nextTurn(currentPlayer);
@@ -133,7 +150,7 @@ public class NimGameCore extends TurnBasedGame {
     @Override
     public void nextTurn(Player originatingPlayer) throws PlayerOrderException {
         super.nextTurn(originatingPlayer);
-        eventHandler.dispacthEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
+        eventCenter.dispacthEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
     }
 
     @Override
@@ -162,17 +179,16 @@ public class NimGameCore extends TurnBasedGame {
 
     @Override
     public boolean isInEndState() {
-        for (Integer i : heapConfiguration) {
-            if (i > 0) {
-                return false;
-            }
-        }
-        return true;
+        return heapConfiguration.stream().noneMatch((i) -> (i > 0));
     }
 
     @Override
     public Player getWiningPlayer() {
-        return currentPlayer;
+        if (inverseNimGame) {
+            return getNextPlayer();
+        } else {
+            return currentPlayer;
+        }
     }
 
     @Override
@@ -196,6 +212,7 @@ public class NimGameCore extends TurnBasedGame {
         return NimGameCore.MAX_PLAYER_COUNT;
     }
 
+    @Override
     public void stopGame() {
         deregisterAllPlayers();
         super.stopGame();
@@ -206,6 +223,11 @@ public class NimGameCore extends TurnBasedGame {
             players.get(0).stop();
             players.remove(0);
         }
+    }
+
+    @Override
+    public List getHeapConfiguration() {
+        return new ArrayList<>(heapConfiguration);
     }
 
 }

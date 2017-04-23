@@ -6,17 +6,16 @@
 package szakdoga_prototype.nimgame.core;
 
 import szakdoga_prototype.gameengine.Player;
-import szakdoga_prototype.gameengine.exceptions.GameException;
-import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 
 /**
  *
  * @author matthew
  */
-public class NimPlayer extends Player{
-
-    public NimPlayer(String name) {
-        super(name);
+public abstract class NimPlayer extends Player{
+    protected  NimPlayerController controller;
+    public NimPlayer(String name, NimPlayerController controller) {
+        super(name, controller);
     }
+
     
 }

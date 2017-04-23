@@ -18,8 +18,10 @@ public class PlayerEntryPanel extends javax.swing.JPanel {
     /**
      * Creates new form PlayerEntryPanel
      */
-    
-    
+    public PlayerEntryPanel() { // Dummy function for Netbeans GUI editor
+        initComponents();
+    }
+
     public PlayerEntryPanel(ButtonGroup starterGroup) {
         this.starterGroup = starterGroup;
         initComponents();

@@ -5,31 +5,59 @@
  */
 package szakdoga_prototype;
 
-import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Container;
+import javax.swing.JOptionPane;
 import szakdoga_prototype.gameengine.GameCore;
+import szakdoga_prototype.gameengine.PlayerControllerInterface;
+import szakdoga_prototype.gameengine.StepObject;
+import szakdoga_prototype.gameengine.events.GameEvent;
+import szakdoga_prototype.gameengine.events.GameEventListener;
+import szakdoga_prototype.gameengine.exceptions.GameException;
+import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
+import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
+import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
+import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
+import szakdoga_prototype.providers.GameEntityProvider;
 
 /**
  *
  * @author matthew
  */
-public class GameElements {
+public class GameController implements GameEventListener, PlayerControllerInterface{
 
-    private final JPanel gameSettingsPanel;
-    private final JPanel gameMainPanel;
     private final GameCore game;
     private final GameSettingsProvider settingsProvider;
+    private final GameEntityProvider entityProvider;
+    
 
-    public GameElements(GameCore game, GameSettingsProvider settingsProvider, JPanel gameSettingsPanel, JPanel gameMainPanel) {
+    public GameController(GameCore game, GameEntityProvider entityProvider) {
         this.game = game;
-        this.gameSettingsPanel = gameSettingsPanel;
-        this.gameMainPanel = gameMainPanel;
-        this.settingsProvider = settingsProvider;
+        this.settingsProvider = entityProvider.getSettingsProvider();
+        this.entityProvider = entityProvider;
     }
 
+    private void removeSelf(Component component){
+        component.getParent().remove(component);
+    }
+    
     public void destroyGame() {
         game.stopGame();
-        gameSettingsPanel.getParent().remove(gameSettingsPanel);
-        gameMainPanel.getParent().remove(gameMainPanel);
+        removeSelf(entityProvider.getMainUIComponent());
+        removeSelf(entityProvider.getSettingsUIComponent());
+        removeSelf(entityProvider.getStatusUIComponent());
+    }
+    
+    public void loadUIElements(Container targetMainPanel, Container targetSettingsPanel, Container targetStatusPanel){
+        targetMainPanel.removeAll();
+        targetSettingsPanel.removeAll();
+        targetStatusPanel.removeAll();
+        targetMainPanel.add(entityProvider.getMainUIComponent());
+        targetSettingsPanel.add(entityProvider.getSettingsUIComponent());
+        targetStatusPanel.add(entityProvider.getStatusUIComponent());
+        targetSettingsPanel.validate();
+        targetMainPanel.validate();
+        targetStatusPanel.validate();
     }
 
     public GameCore getGame() {
@@ -38,6 +66,25 @@ public class GameElements {
 
     public GameSettingsProvider getSettingsProvider() {
         return settingsProvider;
+    }
+
+    @Override
+    public void eventReceived(GameEvent event) {
+    }
+
+    public void startGame() throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException, GameSetupIncompleteException {
+        this.game.getEventCenter().subscribeForEvent(this);
+        this.game.loadGameSettings(settingsProvider.getGameSettings());
+        this.game.startGame();
+    }
+
+    @Override
+    public void nextStep(StepObject nextStep) {
+        try {
+            game.nextStep(nextStep);
+        } catch (GameException ex) {
+            JOptionPane.showMessageDialog(entityProvider.getMainUIComponent(), "Error: " + ex.getMessage());
+        }
     }
 
 }

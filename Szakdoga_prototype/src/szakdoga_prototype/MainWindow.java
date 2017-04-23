@@ -6,51 +6,57 @@
 package szakdoga_prototype;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import szakdoga_prototype.gameengine.GameCore;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
 import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
 import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.nimgame.core.NimGameCore;
+import szakdoga_prototype.nimgame.northcott.NorthcottMainPanel;
 import szakdoga_prototype.nimgame.original.UI.NimMainPanel;
-import szakdoga_prototype.nimgame.original.UI.NimSettingsPanel;
+import szakdoga_prototype.providers.GameEntityProvider;
 
 /**
  *
  * @author matthew
  */
 public class MainWindow extends javax.swing.JFrame {
+
     public static enum SupportedGames {
-        GAME_NIM
+        GAME_NIM,
+        GAME_NORTHCOTT
     }
 
-    private GameElements gameElements;
+    private GameController gameController;
 
-    private void loadGame(SupportedGames gameToLoad) {
-        JPanel gameSettingsPlugin = null, gameMainPlugin = null;
-        GameCore game = null;
-        if (this.gameElements != null) {
-            this.gameElements.destroyGame();
+    private void createGame(SupportedGames gameToCreate) {
+        GameEntityProvider gameEntityProvider;
+        GameCore game;
+        if (this.gameController != null) {
+            this.gameController.destroyGame();
         }
-        switch (gameToLoad) {
+        switch (gameToCreate) {
             case GAME_NIM: {
                 game = new NimGameCore();
-                gameSettingsPlugin = new NimSettingsPanel();
-                gameMainPlugin = new NimMainPanel((NimGameCore) game, gameInfoPanel);
+                gameEntityProvider = new NimMainPanel((NimGameCore) game);
                 break;
             }
+            case GAME_NORTHCOTT: {
+                JOptionPane.showMessageDialog(this, "The selected game type is not yet implemented.");
+                game = new NimGameCore();
+                gameEntityProvider = new NorthcottMainPanel();
+                break;
+            }
+            default: {
+                JOptionPane.showMessageDialog(this, "The selected game type is not yet implemented.");
+                return;
+            }
         }
-        this.gameElements = new GameElements(game, (GameSettingsProvider) gameSettingsPlugin, gameSettingsPlugin, gameMainPlugin);
-        gameSettingsPluginplaceholder.add(gameSettingsPlugin);
-        gameSettingsPluginplaceholder.validate();
-        gameMainPluginPlaceholder.add(gameMainPlugin);
-        gameMainPluginPlaceholder.validate();
-        gameSettingsPanel.setEnabled(true);
+        this.gameController = new GameController(game, gameEntityProvider);
+        gameController.loadUIElements(gameMainPluginPlaceholder, gameSettingsPluginplaceholder, gameStatusPanelPluginPlaceholder);
         startGameButton.setEnabled(true);
         this.repaint();
     }
-
 
     /**
      * Creates new form MainWindow
@@ -69,12 +75,12 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         gameMainPluginPlaceholder = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        sidePanel = new javax.swing.JPanel();
         startGameButton = new javax.swing.JButton();
-        gameInfoPanel = new szakdoga_prototype.GameInfoPanel();
         gameSettingsPanel = new javax.swing.JPanel();
-        gameSettingsLabel = new javax.swing.JLabel();
         gameSettingsPluginplaceholder = new javax.swing.JPanel();
+        gameStatusPanelPluginPlaceholder = new javax.swing.JPanel();
+        gameSettingsLabel = new javax.swing.JLabel();
         mainMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -86,11 +92,12 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NimGame");
         setPreferredSize(new java.awt.Dimension(1024, 768));
+        setSize(new java.awt.Dimension(1024, 768));
 
         gameMainPluginPlaceholder.setLayout(new javax.swing.BoxLayout(gameMainPluginPlaceholder, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 739));
+        sidePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        sidePanel.setPreferredSize(new java.awt.Dimension(300, 739));
 
         startGameButton.setText("Start Game");
         startGameButton.setEnabled(false);
@@ -100,8 +107,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        gameSettingsLabel.setText("Game settings:");
-
         gameSettingsPluginplaceholder.setLayout(new javax.swing.BoxLayout(gameSettingsPluginplaceholder, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout gameSettingsPanelLayout = new javax.swing.GroupLayout(gameSettingsPanel);
@@ -110,46 +115,46 @@ public class MainWindow extends javax.swing.JFrame {
             gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gameSettingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gameSettingsPluginplaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(gameSettingsPanelLayout.createSequentialGroup()
-                        .addComponent(gameSettingsLabel)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(gameSettingsPluginplaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         gameSettingsPanelLayout.setVerticalGroup(
             gameSettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gameSettingsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(gameSettingsLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addComponent(gameSettingsPluginplaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(gameInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
-                    .addComponent(gameSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(startGameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        gameStatusPanelPluginPlaceholder.setLayout(new javax.swing.BoxLayout(gameStatusPanelPluginPlaceholder, javax.swing.BoxLayout.LINE_AXIS));
+
+        gameSettingsLabel.setText("Game settings:");
+
+        javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
+        sidePanel.setLayout(sidePanelLayout);
+        sidePanelLayout.setHorizontalGroup(
+            sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(gameStatusPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(sidePanelLayout.createSequentialGroup()
+                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(gameSettingsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(sidePanelLayout.createSequentialGroup()
+                        .addComponent(gameSettingsLabel)
+                        .addGap(0, 212, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(startGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        sidePanelLayout.setVerticalGroup(
+            sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gameInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addComponent(gameStatusPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(gameSettingsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(gameSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startGameButton)
-                .addContainerGap())
+                .addComponent(startGameButton))
         );
 
         jMenu1.setText("Program");
@@ -166,6 +171,11 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu3.add(miSelectGameNim);
 
         miSelectGameChess.setText("NIM Chess");
+        miSelectGameChess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSelectGameChessActionPerformed(evt);
+            }
+        });
         jMenu3.add(miSelectGameChess);
 
         jMenu1.add(jMenu3);
@@ -191,9 +201,9 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gameMainPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addComponent(gameMainPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,9 +211,8 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gameMainPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(gameMainPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)))
         );
 
         pack();
@@ -212,8 +221,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
         try {
-            gameElements.getGame().loadGameSettings(gameElements.getSettingsProvider().getGameSettings());
-            gameElements.getGame().startGame();
+            gameController.startGame();
             startGameButton.setEnabled(false);
             gameSettingsPanel.setEnabled(false);
         } catch (GameSetupIncompleteException ex) {
@@ -224,17 +232,21 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_startGameButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if (this.gameElements != null) {
-            gameElements.destroyGame();
-            this.gameElements = null;
+        if (this.gameController != null) {
+            gameController.destroyGame();
+            this.gameController = null;
             startGameButton.setEnabled(false);
             this.revalidate();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void miSelectGameNimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSelectGameNimActionPerformed
-        loadGame(SupportedGames.GAME_NIM);
+        createGame(SupportedGames.GAME_NIM);
     }//GEN-LAST:event_miSelectGameNimActionPerformed
+
+    private void miSelectGameChessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSelectGameChessActionPerformed
+        createGame(SupportedGames.GAME_NORTHCOTT);
+    }//GEN-LAST:event_miSelectGameChessActionPerformed
 
     /**
      * @param args the command line arguments
@@ -266,19 +278,19 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private szakdoga_prototype.GameInfoPanel gameInfoPanel;
     private javax.swing.JPanel gameMainPluginPlaceholder;
     private javax.swing.JLabel gameSettingsLabel;
     private javax.swing.JPanel gameSettingsPanel;
     private javax.swing.JPanel gameSettingsPluginplaceholder;
+    private javax.swing.JPanel gameStatusPanelPluginPlaceholder;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JRadioButtonMenuItem miSelectGameChess;
     private javax.swing.JRadioButtonMenuItem miSelectGameNim;
+    private javax.swing.JPanel sidePanel;
     private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables
 }

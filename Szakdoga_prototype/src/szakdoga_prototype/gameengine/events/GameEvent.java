@@ -11,9 +11,9 @@ package szakdoga_prototype.gameengine.events;
  */
 public class GameEvent {
 
-    private Object origin;
+    private final Object origin;
 
-    private int eventType;
+    private final int eventType;
 
     public static final int EVENT_GAME_STARTED = 1;
     public static final int EVENT_GAME_STOPED = 2;
@@ -28,7 +28,7 @@ public class GameEvent {
     }*/
     public GameEvent(Object origin, int eventType) {
         this.origin = origin;
-        this.eventType= eventType;
+        this.eventType = eventType;
     }
 
     public int getEventType() {

@@ -5,14 +5,26 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import szakdoga_prototype.gameengine.PlayerControllerInterface;
+
 /**
  *
  * @author matthew
  */
 public class NimAIPlayer extends NimPlayer {
 
-    public NimAIPlayer(String name) {
-        super(name);
+    private final NimGameAI gameAI = new NimGameAI();
+
+    public NimAIPlayer(String name, NimPlayerController controller) {
+        super(name, controller);
     }
+    
+
+
+    @Override
+    public void notifyYourTurn() {
+        gameAI.getNextStep(controller.getHeapConfiguration());
+    }
+
 
 }

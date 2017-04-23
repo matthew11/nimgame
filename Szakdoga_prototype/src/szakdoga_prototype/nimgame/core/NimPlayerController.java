@@ -5,22 +5,14 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import java.util.List;
 import szakdoga_prototype.gameengine.PlayerControllerInterface;
 
 /**
  *
  * @author matthew
  */
-public class NimHumanPlayer extends NimPlayer{
+public interface NimPlayerController extends PlayerControllerInterface{
 
-    public NimHumanPlayer(String name, NimPlayerController controller) {
-        super(name, controller);
-    }
-    
-    @Override
-    public void notifyYourTurn() {
-        
-    }
-
-    
+    public List getHeapConfiguration();
 }
