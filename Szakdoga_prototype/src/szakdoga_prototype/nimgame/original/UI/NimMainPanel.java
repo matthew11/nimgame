@@ -114,6 +114,7 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
                 updatePanels();
                 this.statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
                 this.statusPanel.setStepHistory(nimGame.getStepHistory());
+                
                 break;
             }
             default: {

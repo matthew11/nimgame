@@ -7,6 +7,7 @@ package szakdoga_prototype.nimgame.original.UI;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.GameSettingsProvider;
@@ -19,7 +20,7 @@ import szakdoga_prototype.nimgame.core.NimPlayerSettings;
  *
  * @author matthew
  */
-public class NimSettingsPanel extends javax.swing.JPanel implements GameSettingsProvider{
+public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
 
     private final NimGameSettings gameSettings = new NimGameSettings();
 
@@ -76,6 +77,7 @@ public class NimSettingsPanel extends javax.swing.JPanel implements GameSettings
         jLabel1.setText("Heap configuration:");
 
         buttonGroup1.add(configTypeRandom);
+        configTypeRandom.setSelected(true);
         configTypeRandom.setText("Full random");
         configTypeRandom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -53,8 +53,11 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
         this.gameController = new GameController(game, gameEntityProvider);
-        gameController.loadUIElements(gameMainPluginPlaceholder, gameSettingsPluginplaceholder, gameStatusPanelPluginPlaceholder);
+        gameMainPluginPlaceholder.setEnabled(true);
+        gameSettingsPluginplaceholder.setEnabled(true);
+        gameStatusPanelPluginPlaceholder.setEnabled(true);
         startGameButton.setEnabled(true);
+        gameController.loadUIElements(gameMainPluginPlaceholder, gameSettingsPluginplaceholder, gameStatusPanelPluginPlaceholder);
         this.repaint();
     }
 
@@ -74,12 +77,13 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        GameTypeButtonGroup = new javax.swing.ButtonGroup();
         gameMainPluginPlaceholder = new javax.swing.JPanel();
         sidePanel = new javax.swing.JPanel();
         startGameButton = new javax.swing.JButton();
         gameSettingsPanel = new javax.swing.JPanel();
-        gameSettingsPluginplaceholder = new javax.swing.JPanel();
-        gameStatusPanelPluginPlaceholder = new javax.swing.JPanel();
+        gameSettingsPluginplaceholder = new DisableableJPanel();
+        gameStatusPanelPluginPlaceholder = new DisableableJPanel();
         gameSettingsLabel = new javax.swing.JLabel();
         mainMenu = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -87,7 +91,10 @@ public class MainWindow extends javax.swing.JFrame {
         miSelectGameNim = new javax.swing.JRadioButtonMenuItem();
         miSelectGameChess = new javax.swing.JRadioButtonMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NimGame");
@@ -161,7 +168,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu3.setText("Select game");
 
-        miSelectGameNim.setSelected(true);
+        miSelectGameNim.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
+        GameTypeButtonGroup.add(miSelectGameNim);
         miSelectGameNim.setText("Classic NIM game");
         miSelectGameNim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,6 +178,8 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jMenu3.add(miSelectGameNim);
 
+        miSelectGameChess.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
+        GameTypeButtonGroup.add(miSelectGameChess);
         miSelectGameChess.setText("NIM Chess");
         miSelectGameChess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +190,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu1.add(jMenu3);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Reset program");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,10 +198,20 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+        jMenu1.add(jSeparator1);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Exit");
+        jMenu1.add(jMenuItem2);
 
         mainMenu.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem3.setText("Undo");
+        jMenu2.add(jMenuItem3);
+
         mainMenu.add(jMenu2);
 
         setJMenuBar(mainMenu);
@@ -223,7 +244,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             gameController.startGame();
             startGameButton.setEnabled(false);
-            gameSettingsPanel.setEnabled(false);
+            gameSettingsPluginplaceholder.setEnabled(false);
         } catch (GameSetupIncompleteException ex) {
             JOptionPane.showMessageDialog(this, "Game setup is incomplete: " + ex.getMessage());
         } catch (GameSettingsInvalidException | PlayerAlreadyRegisteredException | PlayerListFullException ex) {
@@ -278,6 +299,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup GameTypeButtonGroup;
     private javax.swing.JPanel gameMainPluginPlaceholder;
     private javax.swing.JLabel gameSettingsLabel;
     private javax.swing.JPanel gameSettingsPanel;
@@ -287,6 +309,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JRadioButtonMenuItem miSelectGameChess;
     private javax.swing.JRadioButtonMenuItem miSelectGameNim;

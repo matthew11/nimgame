@@ -45,7 +45,6 @@ public class NimStatusPanel extends javax.swing.JPanel implements NimStatusDispl
 
         currentPlayerLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         currentPlayerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        currentPlayerLabel.setText("NOT_SET");
         currentPlayerLabel.setToolTipText("");
 
         jList1.setModel(listModel);
