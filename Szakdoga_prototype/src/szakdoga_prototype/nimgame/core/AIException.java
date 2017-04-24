@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.gameengine;
+package szakdoga_prototype.nimgame.core;
 
 import szakdoga_prototype.gameengine.exceptions.GameException;
 
@@ -11,6 +11,11 @@ import szakdoga_prototype.gameengine.exceptions.GameException;
  *
  * @author matthew
  */
-public interface ControllerPlayerInterface {
-    public void notifyYourTurn() throws GameException;
+public class AIException extends GameException {
+
+    public AIException(String message) {
+        super(message);
+    }
+
+    
 }

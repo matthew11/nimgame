@@ -14,9 +14,14 @@ import szakdoga_prototype.gameengine.events.GameEvent;
 public class NimGameEvent extends GameEvent {
 
     public static final int EVENT_NEXT_TURN = 100;
+    private String message;
 
-    public NimGameEvent(Object origin, int eventType) {
+    public NimGameEvent(Object origin, int eventType, String message) {
         super(origin, eventType);
+    }
+    
+    public NimGameEvent(Object origin, int eventType) {
+        this(origin, eventType, "");
     }
 
 }

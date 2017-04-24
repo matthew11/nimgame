@@ -19,7 +19,7 @@ public class EventCenter {
     List<GameEventListener> listeners = new ArrayList<>();
 
    
-    public void dispacthEvent(GameEvent event){
+    public void dispatchEvent(GameEvent event){
         for(GameEventListener listener: listeners){
             listener.eventReceived(event);
         }

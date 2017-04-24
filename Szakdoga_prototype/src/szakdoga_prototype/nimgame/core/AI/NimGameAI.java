@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype.nimgame.core.AI;
 
 import java.util.List;
-import szakdoga_prototype.gameengine.StepObject;
+import szakdoga_prototype.nimgame.core.AIException;
 
 /**
  *
  * @author matthew
  */
 public class NimGameAI {
+
+    private final AINimWinningStrategy strategy = new AINimWinningStrategy();
 
     public static enum AI_Stategies {
         AI_WINNING_STRATEGY
@@ -28,8 +30,8 @@ public class NimGameAI {
         this.strategyInUse = strategyInUse;
     }
 
-    public StepObject getNextStep(List heapConfiguration) {
-        return null;
+    public NimAISolution getNextStep(List<Integer> heapConfiguration) throws AIException {
+        return strategy.getNextStep(heapConfiguration);
     }
 
 }

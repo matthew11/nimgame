@@ -5,7 +5,9 @@
  */
 package szakdoga_prototype.nimgame.core;
 
-import szakdoga_prototype.gameengine.PlayerControllerInterface;
+import szakdoga_prototype.gameengine.exceptions.GameException;
+import szakdoga_prototype.nimgame.core.AI.NimAISolution;
+import szakdoga_prototype.nimgame.core.AI.NimGameAI;
 
 /**
  *
@@ -20,10 +22,10 @@ public class NimAIPlayer extends NimPlayer {
     }
     
 
-
     @Override
-    public void notifyYourTurn() {
-        gameAI.getNextStep(controller.getHeapConfiguration());
+    public void notifyYourTurn() throws AIException, GameException {
+        NimAISolution nextStep = gameAI.getNextStep(((NimPlayerController)controller).getHeapConfiguration());
+        controller.nextStep(new NimStepObject(nextStep.getHeapID(), nextStep.getAlterValue(), this));
     }
 
 

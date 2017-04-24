@@ -9,7 +9,7 @@ package szakdoga_prototype.gameengine;
  *
  * @author matthew
  */
-public abstract class Player implements ControllerPlayerInterface {
+public abstract class Player{
 
     protected String name;
     protected PlayerControllerInterface controller;

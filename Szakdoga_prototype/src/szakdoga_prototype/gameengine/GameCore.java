@@ -60,11 +60,11 @@ public abstract class GameCore {
     public abstract int getMaxPlayers();
 
     public void startGame() throws GameSetupIncompleteException {
-        eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
+        eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
     }
 
     public void stopGame() {
-        eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
+        eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
     }
 
     public EventCenter getEventCenter() {

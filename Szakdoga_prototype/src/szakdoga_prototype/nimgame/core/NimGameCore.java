@@ -9,6 +9,8 @@ import szakdoga_prototype.nimgame.core.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.gameengine.Player;
 import szakdoga_prototype.gameengine.StepObject;
@@ -25,7 +27,7 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
  *
  * @author matthew
  */
-public class NimGameCore extends TurnBasedGame implements NimPlayerController{
+public class NimGameCore extends TurnBasedGame implements NimPlayerController {
 
     public static final int MAX_PLAYER_COUNT = 2;
     public static final int MIN_PLAYER_COUNT = 2;
@@ -62,19 +64,19 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController{
         }
     }
 
-    private NimPlayer instantiatePlayer(NimPlayerSettings playerSettings){
+    private NimPlayer instantiatePlayer(NimPlayerSettings playerSettings) {
         NimPlayer player;
-        if(playerSettings.isIsAI()){
+        if (playerSettings.isIsAI()) {
             player = new NimAIPlayer(playerSettings.getPlayerName(), this);
-        }else{
+        } else {
             player = new NimHumanPlayer(playerSettings.getPlayerName(), this);
         }
-        if(playerSettings.isStarter()){
+        if (playerSettings.isStarter()) {
             this.currentPlayer = player;
         }
         return player;
     }
-    
+
     @Override
     public void loadGameSettings(AbstractGameSettings gameSettings) throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException {
         int heapCount, minHeapCount = 0, maxHeapCount = 0, minEntityCount = 0, maxEntityCount = 0;
@@ -136,12 +138,15 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController{
         if (!(step instanceof NimStepObject)) {
             throw new GameException("Invalid step object. This step object " + step.getClass().getName() + "is not belongs to Nim game!");
         }
-        stepHistory.add(step);
         NimStepObject nimStep = (NimStepObject) step;
+        if(nimStep.amount <=0){
+            throw new GameException("Invalid amount. At least one entity must be removed from a heap");
+        }
+        stepHistory.add(step);
         validatePlayer(step.getOriginatingPlayer());
         decreaseEntityBy(nimStep.getHeapID(), nimStep.getAmount());
         if (isInEndState()) {
-            eventCenter.dispacthEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
+            eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
             return;
         }
         nextTurn(currentPlayer);
@@ -150,7 +155,12 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController{
     @Override
     public void nextTurn(Player originatingPlayer) throws PlayerOrderException {
         super.nextTurn(originatingPlayer);
-        eventCenter.dispacthEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
+        eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
+        try {
+            ((NimPlayer) (this.currentPlayer)).notifyYourTurn();
+        } catch (GameException ex) {
+            eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_INTERNAL_ERROR, ex.getMessage()));
+        }
     }
 
     @Override
@@ -205,6 +215,11 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController{
             currentPlayer = players.get(0);
         }
         super.startGame();
+        try {
+            ((NimPlayer) (this.currentPlayer)).notifyYourTurn();
+        } catch (GameException ex) {
+            eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_INTERNAL_ERROR, ex.getMessage()));
+        }
     }
 
     @Override

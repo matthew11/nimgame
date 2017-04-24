@@ -18,6 +18,7 @@ public class GameEvent {
     public static final int EVENT_GAME_STARTED = 1;
     public static final int EVENT_GAME_STOPED = 2;
     public static final int EVENT_GAME_ENDED = 3;
+    public static final int EVENT_INTERNAL_ERROR = 66;
     public static final int EVENT_PLAYER_REGISTERED = 4;
 
     /*public static enum GameEvents{

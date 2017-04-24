@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype.nimgame.core.AI;
 
 import java.util.List;
-import szakdoga_prototype.gameengine.PlayerControllerInterface;
+import szakdoga_prototype.nimgame.core.AIException;
 
 /**
  *
  * @author matthew
  */
-public interface NimPlayerController extends PlayerControllerInterface{
-
-    public List<Integer> getHeapConfiguration();
+public interface NimAI {
+    public NimAISolution getNextStep(List<Integer> heapConfiguration) throws AIException;
 }
