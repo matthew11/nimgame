@@ -64,7 +64,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
         rndMaxEntityCountSpinner = new javax.swing.JSpinner();
         heapConfigurationTextField = new javax.swing.JTextField();
         heapConfigurationTextField.setVisible(false);
-        inverseNimGameCheckbox = new javax.swing.JCheckBox();
+        misereNimGameCheckbox = new javax.swing.JCheckBox();
         playerPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         playerEntryPanel1 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(starterGroup);
@@ -178,7 +178,8 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
         heapConfigurationTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         heapConfigurationTextField.setText("5 8 14 7 9 3");
 
-        inverseNimGameCheckbox.setText("Inverse NIM Game");
+        misereNimGameCheckbox.setSelected(true);
+        misereNimGameCheckbox.setText("Misère NIM Game");
 
         jLabel2.setText("Players:");
 
@@ -247,7 +248,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(heapConfigurationTextField)
-                    .addComponent(inverseNimGameCheckbox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(misereNimGameCheckbox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -276,7 +277,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(heapConfigurationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inverseNimGameCheckbox)
+                .addComponent(misereNimGameCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(playerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -319,7 +320,6 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
     private javax.swing.JRadioButton configTypeRandom;
     private javax.swing.JPanel controlledRandomPanel;
     private javax.swing.JTextField heapConfigurationTextField;
-    private javax.swing.JCheckBox inverseNimGameCheckbox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -329,6 +329,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JCheckBox misereNimGameCheckbox;
     private szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel playerEntryPanel1;
     private szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel playerEntryPanel2;
     private javax.swing.JPanel playerHeaderPanel;
@@ -374,7 +375,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
         gameSettings.setMaxHeapCount((int) maxHeapCountModel.getValue());
         gameSettings.setMinEntityCount((int) minEntityCountModel.getValue());
         gameSettings.setMaxEntityCount((int) maxEntityCountModel.getValue());
-        gameSettings.setInverseNimGame(inverseNimGameCheckbox.isSelected());
+        gameSettings.setMisereNimGame(misereNimGameCheckbox.isSelected());
         return gameSettings;
     }
 

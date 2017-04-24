@@ -5,6 +5,7 @@
  */
 package szakdoga_prototype.gameengine;
 
+import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 
@@ -13,6 +14,6 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
  * @author matthew
  */
 public interface PlayerControllerInterface {
-
+    public AbstractGameSettings getGameSettings();
     public void nextStep(StepObject nextStep) throws PlayerOrderException, GameException;
 }

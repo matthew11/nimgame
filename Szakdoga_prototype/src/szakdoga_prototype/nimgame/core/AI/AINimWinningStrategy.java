@@ -5,9 +5,8 @@
  */
 package szakdoga_prototype.nimgame.core.AI;
 
-import szakdoga_prototype.nimgame.core.AI.NimAI;
+import java.util.Arrays;
 import java.util.List;
-import szakdoga_prototype.nimgame.core.AI.NimAISolution;
 import szakdoga_prototype.nimgame.core.AIException;
 
 /**
@@ -16,9 +15,40 @@ import szakdoga_prototype.nimgame.core.AIException;
  */
 public class AINimWinningStrategy implements NimAI {
 
-    private List<Integer> heapConfiguration;
+    private final DecisionMaker decisionMaker;
 
-    private int getNimSum() {
+    public AINimWinningStrategy(boolean misereNim) {
+        if(misereNim){
+            decisionMaker = new NimMisereDecisionMaker();
+        }else{
+            decisionMaker = new NimStandardDecisionMaker();
+        }
+    }
+
+    private interface DecisionMaker {
+
+        public boolean acceptSolution(int nimSum);
+    }
+
+    private class NimStandardDecisionMaker implements DecisionMaker {
+
+        @Override
+        public boolean acceptSolution(int nimSum) {
+            return nimSum == 0;
+        }
+
+    }
+
+    private class NimMisereDecisionMaker implements DecisionMaker {
+
+        @Override
+        public boolean acceptSolution(int nimSum) {
+            return nimSum == 1;
+        }
+
+    }
+
+    private int getNimSum(int[] heapConfiguration) {
         int s = 0;
         for (Integer i : heapConfiguration) {
             s ^= i;
@@ -27,46 +57,46 @@ public class AINimWinningStrategy implements NimAI {
         return s;
     }
 
-    private int getFirstNonemptyHeapID() {
+    private int getFirstNonemptyHeapID(int[] heapConfiguration) {
         int testID = 0;
-        while (testID < heapConfiguration.size() && heapConfiguration.get(testID) <= 0) {  // Look for the first non-empty heap
+        while (testID < heapConfiguration.length && heapConfiguration[testID] <= 0) {  // Look for the first non-empty heap
             testID++;
         }
-        if (testID >= heapConfiguration.size()) {
+        if (testID >= heapConfiguration.length) {
             return -1;
         }
         return testID;
     }
 
-    private NimAISolution getBestMove() throws AIException {
+    private NimAISolution getBestMove(int[] heapConfiguration) throws AIException {
         int testID, testMove = 1, originaValue;
         boolean solutionFound = false;
-        testID = getFirstNonemptyHeapID();
+        testID = getFirstNonemptyHeapID(heapConfiguration);
         if (testID < 0) {
             throw new AIException("Attempt to execute on an empty gamespace!");
         }
         testID--;
-        while ((!solutionFound) && (testID + 1 < heapConfiguration.size())) {
+        while ((!solutionFound) && (testID + 1 < heapConfiguration.length)) {
             testID++;
-            if (heapConfiguration.get(testID) > 0) {
-                originaValue = heapConfiguration.get(testID);
-                heapConfiguration.set(testID, heapConfiguration.get(testID) - 1);
-                while (heapConfiguration.get(testID) >= 0 && (getNimSum() != 0)) {
-                    heapConfiguration.set(testID, heapConfiguration.get(testID) - 1);
-                    System.out.println("Testing: " + heapConfiguration + "=" + getNimSum());
+            if (heapConfiguration[testID] > 0) {
+                originaValue = heapConfiguration[testID];
+                heapConfiguration[testID]--;
+                while (heapConfiguration[testID] >= 0 && ! decisionMaker.acceptSolution(getNimSum(heapConfiguration))) {
+                    heapConfiguration[testID]--;
+                    System.out.println("Testing: " + Arrays.toString(heapConfiguration) + "=" + getNimSum(heapConfiguration));
                 }
-                if (heapConfiguration.get(testID) >= 0) {
-                    testMove = originaValue - heapConfiguration.get(testID);
+                if (heapConfiguration[testID] >= 0) {
+                    testMove = originaValue - heapConfiguration[testID];
                     System.out.println("Solution found.");
                     solutionFound = true;
                 }
-                heapConfiguration.set(testID, originaValue);
+                heapConfiguration[testID] = originaValue;
             }
         }
 
         if (!solutionFound) { // Curerntly there is no winning move :(
             System.out.println("Faking solution.");
-            testID = getFirstNonemptyHeapID();
+            testID = getFirstNonemptyHeapID(heapConfiguration);
             testMove = 1;
         }
 
@@ -75,10 +105,7 @@ public class AINimWinningStrategy implements NimAI {
 
     @Override
     public NimAISolution getNextStep(List<Integer> heapConfiguration) throws AIException {
-        this.heapConfiguration = heapConfiguration;
-        System.out.println("Current NIM sum: " + getNimSum());
-
-        return getBestMove();
+        return getBestMove(heapConfiguration.stream().mapToInt(i -> i).toArray());
     }
 
 }

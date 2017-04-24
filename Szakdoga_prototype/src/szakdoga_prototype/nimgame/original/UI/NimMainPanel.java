@@ -80,6 +80,9 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
                 panel.setPanelValue(nimGame.getHeapValue(panel.getPanelID()));
             }
         }
+        this.statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
+        this.statusPanel.setStepHistory(nimGame.getStepHistory());
+
     }
 
     void heapChanged(int panelID, int value) {
@@ -104,6 +107,7 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
 
             }
             case GameEvent.EVENT_GAME_ENDED: {
+                updatePanels();
                 gameSpace.removeAll();
                 gameSpace.revalidate();
                 gameSpace.repaint();
@@ -112,9 +116,6 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
             }
             case NimGameEvent.EVENT_NEXT_TURN: {
                 updatePanels();
-                this.statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
-                this.statusPanel.setStepHistory(nimGame.getStepHistory());
-                
                 break;
             }
             default: {

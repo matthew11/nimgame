@@ -7,13 +7,7 @@ package szakdoga_prototype;
 
 import java.awt.Component;
 import java.awt.Container;
-import javax.swing.JOptionPane;
 import szakdoga_prototype.gameengine.GameCore;
-import szakdoga_prototype.gameengine.PlayerControllerInterface;
-import szakdoga_prototype.gameengine.StepObject;
-import szakdoga_prototype.gameengine.events.GameEvent;
-import szakdoga_prototype.gameengine.events.GameEventListener;
-import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
 import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
@@ -24,12 +18,11 @@ import szakdoga_prototype.providers.GameEntityProvider;
  *
  * @author matthew
  */
-public class GameController implements GameEventListener, PlayerControllerInterface{
+public class GameController {
 
     private final GameCore game;
     private final GameSettingsProvider settingsProvider;
     private final GameEntityProvider entityProvider;
-    
 
     public GameController(GameCore game, GameEntityProvider entityProvider) {
         this.game = game;
@@ -37,18 +30,18 @@ public class GameController implements GameEventListener, PlayerControllerInterf
         this.entityProvider = entityProvider;
     }
 
-    private void removeSelf(Component component){
+    private void removeSelf(Component component) {
         component.getParent().remove(component);
     }
-    
+
     public void destroyGame() {
         game.stopGame();
         removeSelf(entityProvider.getMainUIComponent());
         removeSelf(entityProvider.getSettingsUIComponent());
         removeSelf(entityProvider.getStatusUIComponent());
     }
-    
-    public void loadUIElements(Container targetMainPanel, Container targetSettingsPanel, Container targetStatusPanel){
+
+    public void loadUIElements(Container targetMainPanel, Container targetSettingsPanel, Container targetStatusPanel) {
         targetMainPanel.removeAll();
         targetSettingsPanel.removeAll();
         targetStatusPanel.removeAll();
@@ -68,23 +61,9 @@ public class GameController implements GameEventListener, PlayerControllerInterf
         return settingsProvider;
     }
 
-    @Override
-    public void eventReceived(GameEvent event) {
-    }
-
     public void startGame() throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException, GameSetupIncompleteException {
-        this.game.getEventCenter().subscribeForEvent(this);
         this.game.loadGameSettings(settingsProvider.getGameSettings());
         this.game.startGame();
-    }
-
-    @Override
-    public void nextStep(StepObject nextStep) {
-        try {
-            game.nextStep(nextStep);
-        } catch (GameException ex) {
-            JOptionPane.showMessageDialog(entityProvider.getMainUIComponent(), "Error: " + ex.getMessage());
-        }
     }
 
 }

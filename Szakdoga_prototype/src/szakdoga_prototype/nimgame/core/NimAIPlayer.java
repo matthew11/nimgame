@@ -15,10 +15,11 @@ import szakdoga_prototype.nimgame.core.AI.NimGameAI;
  */
 public class NimAIPlayer extends NimPlayer {
 
-    private final NimGameAI gameAI = new NimGameAI();
+    private final NimGameAI gameAI;
 
     public NimAIPlayer(String name, NimPlayerController controller) {
         super(name, controller);
+        gameAI = new NimGameAI(((NimGameSettings)controller.getGameSettings()).isMisereNimGame());
     }
     
 

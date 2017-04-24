@@ -90,9 +90,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         miSelectGameNim = new javax.swing.JRadioButtonMenuItem();
         miSelectGameChess = new javax.swing.JRadioButtonMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        resetMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -180,7 +180,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         miSelectGameChess.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
         GameTypeButtonGroup.add(miSelectGameChess);
-        miSelectGameChess.setText("NIM Chess");
+        miSelectGameChess.setText("Northcott-chess");
         miSelectGameChess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miSelectGameChessActionPerformed(evt);
@@ -190,19 +190,24 @@ public class MainWindow extends javax.swing.JFrame {
 
         jMenu1.add(jMenu3);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Reset program");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        resetMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        resetMenuItem.setText("Reset program");
+        resetMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                resetMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(resetMenuItem);
         jMenu1.add(jSeparator1);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Exit");
-        jMenu1.add(jMenuItem2);
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(exitMenuItem);
 
         mainMenu.add(jMenu1);
 
@@ -252,14 +257,15 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_startGameButtonActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void resetMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetMenuItemActionPerformed
         if (this.gameController != null) {
             gameController.destroyGame();
             this.gameController = null;
             startGameButton.setEnabled(false);
             this.revalidate();
+            this.repaint();
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_resetMenuItemActionPerformed
 
     private void miSelectGameNimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSelectGameNimActionPerformed
         createGame(SupportedGames.GAME_NIM);
@@ -268,6 +274,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void miSelectGameChessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSelectGameChessActionPerformed
         createGame(SupportedGames.GAME_NORTHCOTT);
     }//GEN-LAST:event_miSelectGameChessActionPerformed
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        dispose();
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,6 +310,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GameTypeButtonGroup;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JPanel gameMainPluginPlaceholder;
     private javax.swing.JLabel gameSettingsLabel;
     private javax.swing.JPanel gameSettingsPanel;
@@ -308,13 +319,12 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JRadioButtonMenuItem miSelectGameChess;
     private javax.swing.JRadioButtonMenuItem miSelectGameNim;
+    private javax.swing.JMenuItem resetMenuItem;
     private javax.swing.JPanel sidePanel;
     private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables

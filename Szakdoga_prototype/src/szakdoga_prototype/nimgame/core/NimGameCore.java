@@ -9,8 +9,6 @@ import szakdoga_prototype.nimgame.core.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.gameengine.Player;
 import szakdoga_prototype.gameengine.StepObject;
@@ -41,9 +39,10 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     public static final int MIN_RANDOM_ENTITY_COUNT = 5;
 
     private List<Integer> heapConfiguration = new ArrayList<>();
+    private NimGameSettings nimGameSettings;
 
     private final Random random = new Random();
-    private boolean inverseNimGame = false;
+    private boolean misereNimGame = true;
 
     private int getIntBetween(int boundaryA, int boundaryB) {
         if (boundaryA == boundaryB) {
@@ -80,8 +79,8 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     @Override
     public void loadGameSettings(AbstractGameSettings gameSettings) throws GameSettingsInvalidException, PlayerAlreadyRegisteredException, PlayerListFullException {
         int heapCount, minHeapCount = 0, maxHeapCount = 0, minEntityCount = 0, maxEntityCount = 0;
-        NimGameSettings nimGameSettings = (NimGameSettings) gameSettings;
-        this.inverseNimGame = nimGameSettings.isInverseNimGame();
+        nimGameSettings = (NimGameSettings) gameSettings;
+        this.misereNimGame = nimGameSettings.isMisereNimGame();
         this.players.clear();
         for (NimPlayerSettings playerSettings : nimGameSettings.getPlayers()) {
             registerPlayer(instantiatePlayer(playerSettings));
@@ -194,7 +193,7 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
 
     @Override
     public Player getWiningPlayer() {
-        if (inverseNimGame) {
+        if (misereNimGame) {
             return getNextPlayer();
         } else {
             return currentPlayer;
@@ -243,6 +242,11 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     @Override
     public List getHeapConfiguration() {
         return new ArrayList<>(heapConfiguration);
+    }
+
+    @Override
+    public AbstractGameSettings getGameSettings() {
+        return nimGameSettings;
     }
 
 }

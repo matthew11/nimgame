@@ -14,7 +14,11 @@ import szakdoga_prototype.nimgame.core.AIException;
  */
 public class NimGameAI {
 
-    private final AINimWinningStrategy strategy = new AINimWinningStrategy();
+    private final AINimWinningStrategy strategy ;
+
+    public NimGameAI(boolean misereNim) {
+        strategy = new AINimWinningStrategy(misereNim);
+    }
 
     public static enum AI_Stategies {
         AI_WINNING_STRATEGY

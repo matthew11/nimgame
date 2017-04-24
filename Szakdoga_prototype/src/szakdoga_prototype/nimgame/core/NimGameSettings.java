@@ -21,7 +21,7 @@ public class NimGameSettings extends AbstractGameSettings {
     private List<Integer> heapConfiguration;
     private ConfigurationType configType;
     private List<NimPlayerSettings> players;
-    private boolean inverseNimGame;
+    private boolean misereNimGame;
     private int minHeapCount, maxHeapCount, minEntityCount, maxEntityCount;
 
     public List<Integer> getHeapConfiguration() {
@@ -80,12 +80,12 @@ public class NimGameSettings extends AbstractGameSettings {
         this.maxEntityCount = maxEntityCount;
     }
 
-    public boolean isInverseNimGame() {
-        return inverseNimGame;
+    public boolean isMisereNimGame() {
+        return misereNimGame;
     }
 
-    public void setInverseNimGame(boolean inverseNimGame) {
-        this.inverseNimGame = inverseNimGame;
+    public void setMisereNimGame(boolean misereNimGame) {
+        this.misereNimGame = misereNimGame;
     }
 
 }

@@ -5,8 +5,6 @@
  */
 package szakdoga_prototype.nimgame.core;
 
-import szakdoga_prototype.gameengine.PlayerControllerInterface;
-
 /**
  *
  * @author matthew

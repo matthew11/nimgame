@@ -25,7 +25,7 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="heapConfigurationTextField" alignment="0" max="32767" attributes="0"/>
-                  <Component id="inverseNimGameCheckbox" alignment="1" max="32767" attributes="0"/>
+                  <Component id="misereNimGameCheckbox" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -60,7 +60,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="heapConfigurationTextField" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="inverseNimGameCheckbox" min="-2" max="-2" attributes="0"/>
+              <Component id="misereNimGameCheckbox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="playerPanel" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -242,9 +242,10 @@
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="heapConfigurationTextField.setVisible(false);"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="inverseNimGameCheckbox">
+    <Component class="javax.swing.JCheckBox" name="misereNimGameCheckbox">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Inverse NIM Game"/>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Mis&#xe8;re NIM Game"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="playerPanel">

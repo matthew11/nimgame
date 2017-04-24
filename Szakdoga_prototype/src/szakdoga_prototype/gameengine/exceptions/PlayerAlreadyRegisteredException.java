@@ -5,8 +5,6 @@
  */
 package szakdoga_prototype.gameengine.exceptions;
 
-import szakdoga_prototype.gameengine.exceptions.GameException;
-
 /**
  *
  * @author matthew
