@@ -5,6 +5,7 @@
  */
 package szakdoga_prototype;
 
+import szakdoga_prototype.providers.GameSettingsProvider;
 import java.awt.Component;
 import java.awt.Container;
 import szakdoga_prototype.gameengine.GameCore;

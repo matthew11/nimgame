@@ -5,8 +5,6 @@
  */
 package szakdoga_prototype.providers;
 
-import szakdoga_prototype.GameSettingsProvider;
-
 /**
  *
  * @author matthew

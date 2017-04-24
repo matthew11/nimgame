@@ -7,7 +7,6 @@ package szakdoga_prototype.gameengine;
 
 import java.util.ArrayList;
 import java.util.List;
-import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;

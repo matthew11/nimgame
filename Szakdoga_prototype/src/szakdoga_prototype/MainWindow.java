@@ -5,6 +5,7 @@
  */
 package szakdoga_prototype;
 
+import szakdoga_prototype.UI.DisableableJPanel;
 import javax.swing.JOptionPane;
 import szakdoga_prototype.gameengine.GameCore;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
@@ -12,7 +13,7 @@ import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
 import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
 import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.nimgame.core.NimGameCore;
-import szakdoga_prototype.nimgame.northcott.NorthcottMainPanel;
+import szakdoga_prototype.nimgame.northcott.UI.NorthcottMainPanel;
 import szakdoga_prototype.nimgame.original.UI.NimMainPanel;
 import szakdoga_prototype.providers.GameEntityProvider;
 

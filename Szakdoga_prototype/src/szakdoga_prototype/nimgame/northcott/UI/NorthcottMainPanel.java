@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.northcott;
+package szakdoga_prototype.nimgame.northcott.UI;
 
 import java.awt.Component;
-import szakdoga_prototype.GameSettingsProvider;
+import java.util.ArrayList;
+import java.util.List;
+import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.events.GameEventListener;
 import szakdoga_prototype.providers.GameEntityProvider;
@@ -17,13 +19,33 @@ import szakdoga_prototype.providers.GameEntityProvider;
  */
 public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventListener, GameEntityProvider {
 
+    private int heapCount;
+    private int maxHeapValue;
+    private List<ChessColumn> columns;
     private final NorthcottSettingsPanel settingsPanel = new NorthcottSettingsPanel();
     private final NorthcottStatusPanel statusPanel = new NorthcottStatusPanel();
+
     /**
      * Creates new form NorthcottMainPanel
      */
     public NorthcottMainPanel() {
         initComponents();
+        fieldDimensionChanged(8, 8);
+    }
+
+    private void createField() {
+        fieldPanelPluginPlaceholder.removeAll();
+        columns = new ArrayList(heapCount);
+        for (int i = 0; i < this.maxHeapValue; i++) {
+            columns.add(new ChessColumn(i, this.maxHeapValue));
+            fieldPanelPluginPlaceholder.add(columns.get(i));
+        }
+    }
+
+    public void fieldDimensionChanged(int heapCount, int maxHeapValue) {
+        this.heapCount = heapCount;
+        this.maxHeapValue = maxHeapValue;
+        createField();
     }
 
     /**
@@ -39,7 +61,7 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        fieldPanelPluginPlaceholder = new javax.swing.JPanel();
 
         jLabel1.setText("STATUS_TEXT_NOT_YET_SET");
 
@@ -79,18 +101,8 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
                 .addGap(33, 33, 33))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 0, 255));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 418, Short.MAX_VALUE)
-        );
+        fieldPanelPluginPlaceholder.setBackground(new java.awt.Color(255, 0, 255));
+        fieldPanelPluginPlaceholder.setLayout(new javax.swing.BoxLayout(fieldPanelPluginPlaceholder, javax.swing.BoxLayout.X_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -100,7 +112,7 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fieldPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,7 +120,7 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fieldPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -141,10 +153,10 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel fieldPanelPluginPlaceholder;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

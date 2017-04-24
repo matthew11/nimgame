@@ -7,7 +7,7 @@ package szakdoga_prototype.nimgame.core.AI;
 
 import java.util.Arrays;
 import java.util.List;
-import szakdoga_prototype.nimgame.core.AIException;
+import szakdoga_prototype.nimgame.core.exceptions.AIException;
 
 /**
  *

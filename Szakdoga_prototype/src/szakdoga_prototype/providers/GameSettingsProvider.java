@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype;
+package szakdoga_prototype.providers;
 
+import szakdoga_prototype.gameengine.AbstractGameSettings;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 
 /**

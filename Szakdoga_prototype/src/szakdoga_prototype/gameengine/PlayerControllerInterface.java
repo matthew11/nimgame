@@ -5,7 +5,6 @@
  */
 package szakdoga_prototype.gameengine;
 
-import szakdoga_prototype.AbstractGameSettings;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 

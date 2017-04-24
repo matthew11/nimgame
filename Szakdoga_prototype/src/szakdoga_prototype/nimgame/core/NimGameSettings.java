@@ -6,7 +6,7 @@
 package szakdoga_prototype.nimgame.core;
 
 import java.util.List;
-import szakdoga_prototype.AbstractGameSettings;
+import szakdoga_prototype.gameengine.AbstractGameSettings;
 
 /**
  *

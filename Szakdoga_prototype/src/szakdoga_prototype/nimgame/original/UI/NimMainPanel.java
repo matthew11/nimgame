@@ -7,7 +7,7 @@ package szakdoga_prototype.nimgame.original.UI;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
-import szakdoga_prototype.GameSettingsProvider;
+import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.events.GameEventListener;
 import szakdoga_prototype.gameengine.exceptions.GameException;

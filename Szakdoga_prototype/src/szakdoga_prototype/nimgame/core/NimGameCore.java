@@ -9,7 +9,7 @@ import szakdoga_prototype.nimgame.core.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import szakdoga_prototype.AbstractGameSettings;
+import szakdoga_prototype.gameengine.AbstractGameSettings;
 import szakdoga_prototype.gameengine.Player;
 import szakdoga_prototype.gameengine.StepObject;
 import szakdoga_prototype.gameengine.events.GameEvent;

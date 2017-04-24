@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.northcott;
+package szakdoga_prototype.nimgame.northcott.UI;
 
-import szakdoga_prototype.AbstractGameSettings;
-import szakdoga_prototype.GameSettingsProvider;
+import szakdoga_prototype.gameengine.AbstractGameSettings;
+import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 
 /**
@@ -94,7 +94,6 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
                             .addComponent(jLabel1)
                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)

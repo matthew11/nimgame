@@ -5,6 +5,7 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import szakdoga_prototype.nimgame.core.exceptions.AIException;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.nimgame.core.AI.NimAISolution;
 import szakdoga_prototype.nimgame.core.AI.NimGameAI;
