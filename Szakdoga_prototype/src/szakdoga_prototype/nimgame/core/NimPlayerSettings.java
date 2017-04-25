@@ -11,11 +11,13 @@ package szakdoga_prototype.nimgame.core;
  */
 public class NimPlayerSettings {
 
+    private final int playerID;
     private final String playerName;
     private final boolean isAI;
     private final boolean starter;
 
-    public NimPlayerSettings(String playerName, boolean isAI, boolean starter) {
+    public NimPlayerSettings(int playerID, String playerName, boolean isAI, boolean starter) {
+        this.playerID = playerID;
         this.playerName = playerName;
         this.isAI = isAI;
         this.starter = starter;
@@ -31,6 +33,10 @@ public class NimPlayerSettings {
 
     public boolean isStarter() {
         return starter;
+    }
+
+    int getPlayerID() {
+        return playerID;
     }
     
     

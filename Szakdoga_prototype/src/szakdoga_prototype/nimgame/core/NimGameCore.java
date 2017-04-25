@@ -5,6 +5,8 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import szakdoga_prototype.nimgame.core.events.NimGameStepEvent;
+import szakdoga_prototype.nimgame.core.events.NimGameEvent;
 import szakdoga_prototype.nimgame.core.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Random;
 import szakdoga_prototype.gameengine.AbstractGameSettings;
 import szakdoga_prototype.gameengine.Player;
 import szakdoga_prototype.gameengine.StepObject;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.events.GameErrorEvent;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
@@ -44,6 +48,10 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     private final Random random = new Random();
     private boolean misereNimGame = true;
 
+    public NimGameCore() throws EventChannelInvalidException {
+        super();
+    }
+
     private int getIntBetween(int boundaryA, int boundaryB) {
         if (boundaryA == boundaryB) {
             return boundaryA;
@@ -66,9 +74,9 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     private NimPlayer instantiatePlayer(NimPlayerSettings playerSettings) {
         NimPlayer player;
         if (playerSettings.isIsAI()) {
-            player = new NimAIPlayer(playerSettings.getPlayerName(), this);
+            player = new NimAIPlayer(playerSettings.getPlayerID(), playerSettings.getPlayerName(), this);
         } else {
-            player = new NimHumanPlayer(playerSettings.getPlayerName(), this);
+            player = new NimHumanPlayer(playerSettings.getPlayerID(), playerSettings.getPlayerName(), this);
         }
         if (playerSettings.isStarter()) {
             this.currentPlayer = player;
@@ -138,27 +146,29 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
             throw new GameException("Invalid step object. This step object " + step.getClass().getName() + "is not belongs to Nim game!");
         }
         NimStepObject nimStep = (NimStepObject) step;
-        if(nimStep.amount <=0){
+        if (nimStep.amount <= 0) {
             throw new GameException("Invalid amount. At least one entity must be removed from a heap");
         }
         stepHistory.add(step);
         validatePlayer(step.getOriginatingPlayer());
         decreaseEntityBy(nimStep.getHeapID(), nimStep.getAmount());
+        eventChannel.dispatchEvent(new NimGameStepEvent(this, nimStep, NimGameEvent.EVENT_OTHER_EVENT));
         if (isInEndState()) {
-            eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
+            eventChannel.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
             return;
         }
+        System.out.println("Heap config: " + heapConfiguration);
         nextTurn(currentPlayer);
     }
 
     @Override
     public void nextTurn(Player originatingPlayer) throws PlayerOrderException {
         super.nextTurn(originatingPlayer);
-        eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
+        eventChannel.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
         try {
             ((NimPlayer) (this.currentPlayer)).notifyYourTurn();
         } catch (GameException ex) {
-            eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_INTERNAL_ERROR, ex.getMessage()));
+            eventChannel.dispatchEvent(new GameErrorEvent(this, ex));
         }
     }
 
@@ -217,7 +227,7 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
         try {
             ((NimPlayer) (this.currentPlayer)).notifyYourTurn();
         } catch (GameException ex) {
-            eventCenter.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_INTERNAL_ERROR, ex.getMessage()));
+            eventChannel.dispatchEvent(new GameErrorEvent(this, ex));
         }
     }
 
@@ -240,7 +250,7 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     }
 
     @Override
-    public List getHeapConfiguration() {
+    public List<Integer> getHeapConfiguration() {
         return new ArrayList<>(heapConfiguration);
     }
 

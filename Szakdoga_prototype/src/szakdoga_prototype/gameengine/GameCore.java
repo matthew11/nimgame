@@ -5,8 +5,15 @@
  */
 package szakdoga_prototype.gameengine;
 
+import szakdoga_prototype.gameengine.eventmanager.EventChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.eventmanager.EventManager;
+import szakdoga_prototype.gameengine.eventmanager.EventPermissionDeniedException;
+import szakdoga_prototype.gameengine.eventmanager.EventRegistry;
 import szakdoga_prototype.gameengine.events.GameEvent;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
@@ -23,9 +30,11 @@ public abstract class GameCore {
 
     protected final List<Player> players;
     protected final List<StepObject> stepHistory = new ArrayList<>();
-    protected final EventCenter eventCenter = new EventCenter();
+    protected final EventChannel eventChannel;
 
-    public GameCore() {
+    public GameCore() throws EventChannelInvalidException {
+        EventManager.createEventChannel(this, EventRegistry.EVENT_GAMEENGINE);
+        this.eventChannel = EventManager.getEventChannel(EventRegistry.EVENT_GAMEENGINE);
         this.players = new ArrayList<>();
     }
 
@@ -59,15 +68,20 @@ public abstract class GameCore {
     public abstract int getMaxPlayers();
 
     public void startGame() throws GameSetupIncompleteException {
-        eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
+        eventChannel.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STARTED));
     }
 
     public void stopGame() {
-        eventCenter.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
+        eventChannel.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_STOPED));
+        try {
+            EventManager.deleteEventChannel(this, EventRegistry.EVENT_GAMEENGINE);
+        } catch (EventChannelInvalidException | EventPermissionDeniedException ex) {
+            Logger.getLogger(GameCore.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public EventCenter getEventCenter() {
-        return eventCenter;
+    public EventChannel getEventChannel() {
+        return eventChannel;
     }
 
 }

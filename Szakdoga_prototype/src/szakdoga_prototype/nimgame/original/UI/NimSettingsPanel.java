@@ -32,7 +32,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
     /**
      * Creates new form NimGameSettingsPanel
      */
-    public NimSettingsPanel() {
+    public NimSettingsPanel(){
         initComponents();
         configTypeRandomActionPerformed(null);
         playerEntryPanel1.setStarter(true);
@@ -67,8 +67,8 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
         misereNimGameCheckbox = new javax.swing.JCheckBox();
         playerPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        playerEntryPanel1 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(starterGroup);
-        playerEntryPanel2 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(starterGroup);
+        playerEntryPanel1 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(0, starterGroup);
+        playerEntryPanel2 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(1, starterGroup);
         playerHeaderPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -353,7 +353,7 @@ public class NimSettingsPanel extends JPanel implements GameSettingsProvider{
     }
 
     private NimPlayerSettings getPlayerFromPlayerPanel(PlayerEntryPanel playerPanel) {
-        return new NimPlayerSettings(playerPanel.getPlayerName(), playerPanel.isAI(), playerPanel.isStarter());
+        return new NimPlayerSettings(playerPanel.getPlayerID(), playerPanel.getPlayerName(), playerPanel.isAI(), playerPanel.isStarter());
     }
 
     @Override

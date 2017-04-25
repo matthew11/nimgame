@@ -11,8 +11,8 @@ package szakdoga_prototype.nimgame.core;
  */
 public class NimHumanPlayer extends NimPlayer{
 
-    public NimHumanPlayer(String name, NimPlayerController controller) {
-        super(name, controller);
+    public NimHumanPlayer(int playerID, String name, NimPlayerController controller) {
+        super(playerID, name, controller);
     }
     
     @Override

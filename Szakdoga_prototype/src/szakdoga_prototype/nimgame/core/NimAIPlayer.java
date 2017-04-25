@@ -18,8 +18,8 @@ public class NimAIPlayer extends NimPlayer {
 
     private final NimGameAI gameAI;
 
-    public NimAIPlayer(String name, NimPlayerController controller) {
-        super(name, controller);
+    public NimAIPlayer(int playerID, String name, NimPlayerController controller) {
+        super(playerID, name, controller);
         gameAI = new NimGameAI(((NimGameSettings)controller.getGameSettings()).isMisereNimGame());
     }
     

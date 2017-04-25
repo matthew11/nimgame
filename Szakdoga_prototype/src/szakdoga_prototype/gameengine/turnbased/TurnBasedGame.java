@@ -7,6 +7,7 @@ package szakdoga_prototype.gameengine.turnbased;
 
 import szakdoga_prototype.gameengine.GameCore;
 import szakdoga_prototype.gameengine.Player;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 
 /**
@@ -16,6 +17,10 @@ import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
 public abstract class TurnBasedGame extends GameCore {
 
     protected Player currentPlayer;
+
+    public TurnBasedGame() throws EventChannelInvalidException {
+        super();
+    }
 
     public void nextTurn(final Player originatingPlayer) throws PlayerOrderException {
         validatePlayer(originatingPlayer);

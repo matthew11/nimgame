@@ -5,9 +5,15 @@
  */
 package szakdoga_prototype;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import szakdoga_prototype.UI.DisableableJPanel;
 import javax.swing.JOptionPane;
 import szakdoga_prototype.gameengine.GameCore;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.eventmanager.EventManager;
+import szakdoga_prototype.gameengine.eventmanager.EventPermissionDeniedException;
+import szakdoga_prototype.gameengine.eventmanager.EventRegistry;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
 import szakdoga_prototype.gameengine.exceptions.GameSetupIncompleteException;
 import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException;
@@ -36,6 +42,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (this.gameController != null) {
             this.gameController.destroyGame();
         }
+            try {
         switch (gameToCreate) {
             case GAME_NIM: {
                 game = new NimGameCore();
@@ -43,15 +50,18 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
             }
             case GAME_NORTHCOTT: {
-                JOptionPane.showMessageDialog(this, "The selected game type is not yet implemented.");
                 game = new NimGameCore();
-                gameEntityProvider = new NorthcottMainPanel();
+                gameEntityProvider = new NorthcottMainPanel((NimGameCore) game);
                 break;
             }
             default: {
                 JOptionPane.showMessageDialog(this, "The selected game type is not yet implemented.");
                 return;
             }
+        }
+        } catch (EventChannelInvalidException ex) {
+            JOptionPane.showMessageDialog(this, "Failed to create game: " + ex.getMessage());
+            return;
         }
         this.gameController = new GameController(game, gameEntityProvider);
         gameMainPluginPlaceholder.setEnabled(true);
@@ -67,6 +77,8 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        EventManager.createEventChannel(this, EventRegistry.EVENT_UI);
+        EventManager.createEventChannel(this, EventRegistry.EVENT_UI_SETTINGS);
     }
 
     /**
@@ -255,6 +267,8 @@ public class MainWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Game setup is incomplete: " + ex.getMessage());
         } catch (GameSettingsInvalidException | PlayerAlreadyRegisteredException | PlayerListFullException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error UNHANDLED EXCEPTION: " + ex.getMessage());
         }
     }//GEN-LAST:event_startGameButtonActionPerformed
 
@@ -277,6 +291,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_miSelectGameChessActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        try {
+            EventManager.deleteEventChannel(this, EventRegistry.EVENT_UI_SETTINGS);
+            EventManager.deleteEventChannel(this, EventRegistry.EVENT_UI);
+        } catch (EventChannelInvalidException | EventPermissionDeniedException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_exitMenuItemActionPerformed
 

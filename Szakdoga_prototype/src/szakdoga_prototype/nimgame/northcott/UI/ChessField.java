@@ -6,7 +6,7 @@
 package szakdoga_prototype.nimgame.northcott.UI;
 
 import java.awt.Color;
-import javax.swing.JLabel;
+import java.awt.Component;
 
 /**
  *
@@ -17,17 +17,19 @@ public class ChessField extends javax.swing.JPanel {
     private final int fieldId;
     private final int columnId;
     private final Color backgroundColor;
+    private final ChessColumn parent;
+    private boolean hidden = false;
 
     /**
      * Creates new form ChessField
      */
-    public ChessField(int fieldId, int columnId) {
+    public ChessField(int fieldId, int columnId, ChessColumn parent) {
+        this.parent = parent;
         this.fieldId = fieldId;
         this.columnId = columnId;
         initComponents();
         this.backgroundColor = ((fieldId + columnId) % 2 == 0) ? BACKGROUND_COLOR : BACKGROUND_ALTERNMATE_COLOR;
         setBackground(this.backgroundColor);
-        this.add(new JLabel(fieldId + "," + columnId));
     }
 
     public static Color BACKGROUND_COLOR = new Color(209, 139, 71);
@@ -35,6 +37,7 @@ public class ChessField extends javax.swing.JPanel {
     public static Color HIDDEN_COLOR = new Color(0, 0, 0);
 
     public void setHidden(boolean isHidden) {
+        this.hidden = isHidden;
         if (isHidden) {
             this.setBackground(HIDDEN_COLOR);
         } else {
@@ -42,11 +45,14 @@ public class ChessField extends javax.swing.JPanel {
         }
     }
 
-    public void displayPawn(boolean pawnVisible) {
-        this.removeAll();
-        if (pawnVisible) {
-            this.add(new JLabel("PAWN"));
+    public void setPawnVisible(Component pawnComponent) {
+        if (pawnComponent != null) {
+            this.add(pawnComponent);
+        } else {
+            this.removeAll();
         }
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -58,8 +64,29 @@ public class ChessField extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        parent.fieldClicked(this);
+    }//GEN-LAST:event_formMouseClicked
+
+    public int getFieldId() {
+        return fieldId;
+    }
+
+    public int getColumnId() {
+        return columnId;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

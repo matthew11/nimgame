@@ -7,12 +7,15 @@ package szakdoga_prototype.nimgame.original.UI;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.eventmanager.EventManager;
+import szakdoga_prototype.gameengine.eventmanager.EventRegistry;
 import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.events.GameEvent;
-import szakdoga_prototype.gameengine.events.GameEventListener;
+import szakdoga_prototype.gameengine.eventmanager.GameEventListener;
 import szakdoga_prototype.gameengine.exceptions.GameException;
 import szakdoga_prototype.nimgame.core.NimGameCore;
-import szakdoga_prototype.nimgame.core.NimGameEvent;
+import szakdoga_prototype.nimgame.core.events.NimGameEvent;
 import szakdoga_prototype.nimgame.core.NimPlayer;
 import szakdoga_prototype.nimgame.core.NimStepObject;
 import szakdoga_prototype.providers.GameEntityProvider;
@@ -32,9 +35,9 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
      *
      * @param nimGame
      */
-    public NimMainPanel(final NimGameCore nimGame) {
+    public NimMainPanel(final NimGameCore nimGame) throws EventChannelInvalidException {
         this.nimGame = nimGame;
-        this.nimGame.getEventCenter().subscribeForEvent(this);
+        EventManager.getEventChannel(EventRegistry.EVENT_GAMEENGINE).subscribeForEvent(this);
         initComponents();
     }
 
@@ -94,7 +97,7 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
     }
 
     @Override
-    public void eventReceived(GameEvent event) {
+    public void eventReceived(String channelName, GameEvent event) {
         switch (event.getEventType()) {
             case GameEvent.EVENT_GAME_STARTED: {
                 startGame();

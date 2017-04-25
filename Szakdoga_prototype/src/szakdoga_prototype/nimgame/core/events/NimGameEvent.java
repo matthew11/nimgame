@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype.nimgame.core.events;
 
 import szakdoga_prototype.gameengine.events.GameEvent;
 
@@ -14,14 +14,10 @@ import szakdoga_prototype.gameengine.events.GameEvent;
 public class NimGameEvent extends GameEvent {
 
     public static final int EVENT_NEXT_TURN = 100;
-    private String message;
 
-    public NimGameEvent(Object origin, int eventType, String message) {
+    public NimGameEvent(Object origin, int eventType) {
         super(origin, eventType);
     }
     
-    public NimGameEvent(Object origin, int eventType) {
-        this(origin, eventType, "");
-    }
 
 }

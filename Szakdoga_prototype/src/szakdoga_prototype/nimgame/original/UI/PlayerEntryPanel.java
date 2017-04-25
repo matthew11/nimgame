@@ -5,7 +5,14 @@
  */
 package szakdoga_prototype.nimgame.original.UI;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import szakdoga_prototype.gameengine.eventmanager.EventChannel;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.eventmanager.EventManager;
+import szakdoga_prototype.gameengine.events.GameEvent;
+import szakdoga_prototype.nimgame.core.NimPlayerSettings;
 
 /**
  *
@@ -13,7 +20,9 @@ import javax.swing.ButtonGroup;
  */
 public class PlayerEntryPanel extends javax.swing.JPanel {
 
-    ButtonGroup starterGroup = new ButtonGroup();
+    private ButtonGroup starterGroup = new ButtonGroup();
+    private int playerID;
+    private EventChannel eventChannel;
 
     /**
      * Creates new form PlayerEntryPanel
@@ -22,8 +31,14 @@ public class PlayerEntryPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PlayerEntryPanel(ButtonGroup starterGroup) {
+    public PlayerEntryPanel(int playerID, ButtonGroup starterGroup){
         this.starterGroup = starterGroup;
+        this.playerID = playerID;
+        try {
+            this.eventChannel = EventManager.getEventChannel(EventManager.EVENT_REGISTRY.EVENT_UI_SETTINGS);
+        } catch (EventChannelInvalidException ex) {
+            Logger.getLogger(PlayerEntryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents();
     }
 
@@ -43,6 +58,12 @@ public class PlayerEntryPanel extends javax.swing.JPanel {
         starterGroup.add(starterRadioButton);
 
         playerNameTextfield.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        isAICheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isAICheckBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -70,6 +91,10 @@ public class PlayerEntryPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void isAICheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isAICheckBoxActionPerformed
+        eventChannel.dispatchEvent(new GameEvent(this));
+    }//GEN-LAST:event_isAICheckBoxActionPerformed
+
     public void setStarter(boolean selected) {
         starterRadioButton.setSelected(selected);
     }
@@ -82,10 +107,18 @@ public class PlayerEntryPanel extends javax.swing.JPanel {
         return playerNameTextfield.getText();
     }
 
+    public int getPlayerID() {
+        return playerID;
+    }
+
     public boolean isAI() {
         return isAICheckBox.isSelected();
     }
 
+    public NimPlayerSettings getPlayerSettings(){
+        return new NimPlayerSettings(playerID, getPlayerName(), isAI(), isStarter());
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox isAICheckBox;

@@ -5,47 +5,82 @@
  */
 package szakdoga_prototype.nimgame.northcott.UI;
 
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
+import szakdoga_prototype.gameengine.Range;
 
 /**
  *
  * @author matthew
  */
-public class ChessColumn extends javax.swing.JPanel {
+public final class ChessColumn extends javax.swing.JPanel {
 
     private final int heapID;
     private int heapMaxSize;
+    private int heapOffset = 0;
     private List<ChessField> fields;
+    private final PawnComponent topPawn = new PawnComponent(0, 0);
+    private final PawnComponent bottomPawn = new PawnComponent(1, 1);
+    private boolean isInitState = true;
+    private final NorthcottMainPanel mainPanel;
 
+    public ChessColumn(NorthcottMainPanel mainPanel, int heapID, int heapMaxSize) {
+        this.heapID = heapID;
+        this.heapMaxSize = heapMaxSize;
+        this.mainPanel = mainPanel;
+        this.add(topPawn);
+        this.add(bottomPawn);
+        topPawn.setRange(new Range(0, (heapMaxSize) / 2 - 1));
+        bottomPawn.setRange(new Range((int) Math.ceil(heapMaxSize / 2.0), heapMaxSize - 1));
+        initComponents();
 
-    private void createFields(){
+        topLabel.setText("" + (char) ((int) 'A' + heapID));
+        bottomLabel.setText(topLabel.getText());
+        createFields();
+        placePawn(topPawn, fields.get(0));
+        placePawn(bottomPawn, fields.get(heapMaxSize - 1));
+    }
+
+    private void createFields() {
         fieldContainer.removeAll();
         fields = new ArrayList<>(heapMaxSize);
         for (int i = 0; i < heapMaxSize; i++) {
-            fields.add(new ChessField(heapID, i));
+            fields.add(new ChessField(i, heapID, this));
             fieldContainer.add(fields.get(i));
         }
-        
-    }
-
-    public ChessColumn(int heapID, int heapMaxSize) {
-        this.heapID = heapID;
-        this.heapMaxSize = heapMaxSize;
-        initComponents();
-        createFields();
-    }
-
-    public void activateTopPlayer() {
 
     }
 
-    public void activateBottomPlayer() {
-
+    public void setTopPlayerHidden(boolean isHidden) {
+        for (Integer i : topPawn.getRange()) {
+            fields.get(i).setHidden(isHidden);
+            topPawn.setVisible(!isHidden);
+        }
     }
-    
-    public void chessDimensionChanged(int fieldCount){
-        this.heapMaxSize=fieldCount;
+
+    public void setBottomPlayerHidden(boolean isHidden) {
+        for (Integer i : bottomPawn.getRange()) {
+            fields.get(i).setHidden(isHidden);
+            bottomPawn.setVisible(!isHidden);
+        }
+    }
+
+    public void setBothPlayerHidden(boolean isHidden) {
+        setTopPlayerHidden(isHidden);
+        setBottomPlayerHidden(isHidden);
+    }
+
+    public void setAllFieldsHidden(boolean isHidden) {
+        topPawn.setVisible(!isHidden);
+        bottomPawn.setVisible(!isHidden);
+        fields.forEach((field) -> {
+            field.setHidden(isHidden);
+        });
+    }
+
+    public void chessDimensionChanged(int fieldCount) {
+        this.heapMaxSize = fieldCount;
         createFields();
     }
 
@@ -61,35 +96,115 @@ public class ChessColumn extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        topPawnPosition = new javax.swing.JSpinner();
-        bottomPawnPosition = new javax.swing.JSpinner();
         fieldContainer = new javax.swing.JPanel();
+        topLabel = new javax.swing.JLabel();
+        bottomLabel = new javax.swing.JLabel();
 
         fieldContainer.setLayout(new java.awt.GridLayout(0, 1));
+
+        topLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        topLabel.setText("jLabel1");
+
+        bottomLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bottomLabel.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topPawnPosition, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-            .addComponent(bottomPawnPosition)
             .addComponent(fieldContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(topLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .addComponent(bottomLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(topPawnPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(topLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fieldContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bottomPawnPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bottomLabel))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner bottomPawnPosition;
+    private javax.swing.JLabel bottomLabel;
     private javax.swing.JPanel fieldContainer;
-    private javax.swing.JSpinner topPawnPosition;
+    private javax.swing.JLabel topLabel;
     // End of variables declaration//GEN-END:variables
+
+    void fieldClicked(ChessField field) {
+        PawnComponent currentPawn;
+        if (field.isHidden()) {
+            return;
+        }
+        if (isInitState) {
+            setupPawn(field);
+        } else {
+            int currentPlayer = mainPanel.getCurrentPlayerID();
+            if (currentPlayer == 0) {
+                currentPawn = topPawn;
+                if (field.getFieldId() >= bottomPawn.getPosition() || field.getFieldId() <= topPawn.getPosition()) {
+                    return;
+                }
+            } else {
+                currentPawn = bottomPawn;
+                if (field.getFieldId() <= topPawn.getPosition() || field.getFieldId() >= bottomPawn.getPosition()) {
+                    return;
+                }
+            }
+            int oldPosition = currentPawn.getPosition();
+            //placePawn(currentPawn, field);
+            mainPanel.heapConfigurationChanged(heapID, Math.abs(oldPosition - field.getFieldId()));
+        }
+    }
+
+    private void placePawn(PawnComponent pawn, ChessField field) {
+        if (pawn == topPawn) {
+            heapOffset = field.getFieldId();
+        }
+        pawn.setPosition(field.getFieldId());
+        Container parent = pawn.getParent();
+        parent.remove(pawn);
+        parent.revalidate();
+        parent.repaint();
+        field.add(pawn);
+        pawn.setVisible(true);
+        field.revalidate();
+        field.repaint();
+    }
+
+    private void setupPawn(ChessField field) {
+        PawnComponent pawn = getPawnByPlayerFiledID(field);
+        if (pawn != null) {
+            placePawn(pawn, field);
+        }
+    }
+
+    private PawnComponent getPawnByPlayerFiledID(ChessField aThis) {
+        if (topPawn.getRange().isInBoundary(aThis.getFieldId())) {
+            return topPawn;
+        } else if (bottomPawn.getRange().isInBoundary(aThis.getFieldId())) {
+            return bottomPawn;
+        } else {
+            return null;
+        }
+    }
+
+    public int getHeapValue() {
+        return bottomPawn.getPosition() - topPawn.getPosition() - 1;
+    }
+
+    public void startGame() {
+        this.isInitState = false;
+        this.setAllFieldsHidden(false);
+    }
+
+    void updateHeap(int playerID, int amount) {
+        PawnComponent pawn = (playerID == 0) ? topPawn : bottomPawn;
+        int moveBy = (playerID == 0) ? amount : amount * (-1);
+        placePawn(pawn, fields.get(pawn.getPosition() + moveBy));
+    }
+
 }

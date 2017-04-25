@@ -8,6 +8,8 @@ package szakdoga_prototype.nimgame.northcott.UI;
 import szakdoga_prototype.gameengine.AbstractGameSettings;
 import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
+import szakdoga_prototype.nimgame.core.NimGameSettings;
+import szakdoga_prototype.nimgame.core.NimPlayerSettings;
 
 /**
  *
@@ -15,11 +17,14 @@ import szakdoga_prototype.gameengine.exceptions.GameSettingsInvalidException;
  */
 public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSettingsProvider{
 
+    private final NorthcottMainPanel mainPanel;
     /**
      * Creates new form NorthcottSettingsPanel
      */
-    public NorthcottSettingsPanel() {
+    public NorthcottSettingsPanel(NorthcottMainPanel mainPanel) {
         initComponents();
+        this.mainPanel = mainPanel;
+        playerEntryPanel1.setStarter(true);
     }
 
     /**
@@ -31,14 +36,15 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        starterPlayerGroup = new javax.swing.ButtonGroup();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        playerEntryPanel1 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel();
-        playerEntryPanel2 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        columnCountSpinner = new javax.swing.JSpinner();
+        rowCountSpinner = new javax.swing.JSpinner();
+        playerEntryPanel1 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(0, starterPlayerGroup);
+        playerEntryPanel2 = new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(1, starterPlayerGroup);
+        misereGameCheckBox = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
 
         jLabel2.setText("Dimensions:");
@@ -47,11 +53,21 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
 
         jLabel3.setText("Verticall:");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(8, 3, 15, 1));
+        columnCountSpinner.setModel(new javax.swing.SpinnerNumberModel(8, 3, 15, 1));
+        columnCountSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                columnCountSpinnerStateChanged(evt);
+            }
+        });
 
-        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(8, 3, 15, 1));
+        rowCountSpinner.setModel(new javax.swing.SpinnerNumberModel(8, 3, 15, 1));
+        rowCountSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rowCountSpinnerStateChanged(evt);
+            }
+        });
 
-        jCheckBox1.setText("Inverse NIM Game");
+        misereGameCheckBox.setText("Inverse NIM Game");
 
         jLabel4.setText("Players:");
 
@@ -62,7 +78,7 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(misereGameCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(playerEntryPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,8 +86,8 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(columnCountSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rowCountSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(playerEntryPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -85,16 +101,16 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rowCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(columnCountSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27)))
-                .addComponent(jCheckBox1)
+                .addComponent(misereGameCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -105,21 +121,36 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void columnCountSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_columnCountSpinnerStateChanged
+        mainPanel.columnChanged((int) columnCountSpinner.getValue());
+    }//GEN-LAST:event_columnCountSpinnerStateChanged
+
+    private void rowCountSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rowCountSpinnerStateChanged
+        mainPanel.rowChanged((int) rowCountSpinner.getValue());
+    }//GEN-LAST:event_rowCountSpinnerStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JSpinner columnCountSpinner;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JCheckBox misereGameCheckBox;
     private szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel playerEntryPanel1;
     private szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel playerEntryPanel2;
+    private javax.swing.JSpinner rowCountSpinner;
+    private javax.swing.ButtonGroup starterPlayerGroup;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public AbstractGameSettings getGameSettings() throws GameSettingsInvalidException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        NimGameSettings gameSettings = new NimGameSettings();
+        gameSettings.setConfigType(NimGameSettings.ConfigurationType.CONFIG_TYPE_CUSTOM);
+        gameSettings.setHeapConfiguration(mainPanel.getHeapConfiguration());
+        gameSettings.setMisereNimGame(misereGameCheckBox.isSelected());
+        gameSettings.addPlayer(playerEntryPanel1.getPlayerSettings());
+        gameSettings.addPlayer(playerEntryPanel2.getPlayerSettings());
+        return gameSettings;
     }
 }

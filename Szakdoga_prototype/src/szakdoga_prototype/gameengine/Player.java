@@ -11,10 +11,12 @@ package szakdoga_prototype.gameengine;
  */
 public abstract class Player{
 
-    protected String name;
+    protected final String name;
+    protected final int playerID;
     protected PlayerControllerInterface controller;
 
-    public Player(String name, PlayerControllerInterface controller) {
+    public Player(int playerID, String name, PlayerControllerInterface controller) {
+        this.playerID = playerID;
         this.name = name;
         this.controller = controller;
     }
@@ -29,6 +31,10 @@ public abstract class Player{
     @Override
     public String toString() {
         return name;
+    }
+
+    public int getPlayerID() {
+        return playerID;
     }
 
 }

@@ -289,12 +289,12 @@
         </Component>
         <Component class="szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel" name="playerEntryPanel1">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(starterGroup)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(0, starterGroup)"/>
           </AuxValues>
         </Component>
         <Component class="szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel" name="playerEntryPanel2">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(starterGroup)"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel(1, starterGroup)"/>
           </AuxValues>
         </Component>
         <Container class="javax.swing.JPanel" name="playerHeaderPanel">

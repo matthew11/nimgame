@@ -13,8 +13,8 @@ import szakdoga_prototype.gameengine.Player;
  * @author matthew
  */
 public abstract class NimPlayer extends Player  implements ControllerPlayerInterface {
-    public NimPlayer(String name, NimPlayerController controller) {
-        super(name, controller);
+    public NimPlayer(int playerID, String name, NimPlayerController controller) {
+        super(playerID, name, controller);
     }
 
     

@@ -5,6 +5,7 @@
  */
 package szakdoga_prototype.nimgame.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import szakdoga_prototype.gameengine.AbstractGameSettings;
 
@@ -14,15 +15,21 @@ import szakdoga_prototype.gameengine.AbstractGameSettings;
  */
 public class NimGameSettings extends AbstractGameSettings {
 
+
     public static enum ConfigurationType {
         CONFIG_TYPE_RANDOM, CONFIG_TYPE_CONTROLLED_RANDOM, CONFIG_TYPE_CUSTOM
     }
 
     private List<Integer> heapConfiguration;
     private ConfigurationType configType;
-    private List<NimPlayerSettings> players;
+    private List<NimPlayerSettings> players = new ArrayList<>();
     private boolean misereNimGame;
     private int minHeapCount, maxHeapCount, minEntityCount, maxEntityCount;
+
+
+    public void addPlayer(NimPlayerSettings playerSettings) {
+        players.add(playerSettings);
+    }
 
     public List<Integer> getHeapConfiguration() {
         return heapConfiguration;

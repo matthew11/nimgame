@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package szakdoga_prototype.nimgame.core;
+package szakdoga_prototype.nimgame.core.events;
 
 import szakdoga_prototype.gameengine.Player;
 

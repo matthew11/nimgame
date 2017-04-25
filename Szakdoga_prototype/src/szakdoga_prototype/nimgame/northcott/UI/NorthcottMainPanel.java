@@ -8,9 +8,20 @@ package szakdoga_prototype.nimgame.northcott.UI;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import szakdoga_prototype.gameengine.eventmanager.EventChannelInvalidException;
+import szakdoga_prototype.gameengine.eventmanager.EventManager;
+import szakdoga_prototype.gameengine.eventmanager.EventRegistry;
 import szakdoga_prototype.providers.GameSettingsProvider;
 import szakdoga_prototype.gameengine.events.GameEvent;
-import szakdoga_prototype.gameengine.events.GameEventListener;
+import szakdoga_prototype.gameengine.eventmanager.GameEventListener;
+import szakdoga_prototype.gameengine.exceptions.GameException;
+import szakdoga_prototype.nimgame.core.NimGameCore;
+import szakdoga_prototype.nimgame.core.events.NimGameEvent;
+import szakdoga_prototype.nimgame.core.events.NimGameStepEvent;
+import szakdoga_prototype.nimgame.core.NimPlayer;
+import szakdoga_prototype.nimgame.core.NimStepObject;
+import szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel;
 import szakdoga_prototype.providers.GameEntityProvider;
 
 /**
@@ -19,27 +30,39 @@ import szakdoga_prototype.providers.GameEntityProvider;
  */
 public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventListener, GameEntityProvider {
 
+    public static final String NORTHCOTT_CHANNEL_NAME = "NORTHCOTT_UI";
     private int heapCount;
+    private NimGameCore nimGame;
     private int maxHeapValue;
     private List<ChessColumn> columns;
-    private final NorthcottSettingsPanel settingsPanel = new NorthcottSettingsPanel();
+    private final NorthcottSettingsPanel settingsPanel = new NorthcottSettingsPanel(this);
     private final NorthcottStatusPanel statusPanel = new NorthcottStatusPanel();
 
     /**
      * Creates new form NorthcottMainPanel
      */
-    public NorthcottMainPanel() {
+    public NorthcottMainPanel(NimGameCore nimGame) throws EventChannelInvalidException {
         initComponents();
+        this.nimGame = nimGame;
+        EventManager.getEventChannel(EventRegistry.EVENT_UI_SETTINGS).subscribeForEvent(this);
+        EventManager.getEventChannel(EventRegistry.EVENT_GAMEENGINE).subscribeForEvent(this);
         fieldDimensionChanged(8, 8);
     }
 
     private void createField() {
         fieldPanelPluginPlaceholder.removeAll();
-        columns = new ArrayList(heapCount);
-        for (int i = 0; i < this.maxHeapValue; i++) {
-            columns.add(new ChessColumn(i, this.maxHeapValue));
+        columns = new ArrayList(this.heapCount);
+        fieldPanelPluginPlaceholder.add(new ChessSideColumn(maxHeapValue));
+        for (int i = 0; i < this.heapCount; i++) {
+            columns.add(new ChessColumn(this, i, this.maxHeapValue));
             fieldPanelPluginPlaceholder.add(columns.get(i));
         }
+        fieldPanelPluginPlaceholder.add(new ChessSideColumn(maxHeapValue));
+        fieldPanelPluginPlaceholder.revalidate();
+        fieldPanelPluginPlaceholder.repaint();
+        setAllFieldsHidden(true);
+        revealTopPlayer.setSelected(false);
+        revealBottomPlayer.setSelected(false);
     }
 
     public void fieldDimensionChanged(int heapCount, int maxHeapValue) {
@@ -57,59 +80,54 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        initControlls = new javax.swing.JPanel();
+        revealTopPlayer = new javax.swing.JToggleButton();
+        revealBottomPlayer = new javax.swing.JToggleButton();
         fieldPanelPluginPlaceholder = new javax.swing.JPanel();
 
-        jLabel1.setText("STATUS_TEXT_NOT_YET_SET");
+        revealTopPlayer.setText("Reveal Top Player");
+        revealTopPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revealTopPlayerActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        revealBottomPlayer.setText("Reveal Bottom Player");
+        revealBottomPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revealBottomPlayerActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("PLACEHOLDER - Initial heap configuration");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout initControllsLayout = new javax.swing.GroupLayout(initControlls);
+        initControlls.setLayout(initControllsLayout);
+        initControllsLayout.setHorizontalGroup(
+            initControllsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(initControllsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(535, Short.MAX_VALUE))
+                .addComponent(revealTopPlayer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(revealBottomPlayer)
+                .addContainerGap(483, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        initControllsLayout.setVerticalGroup(
+            initControllsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, initControllsLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(33, 33, 33))
+                .addGroup(initControllsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(revealTopPlayer)
+                    .addComponent(revealBottomPlayer))
+                .addGap(17, 17, 17))
         );
 
-        fieldPanelPluginPlaceholder.setBackground(new java.awt.Color(255, 0, 255));
+        fieldPanelPluginPlaceholder.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fieldPanelPluginPlaceholder.setLayout(new javax.swing.BoxLayout(fieldPanelPluginPlaceholder, javax.swing.BoxLayout.X_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(initControlls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fieldPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -118,17 +136,53 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(fieldPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldPanelPluginPlaceholder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(initControlls, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void revealTopPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revealTopPlayerActionPerformed
+        this.setTopPlayerHidden(!revealTopPlayer.isSelected());
+        revealBottomPlayer.setEnabled(!revealTopPlayer.isSelected());
+    }//GEN-LAST:event_revealTopPlayerActionPerformed
+
+    private void revealBottomPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revealBottomPlayerActionPerformed
+        this.setBottomPlayerHidden(!revealBottomPlayer.isSelected());
+        revealTopPlayer.setEnabled(!revealBottomPlayer.isSelected());
+    }//GEN-LAST:event_revealBottomPlayerActionPerformed
+
     @Override
-    public void eventReceived(GameEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void eventReceived(String channelName, GameEvent event) {
+        if (event.getOrigin() instanceof PlayerEntryPanel) {
+            PlayerEntryPanel playerPanel = (PlayerEntryPanel) event.getOrigin();
+            if (playerPanel.getPlayerID() == 0) {
+                revealTopPlayer.setVisible(!playerPanel.isAI());
+            } else {
+                revealBottomPlayer.setVisible(!playerPanel.isAI());
+            }
+            setAllFieldsHidden(true);
+            revealBottomPlayer.setSelected(false);
+            revealBottomPlayer.setEnabled(true);
+            revealTopPlayer.setSelected(false);
+            revealTopPlayer.setEnabled(true);
+        }
+        switch (event.getEventType()) {
+            case GameEvent.EVENT_GAME_STARTED: {
+                startGame();
+                break;
+            }
+            case GameEvent.EVENT_GAME_ENDED: {
+                JOptionPane.showMessageDialog(this, "The game is normally ended. Winner is: " + nimGame.getWiningPlayer());
+                break;
+            }
+        }
+        if (event instanceof NimGameStepEvent) {
+            NimGameStepEvent nimStepEvent = (NimGameStepEvent) event;
+            updatePanels();
+            columns.get(nimStepEvent.getStepObject().getHeapID()).updateHeap(nimStepEvent.getStepObject().getOriginatingPlayer().getPlayerID(), nimStepEvent.getStepObject().getAmount());
+        }
     }
 
     @Override
@@ -154,9 +208,70 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel fieldPanelPluginPlaceholder;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel initControlls;
+    private javax.swing.JToggleButton revealBottomPlayer;
+    private javax.swing.JToggleButton revealTopPlayer;
     // End of variables declaration//GEN-END:variables
+
+    public void columnChanged(int value) {
+        fieldDimensionChanged(value, this.maxHeapValue);
+    }
+
+    public void rowChanged(int value) {
+        fieldDimensionChanged(this.heapCount, value);
+    }
+
+    public void setTopPlayerHidden(boolean isHidden) {
+        columns.forEach((column) -> {
+            column.setTopPlayerHidden(isHidden);
+        });
+    }
+
+    public void setBottomPlayerHidden(boolean isHidden) {
+        columns.forEach((column) -> {
+            column.setBottomPlayerHidden(isHidden);
+        });
+    }
+
+    public void setBothPlayerHidden(boolean isHidden) {
+        setTopPlayerHidden(isHidden);
+        setBottomPlayerHidden(isHidden);
+    }
+
+    public void setAllFieldsHidden(boolean isHidden) {
+        columns.forEach((column) -> {
+            column.setAllFieldsHidden(isHidden);
+        });
+    }
+
+    List<Integer> getHeapConfiguration() {
+        List<Integer> heapConfiguration = new ArrayList<>();
+        for (ChessColumn column : columns) {
+            heapConfiguration.add(column.getHeapValue());
+        }
+        return heapConfiguration;
+    }
+
+    private void updatePanels() {
+        statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer().getName());
+    }
+
+    private void startGame() {
+        for (ChessColumn column : columns) {
+            column.startGame();
+        }
+        updatePanels();
+    }
+
+    public int getCurrentPlayerID() {
+        return nimGame.getCurrentPlayer().getPlayerID();
+    }
+
+    public void heapConfigurationChanged(int heapID, int amount) {
+        try {
+            nimGame.nextStep(new NimStepObject(heapID, amount, (NimPlayer) nimGame.getCurrentPlayer()));
+        } catch (GameException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid step: " + ex.getMessage());
+        }
+    }
 }

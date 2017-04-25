@@ -16,28 +16,24 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="topPawnPosition" pref="165" max="32767" attributes="0"/>
-          <Component id="bottomPawnPosition" alignment="0" max="32767" attributes="0"/>
-          <Component id="fieldContainer" alignment="0" max="32767" attributes="0"/>
+          <Component id="fieldContainer" max="32767" attributes="0"/>
+          <Component id="topLabel" alignment="0" pref="165" max="32767" attributes="0"/>
+          <Component id="bottomLabel" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="topPawnPosition" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <Component id="topLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="fieldContainer" max="32767" attributes="0"/>
+              <Component id="fieldContainer" pref="292" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="bottomPawnPosition" min="-2" max="-2" attributes="0"/>
+              <Component id="bottomLabel" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JSpinner" name="topPawnPosition">
-    </Component>
-    <Component class="javax.swing.JSpinner" name="bottomPawnPosition">
-    </Component>
     <Container class="javax.swing.JPanel" name="fieldContainer">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
@@ -45,5 +41,17 @@
         <Property name="rows" type="int" value="0"/>
       </Layout>
     </Container>
+    <Component class="javax.swing.JLabel" name="topLabel">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="bottomLabel">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="jLabel2"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>
