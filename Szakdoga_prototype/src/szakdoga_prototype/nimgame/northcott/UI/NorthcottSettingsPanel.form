@@ -127,7 +127,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="misereGameCheckBox">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Inverse NIM Game"/>
+        <Property name="text" type="java.lang.String" value="Mis&#xe8;re NIM Game"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">

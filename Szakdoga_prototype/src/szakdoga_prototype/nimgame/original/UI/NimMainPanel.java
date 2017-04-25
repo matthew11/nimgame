@@ -117,6 +117,12 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
                 JOptionPane.showMessageDialog(this, "The game is normally ended. Player '" + nimGame.getWiningPlayer() + "' won the game.");
                 break;
             }
+            case NimGameEvent.EVENT_OTHER_EVENT: {
+                break;
+            }
+            case NimGameEvent.EVENT_NEXT_STEP: {
+                updatePanels();
+            }
             case NimGameEvent.EVENT_NEXT_TURN: {
                 updatePanels();
                 break;

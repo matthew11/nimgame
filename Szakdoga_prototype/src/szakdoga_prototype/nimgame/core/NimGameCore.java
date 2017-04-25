@@ -24,6 +24,7 @@ import szakdoga_prototype.gameengine.exceptions.PlayerAlreadyRegisteredException
 import szakdoga_prototype.gameengine.exceptions.PlayerListFullException;
 import szakdoga_prototype.gameengine.turnbased.TurnBasedGame;
 import szakdoga_prototype.gameengine.turnbased.exceptions.PlayerOrderException;
+import szakdoga_prototype.nimgame.core.events.NimGameTurnEvent;
 
 /**
  *
@@ -149,10 +150,10 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
         if (nimStep.amount <= 0) {
             throw new GameException("Invalid amount. At least one entity must be removed from a heap");
         }
-        stepHistory.add(step);
         validatePlayer(step.getOriginatingPlayer());
         decreaseEntityBy(nimStep.getHeapID(), nimStep.getAmount());
-        eventChannel.dispatchEvent(new NimGameStepEvent(this, nimStep, NimGameEvent.EVENT_OTHER_EVENT));
+        stepHistory.add(step);
+        eventChannel.dispatchEvent(new NimGameStepEvent(this, nimStep));
         if (isInEndState()) {
             eventChannel.dispatchEvent(new GameEvent(this, GameEvent.EVENT_GAME_ENDED));
             return;
@@ -164,7 +165,7 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     @Override
     public void nextTurn(Player originatingPlayer) throws PlayerOrderException {
         super.nextTurn(originatingPlayer);
-        eventChannel.dispatchEvent(new NimGameEvent(this, NimGameEvent.EVENT_NEXT_TURN));
+        eventChannel.dispatchEvent(new NimGameTurnEvent(this, currentPlayer));
         try {
             ((NimPlayer) (this.currentPlayer)).notifyYourTurn();
         } catch (GameException ex) {

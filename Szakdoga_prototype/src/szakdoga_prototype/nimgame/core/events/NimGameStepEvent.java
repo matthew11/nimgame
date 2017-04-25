@@ -6,7 +6,6 @@
 package szakdoga_prototype.nimgame.core.events;
 
 import szakdoga_prototype.nimgame.core.NimStepObject;
-import szakdoga_prototype.nimgame.core.events.NimGameEvent;
 
 /**
  *
@@ -16,8 +15,8 @@ public class NimGameStepEvent extends NimGameEvent {
 
     private final NimStepObject stepObject;
 
-    public NimGameStepEvent(Object origin, NimStepObject stepObject, int eventType) {
-        super(origin, eventType);
+    public NimGameStepEvent(Object origin, NimStepObject stepObject) {
+        super(origin, NimGameEvent.EVENT_NEXT_STEP);
         this.stepObject = stepObject;
     }
 

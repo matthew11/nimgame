@@ -21,6 +21,7 @@ import szakdoga_prototype.nimgame.core.events.NimGameEvent;
 import szakdoga_prototype.nimgame.core.events.NimGameStepEvent;
 import szakdoga_prototype.nimgame.core.NimPlayer;
 import szakdoga_prototype.nimgame.core.NimStepObject;
+import szakdoga_prototype.nimgame.core.events.NimGameTurnEvent;
 import szakdoga_prototype.nimgame.original.UI.PlayerEntryPanel;
 import szakdoga_prototype.providers.GameEntityProvider;
 
@@ -171,6 +172,7 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
         switch (event.getEventType()) {
             case GameEvent.EVENT_GAME_STARTED: {
                 startGame();
+                initControlls.setVisible(false);
                 break;
             }
             case GameEvent.EVENT_GAME_ENDED: {
@@ -180,8 +182,11 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
         }
         if (event instanceof NimGameStepEvent) {
             NimGameStepEvent nimStepEvent = (NimGameStepEvent) event;
-            updatePanels();
             columns.get(nimStepEvent.getStepObject().getHeapID()).updateHeap(nimStepEvent.getStepObject().getOriginatingPlayer().getPlayerID(), nimStepEvent.getStepObject().getAmount());
+        }
+        if (event instanceof NimGameTurnEvent) {
+            NimGameTurnEvent nimTurnEvent = (NimGameTurnEvent) event;
+            updatePanels();
         }
     }
 

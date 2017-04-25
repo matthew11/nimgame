@@ -67,7 +67,7 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
             }
         });
 
-        misereGameCheckBox.setText("Inverse NIM Game");
+        misereGameCheckBox.setText("Misère NIM Game");
 
         jLabel4.setText("Players:");
 
