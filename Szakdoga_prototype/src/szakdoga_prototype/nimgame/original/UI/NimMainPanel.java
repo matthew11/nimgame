@@ -122,6 +122,7 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
             }
             case NimGameEvent.EVENT_NEXT_STEP: {
                 updatePanels();
+                break;
             }
             case NimGameEvent.EVENT_NEXT_TURN: {
                 updatePanels();
