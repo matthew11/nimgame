@@ -28,5 +28,13 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 .vs/
+
+# Ignore temporary LaTeX files
+*.aux
+*.toc
+
+
 #Nuget packages folder
 packages/
+/Szakdoga_prototype/nbproject/private/
+/Szakdoga_prototype/build/
