@@ -43,7 +43,9 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
 
     public void startGame() {
         for (int i = 0; i < nimGame.getHeapCount(); i++) {
-            gameSpace.add(new HeapPanel(this, i, nimGame.getHeapValue(i)));
+            if (nimGame.getHeapValue(i) > 0) {
+                gameSpace.add(new HeapPanel(this, i, nimGame.getHeapValue(i)));
+            }
         }
         statusPanel.setCurrentPlayer(nimGame.getCurrentPlayer());
         gameSpace.revalidate();

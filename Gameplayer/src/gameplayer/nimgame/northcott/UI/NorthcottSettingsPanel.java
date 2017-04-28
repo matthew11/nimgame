@@ -9,7 +9,6 @@ import gameplayer.gameengine.AbstractGameSettings;
 import gameplayer.providers.GameSettingsProvider;
 import gameplayer.gameengine.exceptions.GameSettingsInvalidException;
 import gameplayer.nimgame.core.NimGameSettings;
-import gameplayer.nimgame.core.NimPlayerSettings;
 
 /**
  *
@@ -51,7 +50,7 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
 
         jLabel1.setText("Horizontal:");
 
-        jLabel3.setText("Verticall:");
+        jLabel3.setText("Vertical:");
 
         columnCountSpinner.setModel(new javax.swing.SpinnerNumberModel(8, 3, 15, 1));
         columnCountSpinner.addChangeListener(new javax.swing.event.ChangeListener() {

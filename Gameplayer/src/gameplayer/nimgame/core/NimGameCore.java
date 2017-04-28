@@ -37,7 +37,7 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
     public static final int MAX_HEAP_COUNT = 100;
     public static final int MIN_HEAP_COUNT = 1;
     public static final int MAX_ENTITY_COUNT = 999;
-    public static final int MIN_ENTITY_COUNT = 1;
+    public static final int MIN_ENTITY_COUNT = 0;
     public static final int MAX_RANDOM_HEAP_COUNT = 6;
     public static final int MIN_RANDOM_HEAP_COUNT = 2;
     public static final int MAX_RANDOM_ENTITY_COUNT = 20;
