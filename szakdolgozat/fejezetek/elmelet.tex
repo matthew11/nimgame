@@ -1,11 +1,13 @@
 \Chapter{Téma elméleti kifejtése}
 \label{Chap:tema}
 
+\section {A mesterséges intelligencia}
+
 \section{Kétszemélyes teljes információjú játékok}
 
 
 \section{A Nim játék leírása}
-A Nim játék egy két játékos által játszható teljes információjú stratégiai játék. A játék egyszeregyből fakadóan számos változata, illetve továbbgondolása is létezik. Néhányat a későbbiekben röviden ismertetni is fogok. \\
+A Nim játék egy kétszemélyes teljes információjú körökre osztott stratégiai játék. A játék egyszeregyből fakadóan számos változata, illetve továbbgondolása is létezik. Néhányat a későbbiekben röviden ismertetni is fogok. \\
 
 A játék körökre bontott, azaz a játékosok felváltva teszik meg lépéseiket. A játék másik lényeges tulajdonsága, hogy teljes információjú játék, azaz a játék kezdetétől fogva mindkét játékos rendelkezésére áll az összes a játékra vonatkozó ismeret. Beleértve a szabályokat, és a teljes játékteret.\\
 
@@ -18,7 +20,7 @@ A játék célja az, hogy amikor sorra kerülünk, akkor ne legyen már több ha
 A Nim játék különböző variációit nagyon régóta játsszák. Pontos információink nincsenek, de egyes források arra engednek következtetni, hogy már az ókori Kínában is játszották ezt a játékot. Ugyancsak erre enged következtetni a \begin{CJK*}{UTF8}{gbsn}捡石子\end{CJK*}
 (jiǎn-shízi) kínai eredetű játék, amely kísértetiesen hasonlít a Nim játékra, azzal a kivétellel, hogy ott egy halommal játsszák, igaz ennek is sok variánsa létezik, és az érvényes lépéseknek a szabályai bonyolultabbak. \\
 Európában először a 16. század kezdetén tesznek róla említést, de igazán a figyelem középpontjába csak a 19. század végén került, amikor Charles L. Bouton tanulmányozta, majd 1901-ben a játék teljes elméletét kidolgozta. Úgy tudni a játékot is ő keresztelte el Nimnek, a német "Nimm" (elvenni) szó alapján. Más források arra hívják fel a figyelmet, hogy a "NIM" szót 180 fokkal elfordítva az angol "WIN" (nyerni) szót kaphatjuk meg. \\
-A játék további ismertségre tett szert az 1939-es New York -i világkiállításon, ahol az 1886-ban alapított amerikai Westinghouse Electric Corporation cég bemutatta a Nimatront, amely Nim játékot játszott. A dolog külön érdekessége, hogy ez volt az első elektromos számítógépes játék.
+A játék további ismertségre tett szert az 1939-es New York -i világkiállításon, ahol az 1886-ban alapított amerikai Westinghouse Electric Corporation cég bemutatta a Nimatront, egy olyan gépet, amely Nim játékot játszott. A dolog külön érdekessége, hogy ez volt világon az első elektronikus számítógépes játék.
 
 \section{Ismertebb Nim variációk}
 \subsection{Moore-Nim}
@@ -70,13 +72,21 @@ Az építő-Nim két részből tevődik össze. Először felépítik Nim játé
 
 \subsection{Northcott-sakk}
 A Northcott-sakk egy 8x8-as sakktáblából áll. Kezdetben a játékosok (egymás elől elrejtve) elhelyezik a bábuikat (mindegyik oszlopba csak egyet téve) a saját térfelükön. Miután ezzel végeztek elkezdődik a játék. A játékosok felváltva lépnek, minden körben csak az egyik saját bábujukkal csak előre, és legfeljebb annyit amennyi üres hely van az ő bábuja, és az ellenfél bábuja között, azaz az ellenfél bábuját nem ütheti le, és nem ugorhatja át.\\
+
+\begin{figure}[h]
+	\includegraphics[width=8cm, height=8cm]{northcott-chess}
+	\centering
+	\caption{Nortcott-sakk táblája. A nyilak a bábuk közti távolságot jelöli, ami a halom méretének felel meg.}
+\end{figure}
+
 Ha jobban belegondolunk ez a játék egy az egyben megfeleltethető a hagyományos Nim játéknak, ebből következően játszható sima, és Misère módon is.\\ 
 Szempontunkból ez a variáns azért is különösen érdekes, mert a szakdolgozatom tartalmazza ennek a játéknak a példaimplementációját, ami ráadásul ténylegesen Nim játékot játszik a háttérben ugyan azt a játékosztályt használva ezzel szemléltetve, hogy mennyire is visszavezethető a Northcott-sakk a standard Nim játékra.
 
 \section{A Nim játék matematikai háttere}
 
+
 \section{Nyerő stratégia}
-Jelen dolgozat írása közben sok érdekes, és informatív internetes oldallal találkoztam. A {\em \url{ https://brilliant.org/wiki/nim/}} oldalon találtam a nyerő stratégiához egy remek leírást bizonyítással egybekötve, amihez úgy érzem nem tudnék érdemben hozzá tenni, ugyanakkor ez a dolgozat bizonyítás nélkül nem lehet teljes, így az alábbiakban közlöm ezen oldalon található angol nyelvű bizonyítás magyar fordítását. Az eredeti bizonyítás Charles L. Bouton-től származik, aki elsőként dolgozta ki a Nim játék teljes matematikai hátterét. (Lásd irodalomjegyzék) \\ \\
+Jelen dolgozat írása közben sok érdekes, és informatív internetes oldallal találkoztam. A {\em \url{ https://brilliant.org/wiki/nim/}} oldalon találtam a nyerő stratégiához egy remek leírást bizonyítással egybekötve, amihez úgy érzem nem tudnék érdemben hozzá tenni, ugyanakkor ez a dolgozat bizonyítás nélkül nem lehet teljes, így az alábbiakban közlöm ezen oldalon található angol nyelvű nyerő stratégiájának leírását, illetve annak bizonyításának bizonyítás magyar fordítását. Az eredeti bizonyítás Charles L. Boutontól származik, aki elsőként dolgozta ki a Nim játék teljes matematikai hátterét. (Lásd irodalomjegyzék) \\ \\
 
 A nyerő stratégia bemutatását kezdjük egy nagyon fontos definícióval:
 \begin{definition}
