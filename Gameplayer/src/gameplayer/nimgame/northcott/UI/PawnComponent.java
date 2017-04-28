@@ -28,7 +28,7 @@ public class PawnComponent extends JPanel {
 
     public PawnComponent(int playerID, int position) {
         try {
-            this.graphic = ImageIO.read(getClass().getResource("/szakdoga_prototype/nimgame/northcott/UI/resources/" + (playerID == 0 ? "pawn_white.png" : "pawn_black.png")));
+            this.graphic = ImageIO.read(getClass().getResource("/gameplayer/nimgame/northcott/UI/resources/" + (playerID == 0 ? "pawn_white.png" : "pawn_black.png")));
         } catch (IOException | IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this.getParent(), "Error: Failed to load internal pawn resource. Using text instead");
             this.add(new JLabel("ERROR - " + playerID));
