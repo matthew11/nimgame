@@ -73,7 +73,7 @@ Amennyiben Misère Nim játék helyett normál módon akarunk játszani, akkor a
 	\label{fig:nim_settings_custom}
 \end{figure}
 
-\subsection{A játék menete}
+\subsubsection{A játék menete}
 Miután végeztünk a beállításokkal kattintsunk a "Start Game" gombra, és a játék elindul. Ekkor a jobb felső sarokban található állapotablak tájékoztat minket arról, hogy ki az éppen soron lévő játékos. \\
 
 A főpanelon látszódnak a halmok 1-1 panel formájában. Mindegyik panel tetején megtalálható a panel sorszáma, alatta egy szövegbeviteli mezőben a halomban található elemek száma, az alatt egy pörgettyűben beállítható az elvenni kívánt elemek darabszáma, majd legalul az elvesz gomb. \\
@@ -83,6 +83,49 @@ Az éppen soron következő játékosnak meg kell hoznia megfelelő döntést, �
 A játék véget ér, amennyiben mindegyik halom elfogy, és a program egy előugró üzenetben ad tájékoztatást arról, hogy melyik játékos nyerte meg a játékot.
 
 \subsection{Northcott-sakk}
+\subsubsection*{A játék beállítása}
+A Northcott-sokk sok tekintetben hasonlít a hagyományos Nim játékra, éppen ezért beállítása is hasonlóan történik. A szövegbeviteli mezőkbe a játékosnevet kell írni, a bal oldali rádiógomb kiválasztja a kezdőjátékost, míg a jobb kéz felől található jelölőnégyzet a játékost gépinek jelöli.\\
+
+Ami viszont lényeges eltérés, hogy itt a halom beállításai mások, mint a Nim esetében. A \myref{fig:northcott-settings} ábrát megfigyelve lényegesen leszűkültek a beállítási lehetőségek. Itt gyakorlatilag csak a sakktábla dimenzióját adhatjuk meg. A "Horizontal" (Vízszintes) az oszlopok számát, míg a "Vertical" (függőleges) a sorok számát adja meg. Ez nim játékra levetítve oszlop darab halom, és minden halomban maximálisan sor darab elem.
+
+\begin{figure}[h]
+	\includegraphics[width=5cm, height=5cm]{program/northcott-settings}
+	\centering
+	\caption{Northcott-sakk beállítópanelje}
+	\label{fig:northcott-settings}
+\end{figure}
+
+Ez a játék is játszható Misère módon, a hozzá tartozó "Misère NIM Game" jelölőnégyzettel lehet állítani, hogy Misère, vagy normál módon kívánunk játszani.
+
+Látható, hogy a véletlen halomgenerálás teljesen eltűnt. Ennek az az oka, hogy a játék kezdése előtt van egy extra művelet, ami nem teszi lehetségessé a véletlen generálást.
+
+\subsubsection*{A játék előkészítése}
+Ha végeztünk a játékbeállításokkal, akkor még ne indítsuk el a játékot, ugyanis a játékosoknak lehetőségük van beállítani a bábujuk kezdő pozícióját. A játéktér kezdetben minkét játékos térfelét elfedi. A térfeleket az főpanel alján lévő két vezérlőgombbal lehet fel, illetve elfedni. A gép által vezérelt játékos bábuinak kezdőpozíciója nem állítható, így a hozzá tartozó gomb eltávolításra kerül, ha jelölőnégyzet bejelölésre kerül.\\
+
+\begin{figure}[h]
+	\includegraphics[width=8cm, height=8cm]{program/northcott-setup}
+	\centering
+	\caption{Northcott-sakk kezdő pozíciók beállítása}
+	\label{fig:northcott-setup}
+\end{figure}
+
+A felső játékos - miután meggyőződött arról, hogy ellenfele nem figyeli - a "Reveal Top Player" gombra kattintva felfedi saját játékterét. Felfedett állapotba a gomb "beragad", és a másik gomb letiltódik, hogy véletlenül ne lehessen az ellenfél térfelére átváltani. A felső játékos a kívánt mezőre kattintva áthelyezheti az adott oszlopban lévő bábuját arra a mezőre, amelyikre kattintott. Ha a felső játékos késznek érzi a kezdőállapotot, akkor a beragadt gombra újból rákattintva elfedi a felső játékteret, és átadja a helyét az alsó játékosnak, aki ugyan ezt a műveletsort végigjátssza. \\
+
+Miután mindketten végeztek a beállítással a játék a "Start Game" gombra kattintva indítható. Ez után a játék beállításai már nem módosíthatóak, a beállításoz tartozó vezérlőelemek letiltásra, a játéktér elrejtéséért/felfedéséért felelős vezérlőgombok eltávolításra kerülnek.
+
+
+\subsubsection*{A játék menete}
+A játék indulásakor a teljes játéktér felfedésre kerül, és a program a jobb felső sarokban található állapotpanelen tájékoztat a soron következő játékos kilétéről. Lépni úgy lehet, hogy a kiválasztott oszlopban arra a mezőre kattintunk, ahova a saját bábunkkal lépni szeretnénk. A mezőre kattintva a lépés bekövetkezik, és a játékos köre véget ér, helyére a következő játékos lép.\\
+
+\begin{figure}[h!]
+	\includegraphics[width=12cm, height=8cm]{program/northcott-end}
+	\centering
+	\caption{Northcott-sakk játék vége; nyertes játékos Zoltán}
+	\label{fig:northcott-end}
+\end{figure}
+
+A játék addig tart, amíg van olyan oszlop, ahol a bábuk között lévő távolság nagyobb, mint 0, azaz nem közvetlenül egymás mellett áll mindegyik bábu. A játék végén a program egy előugró ablakban ad tájékoztatást arról, hogy a játékot melyik játékos nyerte meg.
+
 
 \section{Fejlesztői dokumentáció}
 
