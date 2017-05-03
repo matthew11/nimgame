@@ -2,8 +2,63 @@
 \label{Chap:tema}
 
 \section {A mesterséges intelligencia}
+A mesterséges intelligencia egy viszonylag új, ám hatalmas lehetőségeket rejtő tudományág. A "Mesterséges Intelligencia - Modern megközelítésben" könyv négy kategóriába sorolja, ezen belül is kettő csoportba, amely teljesen más szemszögből vizsgálja a problémát.\\
+
+A megközelítések egyik csoportja az emberközpontú viselkedés, ahol az mesterséges intelligenciától azt várjuk, hogy a lehető legjobban hasonlítson az emberre. Az emberként gondolkodást a lehető legjobban utánozza, és cselekvése - amennyire lehet - emberi viselkedésre hasonlítson. A másik megközelítéscsoport a racionalitást helyezi középpontba, azaz a mesterséges intelligenciának a rendelkezésre álló információk alapján helyes döntéseket kell hoznia, és a lehetőségeihez képest a legjobb módon is kell azt végrehajtania. \\
+
+Látszik, hogy ez a két nézőpont teljesen másképpen írja körül a mesterséges intelligencia mibenlétét, ennek megfelelően más módszereket is használ a vizsgálatukra. Matematikai és mérnöki megközelítésben a racionális irányzatok azok ami megfelelően jól vizsgálható ezen tudományok eszköztárával.
+\subsection{Emberi módon gondolkodni}
+\subsection{Emberi módon cselekedni}
+\subsection{Racionálisan gondolkodni}
+\subsection{Racionálisan cselekedni}
 
 \section{Kétszemélyes teljes információjú játékok}
+A kétszemélyes teljes információjú játékok a játékelmélet egy speciális ága. Először is egy olyan többágenses - egészen pontosan kettő - környezetben játszódik, ahol az ágensek egymás ellenségei, azaz versenyhelyzetben vannak. Cselekvéseiket felváltva hajtják végre.\\
+
+Általában zérus összegű játékokkal foglalkozunk, ami azt jelenti, hogy minden ágens minden cselekedetének hasznossága megegyezik az ellenfélével, csak ellenkező előjellel, tehát arra az előnyre, amit az egyik ágens egy lépésével megtesz, az a másik ágensnek ugyanannyira a hátrányára válik. Fontos megjegyezni, hogy minden kétszemélyes zérus összegű játékban létezik mindkét fél számára optimális stratégia.\\
+
+Teljes információjúnak akkor hívunk egy játékot, ha a játék folyamán - kivéve esetleg az előkészületet - a játéktér minden tekintetben megismerhető az összes ágens számára. Ismerik a játékszabályokat, beleértve az eddig megtett összes lépést.\\
+
+Lényeges szabályok még, hogy a játszma minden állásában véges - és előre ismert - lépés létezik, továbbá a játszma nem lehet végtelen, azaz véges számú lépés megtétele után az egyik játékos nyer, a másik pedig veszít. (Egyes esetekben a döntetlen végeredmény is elfogadott)
+
+\section{A játékfa}
+A kétszemélyes teljes információjú játékok esetében a következő lépés eldöntésének problémájához gyakran alkalmaznak játékfát. A játékfa - mint a neve is mutatja - egy fa adatszerkezet, ami leírja a játék lehetséges állapotait, illetve ezeknek az állapotokban megléphető érvényes lépéseket.\\
+
+A fa csomópontjai a lehetséges állapotok, míg az élek az átmenetet szimbolizálják. A fa szintjei gyakorlatilag egy-egy lépésének felelnek meg, így a vizsgálatot is ennek megfelelően célszerű végezni.\\
+
+Legtöbbször egy már megtalált állapotból nem lehet visszajutni ugyanabba az állapotba - pont ez adja a fa jellegét - ellenkező esetben a fa végtelen nagyságú - ebből következően megoldhatatlan - volna, továbbá sérülne a játék végességére vonatkozó kritérium. Ez probléma főleg az olyan játékokat érinti, ahol a lépések visszavonhatóak, azaz az előzőleg megtett lépés ellentettje a rákövetkező lépésben érvényes lépésnek számít. Amennyiben ilyen előfordul azt többnyire detektálni lehet, és az ilyen ágakat levágják a fát ismét véges nagyságúra - ezáltal a problémát megoldhatóra - redukálva.\\
+
+A megoldás keresése gyakorlatilag a játékfa felépítése, és bejárása. Kezdésként tekintsük a kiinduló állapotot gyökérelemének. Ezután  megvizsgáljuk, hogy végállapotban van-e a játék, majd az összes lehetséges lépést véve egy új ágat hozunk létre, melynek a végére a lépés megtétele utáni állapotteret helyezzük. Egy csomópont további ágainak létrehozását kiterjesztésnek nevezzük. Hogy melyik ággal kezdjük a kiterjesztést azt a keresési stratégia határozza meg. Szükségszerűen a játék végállapotai nem kifejtett csomópontok (levélobjektumok) lesznek.\\
+
+\subsection{Minimax}
+Szó esett már arról, hogy miként lehetséges a játékfa felépítése, ám azt még nem részleteztem, hogy miként lehet kiválasztani a soron következő helyes lépést. Ideális esetben egy játékosnak a győzelemhez vezető út a lépések egy sorozata, ám ebbe az ellenfélnek is van beleszólása. Az optimális lépéssorozat kiválasztásában a Minimax algoritmust tudjuk segítségül hívni.\\
+
+A minimax elv egy kevert stratégia, egy olyan döntési szabály, amely azt célozza meg, hogy minimalizálja a maximális veszteséget, illetve ez meg is fordítható, maximalizálja a minimális nyereséget. \\
+
+Célszerűségből nevezzük el a kezdőjátékost MAX-nak, a második játékost MIN-nek. A minimax elvet a játékfa felépítése során alkalmazzuk. Építsük tehát fel a játékfát az előbb tárgyaltaknak megfelelően, és a végállapotokhoz rendeljünk hozzá egy számértéket. Az olyan játékoknál, ahol csupán azt számít, hogy egy játékos nyert-e elegendő a 1 (MAX nyert), 0 (döntetlen), -1 (MIN nyert) számokkal operálni. Amennyiben a vizsgált játék kifinomultabb pontrendszer rendelkezik, akkor azt az értéket rendeljük hozzá, amennyit az adott játék végállása ér.\\
+
+
+A megértést segítendő tekintsük a \myref{fig:minimax} játékfát. A MAX játékos lehetséges lépéseit a négyzetek, míg MIN játékosét a rombuszok jelölik. Hogy szemléletesebb legyen a minimax bemutatása jelen játéknál nem csupán az számít, hogy a játékos nyer-e, hanem az is, hogy mennyivel, azaz a MAX a legnagyobb értékre törekszik, míg MIN arra, hogy a MAX-nak legyen a legkevesebb pontja. Az ezt reprezentáló számérték a négyszögek alatt találhatóak, melyek minden lehetséges lépéshez megmutatják a minimax értéket. A szaggatott nyilak a mellettük található számmal minimax lépéseinek a sorrendjét jelölik. A kék a rekurzióba való belépést, míg a pirosak az abból való visszatérést szimbolizálják. Az átláthatóság érdekében a nyilakat csupán az első baloldali részfára helyeztem el, de a számértékeket kiszámítottam minden lépéshez. \\
+
+\begin{figure}[h]
+	\includegraphics[width=15cm, height=7cm]{minimax}
+	\centering
+	\caption{Példa a minimax működésére}
+	\label{fig:minimax}
+\end{figure}
+
+A minimaxot általában rekurzív algoritmussal szokták implementálni, ami ugyan a gyökérelemtől indul ki, de - a rekurziónak köszönhetően - egyből az első levélobjektumot veszi célba. Mivel mindegyik lépés minimax értékét a rákövetkező lépések minimax értékeiből számoljuk ki, ezért a fa legmélyebb pontján kell kezdenünk. A levélobjektum minimax értékének a kiszámítása triviális, ugyanis megegyezik azzal a számértékkel amit a játék végállapotához rendeltünk hozzá. Ezt az ábrán az önmagába visszaforduló nyíllal jelöltem. Nem levélobjektum minimax érték úgy tudjuk kiszámolni, hogy az összes gyerekobjektum minimax értékének vesszük vagy a minimumát, vagy pedig a maximumát attól függően, hogy az adott lépés a MIN, vagy a MAX játékoshoz tartozik-e. Nem meglepő módon a MAX játékos a legnagyobb minimax értékeket keresi, míg a MIN a lehető legkisebbet. Miután egy adott ág egy szintjén kiszámoltuk az összes minimax értéket feljebb léphetünk egy szinttel, ahol ugyan ezeket a lépéseket kell megtennünk, egészen addig, míg vissza nem jutunk a rekurzió legfelsőbb szintjére, a gyökérelemre.\\
+
+Az így felépített játékfa segítségével pedig egyszerűen leolvashatjuk, hogy a MAX-nak milyen lépést kell megtennie: mivel a legnagyobb érték a 3, így a $B$ irányába kell elindulnia, tehát meglépi a $B$ lépést. Ekkor a MIN - ha optimálisan játszik - a legkisebb (jelen esetben szintén a 3) értékhez tartozó lépést, az $F$ lépi meg.\\
+
+Látszik hogy amennyiben a MIN nem játszik optimálisan még rosszabbul jár, ezáltal a minimax algoritmus mindig optimális megoldást ad. A dolog szépséghibája, hogy még az egyszerűbb játékok esetében sem biztos, hogy a MAX-nak lesz elegendő ideje kiszámolni ezt az optimális stratégiát. Ezen a problémán tud segíteni a különböző vágási technikák, melyek közül egyet a következő szekcióban be is mutatok.
+
+
+\section{A játékfa levágásának módszerei}
+Az előző részben tárgyaltakat tekintve az olvasóban - jogosan - felmerülhet, hogy a játékfának a használata - még rendkívül egyszerű játékok esetében - is óriási költségekkel (tárhely, számítási igény) jár. Léteznek azonban módszerek, amelyekkel a fa bizonyos részeit le lehet vágni még az előtt, hogy fel kéne építeni, így akár drasztikusan csökkentve ezen költségeket.
+
+
+\subsection{Alfa-Béta vágás}
 
 
 \section{A Nim játék leírása}
