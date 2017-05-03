@@ -2,18 +2,19 @@
 \label{Chap:tema}
 
 \section {A mesterséges intelligencia}
-A mesterséges intelligencia egy viszonylag új, ám hatalmas lehetőségeket rejtő tudományág. A "Mesterséges Intelligencia - Modern megközelítésben" könyv négy kategóriába sorolja, ezen belül is kettő csoportba, amely teljesen más szemszögből vizsgálja a problémát.\\
+A mesterséges intelligencia egy viszonylag új, ám hatalmas lehetőségeket rejtő tudományág. A "Mesterséges Intelligencia - Modern megközelítésben" könyv négy kategóriába sorolja a mesterséges intelligencia mibenlétét, ezen belül is kettő csoportba, amely teljesen más szemszögből vizsgálja a problémát.\\
 
-A megközelítések egyik csoportja az emberközpontú viselkedés, ahol az mesterséges intelligenciától azt várjuk, hogy a lehető legjobban hasonlítson az emberre. Az emberként gondolkodást a lehető legjobban utánozza, és cselekvése - amennyire lehet - emberi viselkedésre hasonlítson. A másik megközelítéscsoport a racionalitást helyezi középpontba, azaz a mesterséges intelligenciának a rendelkezésre álló információk alapján helyes döntéseket kell hoznia, és a lehetőségeihez képest a legjobb módon is kell azt végrehajtania. \\
+A megközelítések egyik csoportja az emberközpontú viselkedés, ahol az mesterséges intelligenciától azt várjuk, hogy a lehető legjobban hasonlítson az emberre. Az emberi gondolkodást az elképzelhető legjobb módon utánozza, és cselekvése - amennyire lehet - emberi viselkedésre hasonlítson. A másik megközelítés a racionalitást helyezi középpontba, azaz a mesterséges intelligenciának a rendelkezésre álló információk alapján a lehető legjobb (helyes) döntéseket kell hoznia, és a lehetőségeihez képest a legjobb módon is kell azt végrehajtania. \\
 
-Látszik, hogy ez a két nézőpont teljesen másképpen írja körül a mesterséges intelligencia mibenlétét, ennek megfelelően más módszereket is használ a vizsgálatukra. Matematikai és mérnöki megközelítésben a racionális irányzatok azok ami megfelelően jól vizsgálható ezen tudományok eszköztárával.
+Látszik, hogy ez a két nézőpont teljesen másképpen írja körül a mesterséges intelligencia mibenlétét, ennek megfelelően más módszereket is használ a vizsgálatukra. Matematikai és mérnöki megközelítésben a racionális irányzatok azok ami megfelelően jól vizsgálható ezen tudományok eszköztárával.\\
+
 \subsection{Emberi módon gondolkodni}
 \subsection{Emberi módon cselekedni}
 \subsection{Racionálisan gondolkodni}
 \subsection{Racionálisan cselekedni}
 
 \section{Kétszemélyes teljes információjú játékok}
-A kétszemélyes teljes információjú játékok a játékelmélet egy speciális ága. Először is egy olyan többágenses - egészen pontosan kettő - környezetben játszódik, ahol az ágensek egymás ellenségei, azaz versenyhelyzetben vannak. Cselekvéseiket felváltva hajtják végre.\\
+A kétszemélyes teljes információjú játékok a játékelmélet egy speciális ága. Először is egy olyan többágenses - egészen pontosan kettő - környezetben játszódik, ahol az ágensek egymás ellenségei, azaz versenyhelyzetben vannak, továbbá cselekvéseiket felváltva hajtják végre.\\
 
 Általában zérus összegű játékokkal foglalkozunk, ami azt jelenti, hogy minden ágens minden cselekedetének hasznossága megegyezik az ellenfélével, csak ellenkező előjellel, tehát arra az előnyre, amit az egyik ágens egy lépésével megtesz, az a másik ágensnek ugyanannyira a hátrányára válik. Fontos megjegyezni, hogy minden kétszemélyes zérus összegű játékban létezik mindkét fél számára optimális stratégia.\\
 
@@ -31,9 +32,27 @@ Legtöbbször egy már megtalált állapotból nem lehet visszajutni ugyanabba a
 A megoldás keresése gyakorlatilag a játékfa felépítése, és bejárása. Kezdésként tekintsük a kiinduló állapotot gyökérelemének. Ezután  megvizsgáljuk, hogy végállapotban van-e a játék, majd az összes lehetséges lépést véve egy új ágat hozunk létre, melynek a végére a lépés megtétele utáni állapotteret helyezzük. Egy csomópont további ágainak létrehozását kiterjesztésnek nevezzük. Hogy melyik ággal kezdjük a kiterjesztést azt a keresési stratégia határozza meg. Szükségszerűen a játék végállapotai nem kifejtett csomópontok (levélobjektumok) lesznek.\\
 
 \subsection{Minimax}
-Szó esett már arról, hogy miként lehetséges a játékfa felépítése, ám azt még nem részleteztem, hogy miként lehet kiválasztani a soron következő helyes lépést. Ideális esetben egy játékosnak a győzelemhez vezető út a lépések egy sorozata, ám ebbe az ellenfélnek is van beleszólása. Az optimális lépéssorozat kiválasztásában a Minimax algoritmust tudjuk segítségül hívni.\\
+Szó esett már arról, hogy miként lehetséges a játékfa felépítése, ám azt még nem részleteztem, hogy miként lehet kiválasztani a soron következő helyes lépést. Ideális esetben egy játékosnak a győzelemhez vezető út a lépések egy sorozata, ám ebbe az ellenfélnek is van beleszólása. Az optimális lépéssorozat kiválasztásában a Minimax (\myref{alg:minimax}) algoritmust tudjuk segítségül hívni.\\
 
 A minimax elv egy kevert stratégia, egy olyan döntési szabály, amely azt célozza meg, hogy minimalizálja a maximális veszteséget, illetve ez meg is fordítható, maximalizálja a minimális nyereséget. \\
+
+\begin{algorithm}
+	\caption{Minimax algoritmus pszeudo kódja}
+	\label{alg:minimax}
+\begin{algorithmic}[1]
+	\Function{minimax}{csomopont, melyseg}
+	\If {a $csomopont$ levél, vagy $melyseg = 0$}
+		\State \Return csomópont heurisztikus értéke
+	\Else
+		\State $\alpha \gets -\infty$
+		\ForAll {gyerekére a csomopontnak}
+			\State $\alpha \gets max(\alpha, -\Call{minimax}{gyerek, melyseg - 1})$
+			\State \Return $\alpha$
+		\EndFor
+	\EndIf
+	\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 Célszerűségből nevezzük el a kezdőjátékost MAX-nak, a második játékost MIN-nek. A minimax elvet a játékfa felépítése során alkalmazzuk. Építsük tehát fel a játékfát az előbb tárgyaltaknak megfelelően, és a végállapotokhoz rendeljünk hozzá egy számértéket. Az olyan játékoknál, ahol csupán azt számít, hogy egy játékos nyert-e elegendő a 1 (MAX nyert), 0 (döntetlen), -1 (MIN nyert) számokkal operálni. Amennyiben a vizsgált játék kifinomultabb pontrendszer rendelkezik, akkor azt az értéket rendeljük hozzá, amennyit az adott játék végállása ér.\\
 
@@ -49,17 +68,51 @@ A megértést segítendő tekintsük a \myref{fig:minimax} játékfát. A MAX j�
 
 A minimaxot általában rekurzív algoritmussal szokták implementálni, ami ugyan a gyökérelemtől indul ki, de - a rekurziónak köszönhetően - egyből az első levélobjektumot veszi célba. Mivel mindegyik lépés minimax értékét a rákövetkező lépések minimax értékeiből számoljuk ki, ezért a fa legmélyebb pontján kell kezdenünk. A levélobjektum minimax értékének a kiszámítása triviális, ugyanis megegyezik azzal a számértékkel amit a játék végállapotához rendeltünk hozzá. Ezt az ábrán az önmagába visszaforduló nyíllal jelöltem. Nem levélobjektum minimax érték úgy tudjuk kiszámolni, hogy az összes gyerekobjektum minimax értékének vesszük vagy a minimumát, vagy pedig a maximumát attól függően, hogy az adott lépés a MIN, vagy a MAX játékoshoz tartozik-e. Nem meglepő módon a MAX játékos a legnagyobb minimax értékeket keresi, míg a MIN a lehető legkisebbet. Miután egy adott ág egy szintjén kiszámoltuk az összes minimax értéket feljebb léphetünk egy szinttel, ahol ugyan ezeket a lépéseket kell megtennünk, egészen addig, míg vissza nem jutunk a rekurzió legfelsőbb szintjére, a gyökérelemre.\\
 
-Az így felépített játékfa segítségével pedig egyszerűen leolvashatjuk, hogy a MAX-nak milyen lépést kell megtennie: mivel a legnagyobb érték a 3, így a $B$ irányába kell elindulnia, tehát meglépi a $B$ lépést. Ekkor a MIN - ha optimálisan játszik - a legkisebb (jelen esetben szintén a 3) értékhez tartozó lépést, az $F$ lépi meg.\\
+Az így felépített játékfa segítségével pedig egyszerűen leolvashatjuk, hogy a MAX-nak milyen lépést kell megtennie: mivel a legnagyobb érték a 4, így a $B$ irányába kell elindulnia, tehát meglépi a $B$ lépést. Ekkor a MIN - ha optimálisan játszik - a legkisebb (jelen esetben szintén a 4) értékhez tartozó lépést, az $F$ lépi meg.\\
 
 Látszik hogy amennyiben a MIN nem játszik optimálisan még rosszabbul jár, ezáltal a minimax algoritmus mindig optimális megoldást ad. A dolog szépséghibája, hogy még az egyszerűbb játékok esetében sem biztos, hogy a MAX-nak lesz elegendő ideje kiszámolni ezt az optimális stratégiát. Ezen a problémán tud segíteni a különböző vágási technikák, melyek közül egyet a következő szekcióban be is mutatok.
 
 
 \section{A játékfa levágásának módszerei}
-Az előző részben tárgyaltakat tekintve az olvasóban - jogosan - felmerülhet, hogy a játékfának a használata - még rendkívül egyszerű játékok esetében - is óriási költségekkel (tárhely, számítási igény) jár. Léteznek azonban módszerek, amelyekkel a fa bizonyos részeit le lehet vágni még az előtt, hogy fel kéne építeni, így akár drasztikusan csökkentve ezen költségeket.
-
+Az előző részben tárgyaltakat tekintve az olvasóban - jogosan - felmerülhet, hogy a játékfának a használata - még rendkívül egyszerű játékok esetében - is óriási költségekkel (tárhely, számítási igény) jár. A játékfa felépítése minimax algoritmussal $O(b^b)$ idő, és $O(b*m)$ tárigényű, ahol $b$ a csomópontokban létező érvényes lépések $m$ pedig a fa maximális mélysége. Léteznek azonban módszerek, amelyekkel a fa bizonyos részeit le lehet vágni még az előtt, hogy fel kéne építeni, így akár drasztikusan csökkentve ezen költségeket.
 
 \subsection{Alfa-Béta vágás}
+Az Alfa-Béta vágás segítségével a gyakorlatban a minimax algoritmust tudjuk felgyorsítani oly módon, hogy a döntésben részt nem vevő ágakat lenyessük, azaz igazából ki sem értékeljük. Ennek megfelelően az alfa-béta vágást a játékfa építése közben kell alkalmazni. A megértés megkönnyítése céljából ezúttal is tekintsünk a már jól ismert \myref{fig:minimax} ábrára. A \myref{alg:alfabeta} algoritmus bemutatja az alfa-béta vágás pszeudokódját.\\
 
+\begin{algorithm}
+	\caption{Alfa-Béta vágás algoritmusának pszeudo kódja}
+	\label{alg:alfabeta}
+	\begin{algorithmic}[1]
+		\Function{kiertekel}{csomopont, alfa, beta}
+		\If {a $csomopont$ levél}
+		\State \Return csomópont heurisztikus értéke
+		\EndIf
+		\If {a $csomopont$ maximalizálandó}
+		\ForAll {gyerekére a csomopontnak}
+		\State $\beta \gets MIN(\beta, \Call{kiertekel}{gyerek, alfa, beta})$
+		\If {$\beta <= \alpha$}
+		\State \Return $\alpha$
+		\EndIf
+		\EndFor
+		\State \Return $\beta$
+		\EndIf		
+		\If {a $csomopont$ minimalizálandó}
+		\ForAll {gyerekére a csomopontnak}
+		\State $\alpha \gets MAX(\alpha, \Call{kiertekel}{gyerek, alfa, beta})$
+		\If {$\beta <= \alpha$}
+		\State \Return $\beta$
+		\EndIf
+		\EndFor
+		\State \Return $\alpha$
+		\EndIf	
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+
+Értékeljük ki a minimax értékeket a baloldali részfán az előbb tárgyalt módon, és kezdjük el kiépíteni a második részfát. Láthatjuk, hogy rögtön az első levélobjektumra kiszámított minimax érték kettő, ami már most kisebb, mint az előző részfa utolsó előtti szintjére számított minimális minimax érték. Ez azt jelenti, hogy teljesen felesleges kiszámolnunk jelen részfa további értékeit, hiszen még ha találnánk is nagyobb értéket az utolsó előtti szinten úgyis a minimumot kell vennünk, ami legrosszabb esetben is kettőnél csak kisebb lehet, az eggyel feletti szinten pedig a maximumot keressük, így - mivel a négy nagyobb a kettőnél - a kettő, s ezáltal a teljes $C$ részfa eldobható. Ugyan ez a helyzet a $D$ részfával is. Az alda-béta vágás használatával jelen esetben csupán az első részfát kellett teljesen kiépíteni, a többi részfa az első levélelem minimax számítása után eldobhatóvá vált, s ezzel jelentősen csökkent mind az időigény, mind pedig a tárigény.\\
+
+Természetesen nem minden esetben vagyunk ilyen szerencsések. Látszik, hogy nagyon nem lényegtelen, hogy az ágakat milyen sorrendben értékeljük ki. Sokszor alkalmaznak kiegészítő heurisztikus függvényeket, amelyek megpróbálják megbecsülni a kiértékelés ideális sorrendjét, sőt egyes esetekben - a játék sajátosságaiból adódóan - ez a sorrend előre ismert, vagy kiszámítható. Ez az algoritmus kifejezetten hatékony olyan esetekben, amikor a csomópontoknak sok gyermeke van, és jól meg tudjuk becsülni, hogy melyik az az elem, amelyik elbuktathatja az adott ágat. Ha ezt megtehetjük, akkor az algoritmus időigénye $O(b^{m/2})$-re redukálódik, ami szignifikánsan jobb a minimax $O(b^m)$ időigényétől, ami nagyjából megduplázza a minimax sebességét.\\
 
 \section{A Nim játék leírása}
 A Nim játék egy kétszemélyes teljes információjú körökre osztott stratégiai játék. A játék egyszeregyből fakadóan számos változata, illetve továbbgondolása is létezik. Néhányat a későbbiekben röviden ismertetni is fogok. \\
