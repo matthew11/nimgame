@@ -44,11 +44,11 @@ A klasszikus Nim - mint arra a neve is utal - a hagyományos Nim játék megval�
 
 A játék kezdete előtt lehetőségünk van részletekbe menően beállítani, hogy pontosan hogyan szeretnénk játszani a játékot. Ehhez be kell állítanunk a halom konfigurációt, és a játékosokat. Miután a beállításokkal végeztünk az oldalsó panel alján található "Start Game" gombbal kezdhetjük a játékot. Ez után a beállítások módosítása már nem lehetséges, de bármikor kezdhető új játék a már említett menüelemek használatával.
 
-\subsubsection{Játékos beállítások}
+\subsubsection{Játékos beállítások} \label{section:nim_playersettings}
 A Nim-játék természetéből fakadóan két "személy" játssza. A szövegbeviteli mezőkbe a játékosok neveit kell megadni (eltérőeknek kell lenniük). A bal oldalon található rádiógomb segítségével azt választhatjuk ki, hogy ki kezdjen, még a jobb oldalon elhelyezkedő jelölőnégyzet arra szolgál, hogy tudassuk a programmal, hogy azt a játékost ő vezérli.\ujsor
 A beállítások adta szabadságból látszik, hogy a programmal lehet ember-ember, gép-ember, és gép-gép játékot is játszani.
 
-\subsubsection{Halom beállítások}
+\subsubsection{Halom beállítások} \label{section:nim_gamesettings}
 A halombeállítások kezdetén azt kell eldönteni, hogy milyen mélységben szeretnénk beleszólni a kezdeti játéktér felépítésébe. Ezt vezérelni a "Heap Configuration" szöveg alatti rádiógomb-csoporttal lehetséges. Ezekre kattintva a felület dinamikusan átalakul további funkciókat felfedve. 
 
 \begin{itemize}
@@ -135,7 +135,7 @@ Nem volt ez most sem másképp. Eredeti megközelítésemben egy univerzális j�
 
 Nem célom a teljes forráskód beillesztése a dolgozatba, mert egyrészt viszonylag nagy méretű, (több ezer sor) sok rész triviális, vagy csak technikai, azonban bizonyos osztályokat, vagy kódrészleteket behivatkozok, amikben úgy érzem, hogy említésre méltó dolgok találhatóak.
 
-\section{Program felépítése, tervezési szempontok}
+\section{Program felépítése, tervezési szempontok} \label{section:implementation_design}
 Kezdetektől fogva a Northcott-sakkot szerettem volna leimplementálni, ugyanis a Nim játékok variánsai közül látványosabbak közé tartozik, és nagyon tetszett az a tulajdonsága, hogy egy-az-egyben visszavezethető hagyományos Nim játékra. Ebből következően az implementálást nem is a Northcott-sakkal kezdtem, hanem hagyományos Nim játékkal. Miután ezzel végeztem akkor tértem át magára a szakdolgozatom gyakorlati feladatára, a Nortcott-sakkra. A visszavezethetőséget implementálás során véresen komolyan vettem, olyan szinten, hogy a Nortcott-sakk nem is különálló játékmodulként szerepel (ezzel kissé megszegve a program koncepcióját), hanem csupán egy új megjelenítési réteget ad a Nim játékhoz. Más szóval amikor a felhasználó Northcott-sakkot játszik, akkor valójában a gép azt Nim játékként fogja fel. Konkrétan ugyan azt az osztályt (NimGameCore) használja felel a Nim játék, mint a Nortcott-sakk. Szándékosan még csak le sem származtattam, ezzel is kidomborítva a a Nortcott-sakk eme érdekes tulajdonságát.\ujsor
 
 A programot Java nyelven írtam, és használok benne olyan nyelvi elemeket, amik megkövetelik a 8-as verziót, azonban a SE (Standard Edition) eszközkészletén túlmenően semmilyen egyéb külső programkönyvtárat nem használtam fel.\ujsor
@@ -165,12 +165,55 @@ A GameEvent a játék eseményeinek az alaposztálya. Gyakorlatilag egy fontos d
 
 Mint azt már korábban említettem a játékok követnek egyfajta hierarchiát, ami az eseményobjektumokon is megmutatkozik. Például a Nim játékok eseményeinek az alaposztálya a NimGameEvent, ami a TurnbasedGameEvent osztályból származik (ez adja hozzá a következő kör eseményt), ami pedig végül a GameEvent osztályból származik le.
 
+\section{Az absztrakt játék (GameEngine) szintje}
+Ez a program rétegződésének a legfelső szintje, gyakorlatilag minden osztálya absztrakt. Az itt található osztályok teljesen általánosan fogják fel a játék mibenlétét, ebből következően ezekből példányosítani értelmetlen, emiatt absztraktként vannak megjelölve. Mindazonáltal már ezen a szinten is bizonyos dolgokat ismerünk. Tudjuk például, hogy a játékot játékos(ok) játsszák, azok lépéseket tesznek meg, a játéknak van eleje, vége, és beállításai.
+
+\subsection{StepObject}
+Minden játékban léteznek valamiféle átmenetek, amik a játékteret a kezdőállapotból további állapotba, végül pedig a végállapotba viszik. Ezeket az állapotátmeneteket a StepObject objektumok reprezentálják. Az alap StepObject absztrakt osztály önmagában csak azt az információt tartalmazza, hogy ezt az átmenetet melyik játékos vitte véghez. Értelemszerűen a konkrét játéknak ki kell egészíteni ezt az osztályt a játék állapotátmeneteire vonatkozó információkkal.
+
+\subsection{Player}
+Egy tetszőleges játékost ír le ez az osztály. Ezen a szinten amit biztosan tudunk, hogy a játékosnak van egy neve, egy belső azonosítója, és egy PlayerControllerje, akitől szükség esetén lekérdezhetjük a játék beállításait, illetve a kontrolleren keresztül a játékot utasíthatjuk a következő lépés megtételére.
+
+\subsection{GameCore}
+Egy általános célú játék absztrakt megvalósítása. Nyilvántartja a játékosokat, eltárolja a lépéselőzményeket, a játék beállításait fogadni tudja, továbbá fenntart egy EventChannelt amire a program többi komponense feliratkozhat. A játék eseményeit ezen keresztül szórja szét.
+
+\subsection{AbstractGameSettings}
+Egy teljesen üres osztály, a játék beállításait tartalmazza, minden játéknak implementálnia kell a saját beállításait, melynek ebből az osztályból kell származnia.
+
 \section{Nim játék leírása}
+A Nim játékot megvalósító osztály a már említett NimGameCore. Az osztály, és a hozzá tartozó egyéb osztályok a gameplayer.nimgame.standard csomagban találhatóak.
+
+\subsection{NimPlayer}
+
+\subsubsection{NimHumanPlayer}
+A NimHumanPlayer az emberi játékos implementációja. Gyakorlatilag egy üres implementáció, a cselekvés a felhasználói felületre van rákötve.
+
+\subsubsection{NimAIPlayer}
+Sokkal érdekesebb a NimAIPlayer osztály. Ez a gépi játékot megvalósító játékos implementációja. Látszik, hogy már egyből a konstruktorba létrehozom a mesterséges intelligenciát az adott játékospéldányhoz. Ez persze azt is jelenti, hogy több gépi játékos esetén több mesterséges intelligencia jön léte, ami magában hordozza annak a lehetőségét, hogy különböző MI implementációkat versenyeztessünk egymással.\ujsor
+
+A notifyYourTurn() visszahívó metódusban értelemszerűen meghívom a mesterséges intelligencia getNextStep() metódusát, ami egy NimAISolution objektumot tartalmaz. Ezután már nincs más dolgom mint ezt az objektumot felhasználva készítsek egy NimStepObject objektumot, és a kontrolleren keresztül léptessem a gépi játékost. A mesterséges intelligenciát megvalósító osztályok a gameplayer.nimgame.standard.AI csomagban találhatóak, de erről részletesebben a \ref*{section:nim_impl_winning_strategy} részben írok.
+
+\subsection{NimGameSettings}
+A Nim játék lehetséges beállításait tartalmazza. A \ref*{section:nim_gamesettings} és a \ref*{section:nim_playersettings} pontokban részletesen leírtam a programomban lévő Nim játék nyújtotta lehetőségeket. Ezeknek a lehetőségeknek a megvalósítása szerepel ebben az osztályban.
+
+\subsection{NimStepObject}
+A Nim játék leszármaztat az alap StepObject osztályból hozzáadva azt az információt, hogy az adott lépésből melyik halomból mennyi elemet vett el az állapotátmenetet előidéző játékos.
+
+\subsection{A Nim játék grafikus felhasználói felületelemei}
+A Nim játék grafikus elemeit a gameplayer.nimgame.standard.UI csomagban találjuk. A \ref*{section:implementation_design} szekcióban már leírtam, hogy legalább három grafikus komponenst kell a játékoknak implementálni, és itt ez a három komponens a NimMainPanel, NimSettingsPanel, és a NimStatusPanel.
+
+\subsubsection{NimMainPanel}
+Egy JPanel típusú grafikus komponens. Ez valósítja meg a játékteret, de egy összefogó szerepe is van. Implementálja a GameEntityProvider interfészt, és a segédpaneleket is lepéldányosítja, továbbá feliratkozik a Nim játék\\
+EventRegistry.EVENT\_GAMEENGINE eseménycsatornára. Ennek köszönhetően a játéktérben bekövetkezett változásról azonnal értesül, és frissíteni tudja a játékteret.
 
 \section{Northcott játék leírása}
+A Northcott-sakk megvalósításának a szépségét a szemfüles olvasó már ott is felfedezheti, hogy ehhez a játékhoz nem tartozik játék, azaz nincsen hozzá olyan osztály, ami a GameCoreból származik le. Az egész játék csupán felhasználói felületelemekből épül fel - mint korábban írtam - a Nim játéknak ténylegesen csak egy másfajta megjelenítése.\ujsor
 
+A három panel itt is ugyan úgy megtalálható: NorthcottMainPanel, NorthCottSettingsPanel, és NorthcottStatusPanel. Itt is a főpanel látja el az összefogó szerepét. Sok szempontból analóg a viselkedése a Nim játék főpaneljével, így részletesen ezt nem is tárgyalom.\ujsor
 
-\section{Nim nyerő stratégia gépi implementációja}
+Akad azonban egy xérdekes probléma. Az igaz ugyan, hogy a Northcott-sakkot vissza lehet vezetni a Nim játékra, ez fordítva azonban nem teljesen igaz. A nim játékban a halmok elemszáma megfeleltethető ugyan a Northcott-sakkban a bábuk közt lévő távolságnak, azonban a bábuk pozíciójára vonatkozóan a Nim játék nem hordoz információt. Ezt a problémát áthidalandó az oszlopok nyilvántartanak egy eltolás értéket, ami azt mutatja meg, hogy a felső játékos bábuja a tábla tetejéhez képest mennyivel van lejjebb. Ehhez az eltolási értékhez hozzáadva a halom elemszámát megkapjuk az alsó játékos bábujának a helyét.
+
+\section{Nim nyerő stratégia gépi implementációja} \label{section:nim_impl_winning_strategy}
 A gépi játékost stratégiáját a AINimWinningStrategy osztály valósítja meg, amely implementálja a NimAI interfészt:
 \lstinputlisting[language=java]{source/nimgame/standard/AI/NimAIStrategy.java}
 
