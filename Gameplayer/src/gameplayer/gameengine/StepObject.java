@@ -11,7 +11,7 @@ import gameplayer.nimgame.standard.NimPlayer;
  *
  * @author Máté Pozsgay
  */
-public class StepObject implements Cloneable{
+public abstract class StepObject implements Cloneable{
 
     protected Player originatingPlayer;
 

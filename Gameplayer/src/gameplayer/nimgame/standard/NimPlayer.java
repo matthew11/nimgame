@@ -5,17 +5,16 @@
  */
 package gameplayer.nimgame.standard;
 
-import gameplayer.gameengine.ControllerPlayerInterface;
 import gameplayer.gameengine.Player;
 
 /**
  *
  * @author Máté Pozsgay
  */
-public abstract class NimPlayer extends Player  implements ControllerPlayerInterface {
+public abstract class NimPlayer extends Player {
+
     public NimPlayer(int playerID, String name, NimPlayerController controller) {
         super(playerID, name, controller);
     }
 
-    
 }

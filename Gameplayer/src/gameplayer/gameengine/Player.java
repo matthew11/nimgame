@@ -9,7 +9,7 @@ package gameplayer.gameengine;
  *
  * @author Máté Pozsgay
  */
-public abstract class Player{
+public abstract class Player implements ControllerPlayerInterface {
 
     protected final String name;
     protected final int playerID;
