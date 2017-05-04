@@ -129,11 +129,50 @@ A játék addig tart, amíg van olyan oszlop, ahol a bábuk között lévő táv
 
 \section{Fejlesztői dokumentáció}
 
+Általánosságban elmondható, hogy amikor az ember találkozik egy konkrét problémával, az gyakran egy nagyobb, összetettebb problémakör része. Éppen emiatt amikor egy megoldandó problémával kerülök szembe, első körben sosem az adott problémára koncentrálok, hanem próbálom megtalálni mi az a kiinduló pont, ahonnan a probléma valójában eredeztethető. Ennek meg van az a hátránya, hogy sokszor lényegesen több munkát kell belefektetni abba, hogy a konkrét problémát megoldjuk, ugyanakkor a megoldás sokkal több problémára nyújt megoldást, s később nagyságrendekkel könnyebben lehet adaptálódni a változó igényekhez. A saját tapasztalataim is azt mutatják, hogy egy adott problémára adandó megoldás követelményei kezdetben egészen mások, mint amire végül szükség van.\ujsor
+
+Nem volt ez most sem másképp. Eredeti megközelítésemben egy univerzális játékmotort képzeltem el, ahol a játékok maguk csupán kiegészítései a szoftvernek, amiket a felhasználók - akár futásidőben is - készíthetnek, vagy módosíthatnak. Ehhez a játékmotorhoz tartozott volna egy univerzális gépi játékos is, ami a játékleíróban található szabályok szerint játszott volna. Ez az elképzelés nagyon szép, ugyanakkor rengeteg időt vett volna igénybe, ami nem állt a rendelkezésemre, így ezt tervet végül végletekig leegyszerűsítettem. Egy dologból azonban nem engedtem. A játékok most is különálló modulként viselkednek (csak bele vannak "égetve" magába a játékmotorba), és erre nagyon jó okom volt.\ujsor
+
 Nem célom a teljes forráskód beillesztése a dolgozatba, mert egyrészt viszonylag nagy méretű, (több ezer sor) sok rész triviális, vagy csak technikai, azonban bizonyos osztályokat, vagy kódrészleteket behivatkozok, amikben úgy érzem, hogy említésre méltó dolgok találhatóak.
+
+\section{Program felépítése, tervezési szempontok}
+Kezdetektől fogva a Northcott-sakkot szerettem volna leimplementálni, ugyanis a Nim játékok variánsai közül látványosabbak közé tartozik, és nagyon tetszett az a tulajdonsága, hogy egy-az-egyben visszavezethető hagyományos Nim játékra. Ebből következően az implementálást nem is a Northcott-sakkal kezdtem, hanem hagyományos Nim játékkal. Miután ezzel végeztem akkor tértem át magára a szakdolgozatom gyakorlati feladatára, a Nortcott-sakkra. A visszavezethetőséget implementálás során véresen komolyan vettem, olyan szinten, hogy a Nortcott-sakk nem is különálló játékmodulként szerepel (ezzel kissé megszegve a program koncepcióját), hanem csupán egy új megjelenítési réteget ad a Nim játékhoz. Más szóval amikor a felhasználó Northcott-sakkot játszik, akkor valójában a gép azt Nim játékként fogja fel. Konkrétan ugyan azt az osztályt (NimGameCore) használja felel a Nim játék, mint a Nortcott-sakk. Szándékosan még csak le sem származtattam, ezzel is kidomborítva a a Nortcott-sakk eme érdekes tulajdonságát.\ujsor
+
+A programot Java nyelven írtam, és használok benne olyan nyelvi elemeket, amik megkövetelik a 8-as verziót, azonban a SE (Standard Edition) eszközkészletén túlmenően semmilyen egyéb külső programkönyvtárat nem használtam fel.\ujsor
+
+A program belépési pontja a MainWindow osztályban található, ami gyakorlatilag létrehozza az alkalmazás főképernyőjét. A főképernyő áll egy menüsorból, egy oldalsó panelből, és egy főpanelből. A főpanelen helyezkedik el a létrehozott játék játéktere, míg az oldalsó panelen a létrehozott játék állapotpanelje, és a beállításpanelje. Ezek a panelok nem feltétlenül kell, hogy a java.swing.JPanel osztályból származzanak. Minden olyan komponenst be tud illeszteni ezekre a helyekre, amelyek a java.awt.Component osztályból származnak.\ujsor
+
+Minden játék két részből tevődik össze. Egyrészt magából a játékból, amely a GameCore osztályból kell, hogy származzon, másrészt egy olyan osztályból, amely megvalósítja a GameEntityProvider interfészt. Ez az interfész nyújt lehetőséget arra, hogy az adott játék beállításait lekérdezzük, továbbá ez az interfész kiterjeszti a GameUIProvider osztályt ami segítségével a már említett játék-specifikus komponenseket lehet lekérdezni. A játékot, és a GameEntityProvider-t a GameController osztály fogja össze, és egységesen egy játékként kezeli. Amennyiben egy futó játékot szeretnénk terminálni ezt rajta keresztül kell megtenni, ez gondoskodik a játék leállításáról, és a grafikus vezérlőelemek helyreállításáról.\ujsor
+
+A játékok felépítése hierarchikus. Mindegyik játék abból az osztályból származtat le, amelyik leginkább megfelel neki. Az alaposztály a GameCore, ami általános koncepciókat tartalmaz egy játékról mindenféle specializáció nélkül. A következő szint a TurnBasedGame, ami a körökre osztott játékok használhatnak, és jelenleg erre épül a NimGameCore. Mindegyik hierarchia hozhatja magával az adott szinthez tartozó kiegészítő (esemény, kivétel) osztályokat.
+
+\section{Objektumok közti kommunikáció}
+Fontos rögtön az elején tisztázni, hogy a program jelenleg egyszálra van felkészítve, azaz sem a metódusok, sem pedig az algoritmusok nem szál-biztosak, nincsenek felkészítve a többszálú futásra, a hívások szinkron módon történnek. Ez jelenleg - a program egyszerűségéből fakadóan - nem okoz nagy problémát, egyetlen kellemetlenség van csupán, abban az esetben ha két gépi játékost játszatunk egymás ellen, kellően nagy játékteret biztosítva számukra, akkor amíg a játékot játsszák a felhasználói felület megfagy, az eseményekre nem reagál.\ujsor
+
+Kommunikációra kétféle módszert használok. Általában ha egy esemény több objektumból érkezhet, de a célja mindig egy konkrét objektum, akkor ott interfészt definiálok. Egyes esetben - ha a kommunikáció két irányú - nem is egyet, hanem mindjárt kettőt a vissza-irányba is. Amennyiben egy eseményt potenciálisan több helyre szeretnék eljuttatni, akkor az EventManagert veszem használatba.
+
+\subsection{A program eseménykezelője}
+A programban egy nagyon pici, egyszerű eseménykezelőt implementáltam, a továbbiakban részletezem a felépítését, és használatát.
+
+\subsubsection{EventManager}
+Az EventManager egy nagyon pici statikus osztály, aminek az a feladata, hogy - igény esetén - EventChanneleket létrehozzon, a létrehozott EventChanneleket nyilvántartja, és igény esetén ezeket az objektumokat kérésre átadja, illetve ha egy EventChannel tulajdonosa úgy dönt, hogy megszünteti az EventChannelt, akkor ezen keresztül teheti meg ő, és csakis ő.
+
+\subsubsection{EventChannel}
+Az EventChannel feladata, hogy egyfajta csatornaként működjön. Erre a csatornára bárki feliratkozhat a subscribeForChannel(GameEventListener eventListener) metódus használatával. Paraméterben a feliratkozónak meg kell adnia önmagát, továbbá implementálnia kell a GameEventListener interfészt, ami gyakorlatilag egy visszahívó metódust tartalmaz. A visszahíváskor két paraméter adódik át. A csatorna azonosítója, illetve az eseményobjektum, ami a GameEventből kell, hogy származzon.
+
+\subsubsection{GameEvent}
+A GameEvent a játék eseményeinek az alaposztálya. Gyakorlatilag egy fontos dolgot tárol, hogy az esemény honnan származik. Minden kiegészítő információ tárolása a leszármaztatott objektumra van bízva. A GameEvent jelen dokumentáció írásakor még tartalmaz egy típus mezőt is, azonban azt fontolgatom, hogy ezt koncepciót kiveszem az eseményből, és az esemény típusát maga az objektum osztálya határozza meg.\ujsor
+
+Mint azt már korábban említettem a játékok követnek egyfajta hierarchiát, ami az eseményobjektumokon is megmutatkozik. Például a Nim játékok eseményeinek az alaposztálya a NimGameEvent, ami a TurnbasedGameEvent osztályból származik (ez adja hozzá a következő kör eseményt), ami pedig végül a GameEvent osztályból származik le.
+
+\section{Nim játék leírása}
+
+\section{Northcott játék leírása}
+
 
 \section{Nim nyerő stratégia gépi implementációja}
 A gépi játékost stratégiáját a AINimWinningStrategy osztály valósítja meg, amely implementálja a NimAI interfészt:
-\lstinputlisting[language=java]{source/nimgame/core/AI/NimAI.java}
+\lstinputlisting[language=java]{source/nimgame/standard/AI/NimAIStrategy.java}
 
 A visszaadott NimAISolution objektum gyakorlatilag egy tárolóobjektum amely a kiválasztott halmot, és az abból elvett elemszámot tartalmazza.
 
@@ -143,5 +182,5 @@ A getBestMove() a gerince a stratégiának, itt dől el, hogy a mesterséges int
 A DecisionMaker egy belső interfész, melyet két belső osztály implementál. Feladata az, hogy eldöntse, hogy az éppen vizsgált lépés elfogadható-e legjobb lépésnek. Az a két belső osztály ami implementálja az pont a NimStandardDecisionMaker, és a NimMisereDecisionMaker. Mint a nevükből kiderül az egyik a hagyományos Nim játéknál hoz döntést, míg a másik a Misère módhoz. Első megközelítésben nem sok értelme látszik ennek a fajta megoldásnak, hiszen ezt a vizsgálatot beleépíthettem volna a kereső algoritmusba, azonban ha így tettem volna, akkor minden ciklusfutáskor kellett volna tennem egy feltételvizsgálatot, hogy éppen melyik módban van a játék. Így azonban a konstruktorban elvégzem ezt a vizsgálatot, és a mezőhöz a megfelelő DecisionMaker objektumot rendelem hozzá, így a ciklusban az összes ilyen vizsgálat elhagyható tovább gyorsítva az algoritmust.\ujsor
 Ez az algoritmus majdnem minden esetben talál nyerő állapotot, kivéve, ha az ellenfél kezdett, és hibátlanul játszik. Ebben az esetben nem tud mit csinálni, így - mivel nincs jó megoldás, de lépni kell - elvesz az első nem üres halomból halomból egyet.
 
-\lstinputlisting[language=java]{source/nimgame/core/AI/AINimWinningStrategy.java}
+\lstinputlisting[language=java]{source/nimgame/standard/AI/AINimWinningStrategy.java}
 
