@@ -16,12 +16,12 @@ import gameplayer.providers.GameSettingsProvider;
 import gameplayer.gameengine.events.GameEvent;
 import gameplayer.gameengine.eventmanager.GameEventListener;
 import gameplayer.gameengine.exceptions.GameException;
-import gameplayer.nimgame.core.NimGameCore;
-import gameplayer.nimgame.core.events.NimGameStepEvent;
-import gameplayer.nimgame.core.NimPlayer;
-import gameplayer.nimgame.core.NimStepObject;
-import gameplayer.nimgame.core.events.NimGameTurnEvent;
-import gameplayer.nimgame.original.UI.PlayerEntryPanel;
+import gameplayer.nimgame.standard.NimGameCore;
+import gameplayer.nimgame.standard.events.NimGameStepEvent;
+import gameplayer.nimgame.standard.NimPlayer;
+import gameplayer.nimgame.standard.NimStepObject;
+import gameplayer.nimgame.standard.events.NimGameTurnEvent;
+import gameplayer.nimgame.standard.UI.PlayerEntryPanel;
 import gameplayer.providers.GameEntityProvider;
 
 /**
@@ -44,8 +44,8 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
     public NorthcottMainPanel(NimGameCore nimGame) throws EventChannelInvalidException {
         initComponents();
         this.nimGame = nimGame;
-        EventManager.getEventChannel(EventRegistry.EVENT_UI_SETTINGS).subscribeForEvent(this);
-        EventManager.getEventChannel(EventRegistry.EVENT_GAMEENGINE).subscribeForEvent(this);
+        EventManager.getEventChannel(EventRegistry.EVENT_UI_SETTINGS).subscribeForChannel(this);
+        EventManager.getEventChannel(EventRegistry.EVENT_GAMEENGINE).subscribeForChannel(this);
         fieldDimensionChanged(8, 8);
     }
 

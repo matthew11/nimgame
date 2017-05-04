@@ -115,14 +115,14 @@
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rowCountSpinnerStateChanged"/>
       </Events>
     </Component>
-    <Component class="gameplayer.nimgame.original.UI.PlayerEntryPanel" name="playerEntryPanel1">
+    <Component class="gameplayer.nimgame.standard.UI.PlayerEntryPanel" name="playerEntryPanel1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new gameplayer.nimgame.original.UI.PlayerEntryPanel(0, starterPlayerGroup)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new gameplayer.nimgame.standard.UI.PlayerEntryPanel(0, starterPlayerGroup)"/>
       </AuxValues>
     </Component>
-    <Component class="gameplayer.nimgame.original.UI.PlayerEntryPanel" name="playerEntryPanel2">
+    <Component class="gameplayer.nimgame.standard.UI.PlayerEntryPanel" name="playerEntryPanel2">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new gameplayer.nimgame.original.UI.PlayerEntryPanel(1, starterPlayerGroup)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new gameplayer.nimgame.standard.UI.PlayerEntryPanel(1, starterPlayerGroup)"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="misereGameCheckBox">

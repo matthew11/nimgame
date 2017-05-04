@@ -5,7 +5,7 @@
  */
 package gameplayer.gameengine;
 
-import gameplayer.nimgame.core.NimPlayer;
+import gameplayer.nimgame.standard.NimPlayer;
 
 /**
  *
@@ -13,13 +13,13 @@ import gameplayer.nimgame.core.NimPlayer;
  */
 public class StepObject implements Cloneable{
 
-    protected NimPlayer originatingPlayer;
+    protected Player originatingPlayer;
 
     public StepObject(NimPlayer originatingPlayer) {
         this.originatingPlayer = originatingPlayer;
     }
 
-    public NimPlayer getOriginatingPlayer() {
+    public Player getOriginatingPlayer() {
         return originatingPlayer;
     }
 

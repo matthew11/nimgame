@@ -8,7 +8,7 @@ package gameplayer.nimgame.northcott.UI;
 import gameplayer.gameengine.AbstractGameSettings;
 import gameplayer.providers.GameSettingsProvider;
 import gameplayer.gameengine.exceptions.GameSettingsInvalidException;
-import gameplayer.nimgame.core.NimGameSettings;
+import gameplayer.nimgame.standard.NimGameSettings;
 
 /**
  *
@@ -41,8 +41,8 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
         jLabel3 = new javax.swing.JLabel();
         columnCountSpinner = new javax.swing.JSpinner();
         rowCountSpinner = new javax.swing.JSpinner();
-        playerEntryPanel1 = new gameplayer.nimgame.original.UI.PlayerEntryPanel(0, starterPlayerGroup);
-        playerEntryPanel2 = new gameplayer.nimgame.original.UI.PlayerEntryPanel(1, starterPlayerGroup);
+        playerEntryPanel1 = new gameplayer.nimgame.standard.UI.PlayerEntryPanel(0, starterPlayerGroup);
+        playerEntryPanel2 = new gameplayer.nimgame.standard.UI.PlayerEntryPanel(1, starterPlayerGroup);
         misereGameCheckBox = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
 
@@ -136,8 +136,8 @@ public class NorthcottSettingsPanel extends javax.swing.JPanel implements GameSe
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JCheckBox misereGameCheckBox;
-    private gameplayer.nimgame.original.UI.PlayerEntryPanel playerEntryPanel1;
-    private gameplayer.nimgame.original.UI.PlayerEntryPanel playerEntryPanel2;
+    private gameplayer.nimgame.standard.UI.PlayerEntryPanel playerEntryPanel1;
+    private gameplayer.nimgame.standard.UI.PlayerEntryPanel playerEntryPanel2;
     private javax.swing.JSpinner rowCountSpinner;
     private javax.swing.ButtonGroup starterPlayerGroup;
     // End of variables declaration//GEN-END:variables

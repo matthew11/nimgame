@@ -7,7 +7,7 @@ package gameplayer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import gameplayer.UI.DisableableJPanel;
+import gameplayer.utils.UI.DisableableJPanel;
 import javax.swing.JOptionPane;
 import gameplayer.gameengine.GameCore;
 import gameplayer.gameengine.eventmanager.EventChannelInvalidException;
@@ -18,9 +18,9 @@ import gameplayer.gameengine.exceptions.GameSettingsInvalidException;
 import gameplayer.gameengine.exceptions.GameSetupIncompleteException;
 import gameplayer.gameengine.exceptions.PlayerAlreadyRegisteredException;
 import gameplayer.gameengine.exceptions.PlayerListFullException;
-import gameplayer.nimgame.core.NimGameCore;
+import gameplayer.nimgame.standard.NimGameCore;
 import gameplayer.nimgame.northcott.UI.NorthcottMainPanel;
-import gameplayer.nimgame.original.UI.NimMainPanel;
+import gameplayer.nimgame.standard.UI.NimMainPanel;
 import gameplayer.providers.GameEntityProvider;
 
 /**

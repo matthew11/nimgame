@@ -28,11 +28,11 @@ public class EventChannel {
         });
     }
 
-    public void subscribeForEvent(GameEventListener eventListener) {
+    public void subscribeForChannel(GameEventListener eventListener) {
         listeners.add(eventListener);
     }
     
-    public void unsubscribeFromEvent(GameEventListener eventListener){
+    public void unsubscribeFromChannel(GameEventListener eventListener){
         listeners.remove(eventListener);
     }
 }

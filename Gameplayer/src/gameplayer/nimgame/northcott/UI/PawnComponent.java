@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import gameplayer.gameengine.Range;
+import gameplayer.utils.Range;
 
 /**
  *
