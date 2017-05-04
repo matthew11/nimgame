@@ -28,9 +28,10 @@
 %utf8 kódolás - mert szabvány
 \usepackage[utf8]{inputenc}
 %a magyar elválasztáshoz szükséges
-\usepackage[T1]{fontenc}
+\usepackage{t1enc}
 %elválasztást végző csomag
-\usepackage[magyar]{babel}
+\def\magyarOptions{hyphenation=huhyphn}
+\usepackage[hungarian]{babel}
 
 % \newcommand{\myinclude}[1]{%
 % 
