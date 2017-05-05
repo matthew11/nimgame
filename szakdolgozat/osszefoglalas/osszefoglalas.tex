@@ -1,4 +1,13 @@
 \Chapter{Összefoglalás}
 \label{Chap:osszefoglalas}
 
-Ebben a fejezetben kell összefoglalni a szakdolgozat eredményeit, sajátosságait és a témában való elhelyezkedését. A fejezet címe az ,,Összefoglalás'' NEM módosítható! Lehet benne több alfejezet is, de nem ajánlott. Minimum 1 maximum 4 oldal a terjedelem. 
+Összefoglalva a Nim-játékok a játékelmélet egy specializált, s egyben a leggyakrabban vizsgált ágába a kétszemélyes teljes információjú stratégiai játékok családjába tartoznak. Bár számos változata létezik, jelen dolgozatban kimondottan a hagyományos Nim játékkal, és a Northcott-sakkal foglalkoztam, azon belül is az utóbbinak azzal az érdekes tulajdonságával, egy az egyben visszavezethető a hagyományos Nim játékra.\ujsor
+
+A játék implementálása során az elsődleges célomat sikerült elérnem, a Northcott-sakk Nim játékra való visszavezethetőséget a gyakorlatban is sikeresen igazoltam, mégpedig nem is akárhogyan. Sikerült elérnem, hogy a Northcott-sakk ténylegesen csupán egy másfajta vizualizációja legyen a Nim-játéknak, ezzel még szemléletesebbé téve ezt a tulajdonságát.\ujsor
+
+A Nim játékhoz készített mesterséges intelligencia - ami gyakorlatilag a nyerő stratégia egy implementációja - szinte legyőzhetetlen nehézségű ellenfelet jelent bármilyen emberi játékos számára.\ujsor
+
+A másodlagos célomat is sikerült részben elérnem. A megírt program hierarchikus és moduláris felépítése lehetővé teszi, hogy a szoftvert bármilyen egyéb - nem feltétlenül csupán Nim - játékkal kényelmesen ki lehessen bővíteni. Ez gyakorlatilag egy felhívás arra, hogy a többi Nim variánst (a hozzájuk tartozó mesterséges intelligenciával) is hozzáadjuk a programhoz létrehozva egy komplett gyűjteményt így tisztelegve ennek a minden tekintetben ősi játéknak, és az ezekből kifejlődő egyéb más játékoknak.\ujsor
+
+A szakdolgozat témájához ugyan nem kapcsolódik, de a program megírása során született néhány "melléktermék", melyek kellően általánosak ahhoz, hogy máshol is fel lehessen ezeket használhatni őket. Ilyen például a DisableableJPanel, amely egy olyan JPanel, melynek a benne foglalt komponensei rekurzívan letilthatóak, ráadásul azt is intelligens módon teszi, azaz letiltáskor csak azokat az elemeket tiltja le, melyek nem voltak korábban letiltva, és feloldáskor pedig visszaállítja az eredeti állapotot, azaz a már korábban (panel tiltása előtt) letiltott vezérlőelemek a panel feloldása után is letiltva maradnak. Amennyire tudom ilyen komponens nem létezik Jávához, olyan meg főleg nem, amelyik ezt a letiltási/feloldási mechanizmust ilyen intelligensen végezné.
+
