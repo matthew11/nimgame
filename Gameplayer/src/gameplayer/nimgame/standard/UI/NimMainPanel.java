@@ -13,6 +13,7 @@ import gameplayer.gameengine.eventmanager.EventRegistry;
 import gameplayer.providers.GameSettingsProvider;
 import gameplayer.gameengine.events.GameEvent;
 import gameplayer.gameengine.eventmanager.GameEventListener;
+import gameplayer.gameengine.events.GameErrorEvent;
 import gameplayer.gameengine.exceptions.GameException;
 import gameplayer.nimgame.standard.NimGameCore;
 import gameplayer.nimgame.standard.events.NimGameEvent;
@@ -119,13 +120,15 @@ public class NimMainPanel extends javax.swing.JPanel implements GameEventListene
                 JOptionPane.showMessageDialog(this, "The game is normally ended. Player '" + nimGame.getWiningPlayer() + "' won the game.");
                 break;
             }
+            case NimGameEvent.EVENT_ERROR_EVENT: {
+                JOptionPane.showMessageDialog(this, "Error occourred during operation: " + ((GameErrorEvent) event).getCause().getMessage());
+                break;
+            }
             case NimGameEvent.EVENT_OTHER_EVENT: {
                 break;
             }
-            case NimGameEvent.EVENT_NEXT_STEP: {
-                updatePanels();
-                break;
-            }
+            case NimGameEvent.EVENT_NEXT_STEP: 
+            case NimGameEvent.EVENT_GAME_UNDO_TURN:
             case NimGameEvent.EVENT_GAME_NEXT_TURN: {
                 updatePanels();
                 break;

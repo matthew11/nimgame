@@ -6,7 +6,6 @@
 package gameplayer.nimgame.northcott.UI;
 
 import java.awt.Container;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import gameplayer.utils.Range;

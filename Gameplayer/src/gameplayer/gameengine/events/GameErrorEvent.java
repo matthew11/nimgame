@@ -14,7 +14,7 @@ public class GameErrorEvent extends GameEvent{
     private final Exception cause;
     
     public GameErrorEvent(Object origin, Exception cause) {
-        super(origin);
+        super(origin, EVENT_ERROR_EVENT);
         this.cause = cause;
     }
 

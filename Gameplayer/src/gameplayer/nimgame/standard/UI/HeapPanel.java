@@ -134,9 +134,7 @@ public final class HeapPanel extends javax.swing.JPanel {
 
     void setPanelValue(int panelValue) {
         heapValue.setText(Integer.toString(panelValue));
-        if (panelValue == 0) {
-            this.setVisible(false);
-        }
+        this.setVisible(panelValue != 0);
         spinnerModel.setMaximum(panelValue);
         if (spinnerModel.getMaximum().compareTo(spinnerModel.getNumber()) < 0) {
             spinnerModel.setValue(spinnerModel.getMaximum());

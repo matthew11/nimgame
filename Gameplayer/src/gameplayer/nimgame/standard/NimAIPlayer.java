@@ -5,6 +5,7 @@
  */
 package gameplayer.nimgame.standard;
 
+import gameplayer.gameengine.AIPlayer;
 import gameplayer.nimgame.standard.exceptions.AIException;
 import gameplayer.gameengine.exceptions.GameException;
 import gameplayer.nimgame.standard.AI.NimAISolution;
@@ -14,7 +15,7 @@ import gameplayer.nimgame.standard.AI.NimGameAI;
  *
  * @author Máté Pozsgay
  */
-public class NimAIPlayer extends NimPlayer {
+public class NimAIPlayer extends NimPlayer implements AIPlayer{
 
     private final NimGameAI gameAI;
 

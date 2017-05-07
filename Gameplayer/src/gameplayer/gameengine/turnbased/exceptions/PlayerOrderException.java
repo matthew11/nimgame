@@ -5,13 +5,11 @@
  */
 package gameplayer.gameengine.turnbased.exceptions;
 
-import gameplayer.gameengine.exceptions.GameException;
-
 /**
  *
  * @author Máté Pozsgay
  */
-public class PlayerOrderException extends GameException{
+public class PlayerOrderException extends TurnBasedGameException{
 
     public PlayerOrderException(final String message) {
         super(message);

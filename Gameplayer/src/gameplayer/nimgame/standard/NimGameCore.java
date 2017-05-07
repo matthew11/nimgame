@@ -5,7 +5,7 @@
  */
 package gameplayer.nimgame.standard;
 
-import gameplayer.nimgame.standard.events.NimGameStepEvent;
+import gameplayer.gameengine.AIPlayer;
 import gameplayer.nimgame.standard.exceptions.NimGameInvalidStepException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import gameplayer.gameengine.StepObject;
 import gameplayer.gameengine.eventmanager.EventChannelInvalidException;
 import gameplayer.gameengine.events.GameErrorEvent;
 import gameplayer.gameengine.events.GameEvent;
+import gameplayer.gameengine.exceptions.GameAlreadyEndedException;
 import gameplayer.gameengine.exceptions.GameException;
 import gameplayer.gameengine.exceptions.GameSettingsInvalidException;
 import gameplayer.gameengine.exceptions.GameSetupIncompleteException;
@@ -23,7 +24,12 @@ import gameplayer.gameengine.exceptions.PlayerAlreadyRegisteredException;
 import gameplayer.gameengine.exceptions.PlayerListFullException;
 import gameplayer.gameengine.turnbased.TurnBasedGame;
 import gameplayer.gameengine.turnbased.exceptions.PlayerOrderException;
+import gameplayer.gameengine.turnbased.exceptions.UndoBeforeFirstException;
+import gameplayer.nimgame.standard.events.NimGameRollbackEvent;
+import gameplayer.nimgame.standard.events.NimGameStepEvent;
 import gameplayer.nimgame.standard.events.NimGameTurnEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -172,12 +178,37 @@ public class NimGameCore extends TurnBasedGame implements NimPlayerController {
         }
     }
 
-    @Override
-    public void undoStep() {
+    private NimStepObject reverseOneStep() throws UndoBeforeFirstException {
+        if (stepHistory.isEmpty()) {
+            throw new UndoBeforeFirstException();
+        }
         NimStepObject lastStep = (NimStepObject) stepHistory.get(stepHistory.size() - 1);
         heapConfiguration.set(lastStep.getHeapID(), heapConfiguration.get(lastStep.getHeapID()) + lastStep.getAmount());
-        this.currentPlayer = getPreviousPlayer(lastStep.getOriginatingPlayer());
+        this.currentPlayer = getPreviousPlayer(getPreviousPlayer(lastStep.getOriginatingPlayer())); // We already after one player of the originating player, therefore we need to go back by two
         stepHistory.remove(lastStep);
+        return lastStep;
+    }
+
+    @Override
+    public void undoStep() {
+        if(this.isInEndState()){
+            eventChannel.dispatchEvent(new GameErrorEvent(this, new GameAlreadyEndedException()));
+            return;
+        }
+        try {
+            eventChannel.dispatchEvent(new NimGameRollbackEvent(this, reverseOneStep()));
+            while (this.currentPlayer instanceof AIPlayer && !stepHistory.isEmpty()) {
+                eventChannel.dispatchEvent(new NimGameRollbackEvent(this, reverseOneStep()));
+            }
+        } catch (UndoBeforeFirstException ex) {
+            eventChannel.dispatchEvent(new GameErrorEvent(this, ex));
+        }
+        eventChannel.dispatchEvent(new NimGameTurnEvent(this, currentPlayer));
+        try {
+            this.currentPlayer.notifyYourTurn();
+        } catch (GameException ex) {
+            eventChannel.dispatchEvent(new GameErrorEvent(this, ex));
+        }
     }
 
     public int getHeapCount() {

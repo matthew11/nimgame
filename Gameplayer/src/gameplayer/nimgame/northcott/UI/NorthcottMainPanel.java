@@ -15,13 +15,16 @@ import gameplayer.gameengine.eventmanager.EventRegistry;
 import gameplayer.providers.GameSettingsProvider;
 import gameplayer.gameengine.events.GameEvent;
 import gameplayer.gameengine.eventmanager.GameEventListener;
+import gameplayer.gameengine.events.GameErrorEvent;
 import gameplayer.gameengine.exceptions.GameException;
+import gameplayer.gameengine.turnbased.events.TurnbasedGameEvent;
 import gameplayer.nimgame.standard.NimGameCore;
 import gameplayer.nimgame.standard.events.NimGameStepEvent;
 import gameplayer.nimgame.standard.NimPlayer;
 import gameplayer.nimgame.standard.NimStepObject;
 import gameplayer.nimgame.standard.events.NimGameTurnEvent;
 import gameplayer.nimgame.standard.UI.PlayerEntryPanel;
+import gameplayer.nimgame.standard.events.NimGameRollbackEvent;
 import gameplayer.providers.GameEntityProvider;
 
 /**
@@ -177,6 +180,25 @@ public class NorthcottMainPanel extends javax.swing.JPanel implements GameEventL
             case GameEvent.EVENT_GAME_ENDED: {
                 JOptionPane.showMessageDialog(this, "The game is normally ended. Winner is: " + nimGame.getWiningPlayer());
                 break;
+            }
+            case TurnbasedGameEvent.EVENT_GAME_UNDO_TURN: {
+                NimStepObject undoStep = ((NimGameRollbackEvent) event).getUndoStep();
+                columns.get(undoStep.getHeapID()).updateHeap(undoStep.getOriginatingPlayer().getPlayerID(), undoStep.getAmount() * -1);
+                break;
+            }
+            case GameEvent.EVENT_ERROR_EVENT: {
+                JOptionPane.showMessageDialog(this, "Error occourred during operation: " + ((GameErrorEvent) event).getCause().getMessage());
+                break;
+            }
+            case GameEvent.EVENT_NEXT_STEP:
+            case GameEvent.EVENT_OTHER_EVENT:
+            case GameEvent.EVENT_GAME_STOPED: 
+            case TurnbasedGameEvent.EVENT_GAME_NEXT_TURN:{
+                break;
+            }
+                
+            default: {
+                JOptionPane.showMessageDialog(this, "Unhandled event: " + event.toString());
             }
         }
         if (event instanceof NimGameStepEvent) {

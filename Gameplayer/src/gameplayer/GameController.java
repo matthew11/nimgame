@@ -67,4 +67,8 @@ public class GameController {
         this.game.startGame();
     }
 
+    void undoLastStep() {
+        game.undoStep();
+    }
+
 }
