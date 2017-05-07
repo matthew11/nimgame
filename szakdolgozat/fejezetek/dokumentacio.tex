@@ -1,11 +1,11 @@
-\Chapter{Nim játék, és Northcott-sakk példaprogram}
+\Chapter{Nim játék és Northcott-sakk példaprogram}
 
 \section{Felhasználói dokumentáció}
 \subsection{Rendszerkövetelmények}
 A program Java-ban íródott, éppen ezért futtatásához Java SE 1.8 futtatókörnyezet szükséges. A program nem támaszt különösebb rendszerkövetelményt a futtató géppel szemben, egy mai asztali számítógépen probléma nélkül el kell, hogy fusson. Legalább egy 1024x768-as felbontású monitor szükséges az ablak megjelenítéséhez, továbbá a programot egérrel, és billentyűzettel (vagy ezt kiváltó perifériákkal) lehet vezérelni.
 
 \subsection{Telepítési útmutató}
-A programot nem szükséges telepíteni, a Java archívumot (.jar) egyszerűen a Java futtatókörnyezetével elindítva a program futtatható. A szoftver nem igényel különösebb rendszerjogosultságokat.
+A programot nem szükséges telepíteni, a Java archívumot (.jar) egyszerűen a Java futtatókörnyezetével elindítva a program futtatható.
 
 \subsection{A program használata}
 A programot elindítva az \myref{fig:fokepernyo} főképernyő fogad minket:\ujsor
@@ -27,7 +27,7 @@ Játékot betölteni a "Program" menü (\myref{fig:program_menu}) "Select game" 
 \end{figure}
 
 
-Jelenleg két játék közül lehet választani, ezeknek a leírására külön szekciót szentelek. Az aktuális játékot bezárni a "Reset program" menüelemmel lehetséges, továbbá a programból kilépni az "Exit" menüelemmel használatával tud a felhasználó.\ujsor
+Jelenleg két játék közül lehet választani, ezeknek a leírására külön fejezetet szentelek. Az aktuális játékot bezárni a "Reset program" menüelemmel lehetséges, továbbá a programból kilépni az "Exit" menüelem használatával tud a felhasználó.\ujsor
 
 Ezek a menüelemek a program futása során bármikor elérhetőek, azonban fontos megjegyezni, hogy amennyiben futó játék alatt egy másik játéktípus kerül kiválasztásra, abban az esetben az éppen játszott játék bezárásra kerül csak úgy, mintha a "Reset program" menüelemet választottuk volna.\ujsor
 
@@ -42,10 +42,10 @@ A klasszikus Nim - mint arra a neve is utal - a hagyományos Nim játék megval�
 	\label{fig:nim_ingame}
 \end{figure}
 
-A játék kezdete előtt lehetőségünk van részletekbe menően beállítani, hogy pontosan hogyan szeretnénk játszani a játékot. Ehhez be kell állítanunk a halom konfigurációt, és a játékosokat. Miután a beállításokkal végeztünk az oldalsó panel alján található "Start Game" gombbal kezdhetjük a játékot. Ez után a beállítások módosítása már nem lehetséges, de bármikor kezdhető új játék a már említett menüelemek használatával.
+A játék kezdete előtt lehetőségünk van részletekbe menően beállítani, hogy pontosan hogyan szeretnénk játszani a játékot. Ehhez be kell állítanunk a halom konfigurációt és a játékosokat. Miután a beállításokkal végeztünk az oldalsó panel alján található "Start Game" gombbal kezdhetjük a játékot. Ezután a beállítások módosítása már nem lehetséges, de bármikor kezdhető új játék a már említett menüelemek használatával.
 
 \subsubsection{Játékos beállítások} \label{section:nim_playersettings}
-A Nim-játék természetéből fakadóan két "személy" játssza. A szövegbeviteli mezőkbe a játékosok neveit kell megadni (eltérőeknek kell lenniük). A bal oldalon található rádiógomb segítségével azt választhatjuk ki, hogy ki kezdjen, még a jobb oldalon elhelyezkedő jelölőnégyzet arra szolgál, hogy tudassuk a programmal, hogy azt a játékost ő vezérli.\ujsor
+A Nim játékot természetéből fakadóan két "személy" játssza. A szövegbeviteli mezőkbe a játékosok neveit kell megadni (eltérőeknek kell lenniük). A bal oldalon található rádiógomb segítségével azt választhatjuk ki, hogy melyik játékos kezdjen, még a jobb oldalon elhelyezkedő jelölőnégyzet arra szolgál, hogy tudassuk a programmal, hogy azt a játékost ő vezérli.\ujsor
 A beállítások adta szabadságból látszik, hogy a programmal lehet ember-ember, gép-ember, és gép-gép játékot is játszani.
 
 \subsubsection{Halom beállítások} \label{section:nim_gamesettings}
@@ -84,7 +84,7 @@ A játék véget ér, amennyiben mindegyik halom elfogy, és a program egy előu
 
 \subsection{Northcott-sakk}
 \subsubsection*{A játék beállítása}
-A Northcott-sokk sok tekintetben hasonlít a hagyományos Nim játékra, éppen ezért beállítása is hasonlóan történik. A szövegbeviteli mezőkbe a játékosnevet kell írni, a bal oldali rádiógomb kiválasztja a kezdőjátékost, míg a jobb kéz felől található jelölőnégyzet a játékost gépinek jelöli.\ujsor
+A Northcott-sakk sok tekintetben hasonlít a hagyományos Nim játékra, éppen ezért beállítása is hasonlóan történik. A szövegbeviteli mezőkbe a játékosnevet kell írni, a bal oldali rádiógomb kiválasztja a kezdőjátékost, míg a jobb kéz felől található jelölőnégyzet a játékost gépinek jelöli.\ujsor
 
 Ami viszont lényeges eltérés, hogy itt a halom beállításai mások, mint a Nim esetében. A \myref{fig:northcott-settings} ábrát megfigyelve lényegesen leszűkültek a beállítási lehetőségek. Itt gyakorlatilag csak a sakktábla dimenzióját adhatjuk meg. A "Horizontal" (Vízszintes) az oszlopok számát, míg a "Vertical" (függőleges) a sorok számát adja meg. Ez nim játékra levetítve oszlop darab halom, és minden halomban maximálisan sor darab elem.
 
@@ -100,7 +100,7 @@ Ez a játék is játszható Misère módon, a hozzá tartozó "Misère NIM Game"
 Látható, hogy a véletlen halomgenerálás teljesen eltűnt. Ennek az az oka, hogy a játék kezdése előtt van egy extra művelet, ami nem teszi lehetségessé a véletlen generálást.
 
 \subsubsection*{A játék előkészítése}
-Ha végeztünk a játékbeállításokkal, akkor még ne indítsuk el a játékot, ugyanis a játékosoknak lehetőségük van beállítani a bábujuk kezdő pozícióját. A játéktér kezdetben minkét játékos térfelét elfedi. A térfeleket az főpanel alján lévő két vezérlőgombbal lehet fel, illetve elfedni. A gép által vezérelt játékos bábuinak kezdőpozíciója nem állítható, így a hozzá tartozó gomb eltávolításra kerül, ha jelölőnégyzet bejelölésre kerül.\ujsor
+Ha végeztünk a játékbeállításokkal, akkor még ne indítsuk el a játékot, ugyanis a játékosoknak lehetőségük van beállítani a bábujuk kezdő pozícióját. A játéktér kezdetben mindkét játékos térfelét elfedi. A térfeleket az főpanel alján lévő két vezérlőgombbal lehet fel, illetve elfedni. A gép által vezérelt játékos bábuinak kezdőpozíciója nem állítható, így a hozzá tartozó gomb eltávolításra kerül, ha jelölőnégyzetet bejelöltük.\ujsor
 
 \begin{figure}[ht]
 	\includegraphics[width=8cm, height=8cm]{program/northcott-setup}
@@ -109,9 +109,9 @@ Ha végeztünk a játékbeállításokkal, akkor még ne indítsuk el a játéko
 	\label{fig:northcott-setup}
 \end{figure}
 
-A felső játékos - miután meggyőződött arról, hogy ellenfele nem figyeli - a "Reveal Top Player" gombra kattintva felfedi saját játékterét. Felfedett állapotba a gomb "beragad", és a másik gomb letiltódik, hogy véletlenül ne lehessen az ellenfél térfelére átváltani. A felső játékos a kívánt mezőre kattintva áthelyezheti az adott oszlopban lévő bábuját arra a mezőre, amelyikre kattintott. Ha a felső játékos késznek érzi a kezdőállapotot, akkor a beragadt gombra újból rákattintva elfedi a felső játékteret, és átadja a helyét az alsó játékosnak, aki ugyan ezt a műveletsort végigjátssza. \ujsor
+A felső játékos - miután meggyőződött arról, hogy ellenfele nem figyeli - a "Reveal Top Player" gombra kattintva felfedi saját játékterét. Felfedett állapotba a gomb "beragad", és a másik gomb letiltódik, hogy véletlenül ne lehessen az ellenfél térfelére átváltani. A felső játékos a kívánt mezőre kattintva áthelyezheti az adott oszlopban lévő bábuját arra a mezőre, amelyikre kattintott. Ha a felső játékos késznek érzi a kezdőállapotot, akkor a beragadt gombra újból rákattintva elfedi a felső játékteret, és átadja a helyét az alsó játékosnak, aki ugyanezt a műveletsort végigjátssza. \ujsor
 
-Miután mindketten végeztek a beállítással a játék a "Start Game" gombra kattintva indítható. Ez után a játék beállításai már nem módosíthatóak, a beállításoz tartozó vezérlőelemek letiltásra, a játéktér elrejtéséért/felfedéséért felelős vezérlőgombok eltávolításra kerülnek.
+Miután mindketten végeztek a beállítással, a játék a "Start Game" gombra kattintva indítható. Ezután a játék beállításai már nem módosíthatóak, a beállításhoz tartozó vezérlőelemek letiltásra, a játéktér elrejtéséért/felfedéséért felelős vezérlőgombok eltávolításra kerülnek.
 
 
 \subsubsection*{A játék menete}
@@ -136,7 +136,7 @@ Nem volt ez most sem másképp. Eredeti megközelítésemben egy univerzális j�
 Nem célom a teljes forráskód beillesztése a dolgozatba, mert egyrészt viszonylag nagy méretű, (több ezer sor) sok rész triviális, vagy csak technikai, azonban bizonyos osztályokat, vagy kódrészleteket behivatkozok, amikben úgy érzem, hogy említésre méltó dolgok találhatóak.
 
 \section{Program felépítése, tervezési szempontok} \label{section:implementation_design}
-Kezdetektől fogva a Northcott-sakkot szerettem volna leimplementálni, ugyanis a Nim játékok variánsai közül látványosabbak közé tartozik, és nagyon tetszett az a tulajdonsága, hogy egy-az-egyben visszavezethető hagyományos Nim játékra. Ebből következően az implementálást nem is a Northcott-sakkal kezdtem, hanem hagyományos Nim játékkal. Miután ezzel végeztem akkor tértem át magára a szakdolgozatom gyakorlati feladatára, a Nortcott-sakkra. A visszavezethetőséget implementálás során véresen komolyan vettem, olyan szinten, hogy a Nortcott-sakk nem is különálló játékmodulként szerepel (ezzel kissé megszegve a program koncepcióját), hanem csupán egy új megjelenítési réteget ad a Nim játékhoz. Más szóval amikor a felhasználó Northcott-sakkot játszik, akkor valójában a gép azt Nim játékként fogja fel. Konkrétan ugyan azt az osztályt (NimGameCore) használja felel a Nim játék, mint a Nortcott-sakk. Szándékosan még csak le sem származtattam, ezzel is kidomborítva a a Nortcott-sakk eme érdekes tulajdonságát.\ujsor
+Kezdetektől fogva a Northcott-sakkot szerettem volna leimplementálni, ugyanis a Nim játékok variánsai közül látványosabbak közé tartozik, és nagyon tetszett az a tulajdonsága, hogy egy-az-egyben visszavezethető hagyományos Nim játékra. Ebből következően az implementálást nem is a Northcott-sakkal kezdtem, hanem a hagyományos Nim játékkal. Miután ezzel végeztem, akkor tértem át magára a szakdolgozatom gyakorlati feladatára, a Nortcott-sakkra. A visszavezethetőség szemléltetésére implementálás során különös figyelmet szenteltem, olyan szinten, hogy a Nortcott-sakk nem is különálló játékmodulként szerepel (ezzel kissé megszegve a program koncepcióját), hanem csupán egy új megjelenítési réteget ad a Nim játékhoz. Más szóval, amikor a felhasználó Northcott-sakkot játszik, akkor valójában a gép azt Nim játékként fogja fel. Konkrétan ugyanazt az osztályt (NimGameCore) használja felel a Nim játék, mint a Nortcott-sakk. Szándékosan még csak le sem származtattam, ezzel is kidomborítva a a Nortcott-sakk eme érdekes tulajdonságát.\ujsor
 
 A programot Java nyelven írtam, és használok benne olyan nyelvi elemeket, amik megkövetelik a 8-as verziót, azonban a SE (Standard Edition) eszközkészletén túlmenően semmilyen egyéb külső programkönyvtárat nem használtam fel.\ujsor
 
@@ -147,9 +147,9 @@ Minden játék két részből tevődik össze. Egyrészt magából a játékból
 A játékok felépítése hierarchikus. Mindegyik játék abból az osztályból származtat le, amelyik leginkább megfelel neki. Az alaposztály a GameCore, ami általános koncepciókat tartalmaz egy játékról mindenféle specializáció nélkül. A következő szint a TurnBasedGame, ami a körökre osztott játékok használhatnak, és jelenleg erre épül a NimGameCore. Mindegyik hierarchia hozhatja magával az adott szinthez tartozó kiegészítő (esemény, kivétel) osztályokat.
 
 \section{Objektumok közti kommunikáció}
-Fontos rögtön az elején tisztázni, hogy a program jelenleg egyszálra van felkészítve, azaz sem a metódusok, sem pedig az algoritmusok nem szál-biztosak, nincsenek felkészítve a többszálú futásra, a hívások szinkron módon történnek. Ez jelenleg - a program egyszerűségéből fakadóan - nem okoz nagy problémát, egyetlen kellemetlenség van csupán, abban az esetben ha két gépi játékost játszatunk egymás ellen, kellően nagy játékteret biztosítva számukra, akkor amíg a játékot játsszák a felhasználói felület megfagy, az eseményekre nem reagál.\ujsor
+Fontos rögtön az elején tisztázni, hogy a program jelenleg egy szálra van felkészítve, azaz sem a metódusok, sem pedig az algoritmusok nem szál-biztosak, nincsenek felkészítve a többszálú futásra, a hívások szinkron módon történnek. Ez jelenleg - a program egyszerűségéből fakadóan - nem okoz nagy problémát, egyetlen kellemetlenség van csupán, abban az esetben, ha két gépi játékost játszatunk egymás ellen, kellően nagy játékteret biztosítva számukra, akkor amíg a játékot játsszák a felhasználói felület az eseményekre nem reagál.\ujsor
 
-Kommunikációra kétféle módszert használok. Általában ha egy esemény több objektumból érkezhet, de a célja mindig egy konkrét objektum, akkor ott interfészt definiálok. Egyes esetben - ha a kommunikáció két irányú - nem is egyet, hanem mindjárt kettőt a vissza-irányba is. Amennyiben egy eseményt potenciálisan több helyre szeretnék eljuttatni, akkor az EventManagert veszem használatba.
+Kommunikációra kétféle módszert használunk. Általában ha egy esemény több objektumból érkezhet, de a célja mindig egy konkrét objektum, akkor ott interfészt definiálunk. Egyes esetben - ha a kommunikáció két irányú - nem is egyet, hanem mindjárt kettőt a vissza-irányba is. Amennyiben egy eseményt potenciálisan több helyre szeretnék eljuttatni, akkor az EventManager szolgáltatásait vesszük igénybe.
 
 \subsection{A program eseménykezelője}
 A programban egy nagyon pici, egyszerű eseménykezelőt implementáltam, a továbbiakban részletezem a felépítését, és használatát.
@@ -203,15 +203,14 @@ A Nim játék leszármaztat az alap StepObject osztályból hozzáadva azt az in
 A Nim játék grafikus elemeit a gameplayer.nimgame.standard.UI csomagban találjuk. A \ref*{section:implementation_design} szekcióban már leírtam, hogy legalább három grafikus komponenst kell a játékoknak implementálni, és itt ez a három komponens a NimMainPanel, NimSettingsPanel, és a NimStatusPanel.
 
 \subsubsection{NimMainPanel}
-Egy JPanel típusú grafikus komponens. Ez valósítja meg a játékteret, de egy összefogó szerepe is van. Implementálja a GameEntityProvider interfészt, és a segédpaneleket is lepéldányosítja, továbbá feliratkozik a Nim játék\\
-EventRegistry.EVENT\_GAMEENGINE eseménycsatornára. Ennek köszönhetően a játéktérben bekövetkezett változásról azonnal értesül, és frissíteni tudja a játékteret.
+Egy javax.swing.JPanel típusú grafikus komponens. Ez valósítja meg a játékteret, de egy összefogó szerepe is van. Implementálja a GameEntityProvider interfészt, és a segédpaneleket is lepéldányosítja, továbbá feliratkozik a Nim játék EventRegistry osztályban található EVENT\_GAMEENGINE eseménycsatornára. Ennek köszönhetően a játéktérben bekövetkezett változásról azonnal értesül, és frissíteni tudja a játékteret.
 
 \section{Northcott játék leírása}
-A Northcott-sakk megvalósításának a szépségét a szemfüles olvasó már ott is felfedezheti, hogy ehhez a játékhoz nem tartozik játék, azaz nincsen hozzá olyan osztály, ami a GameCoreból származik le. Az egész játék csupán felhasználói felületelemekből épül fel - mint korábban írtam - a Nim játéknak ténylegesen csak egy másfajta megjelenítése.\ujsor
+A Northcott-sakk megvalósításának a szépsége, hogy ehhez a játékhoz nem tartozik játék, azaz nincsen hozzá olyan osztály, ami a GameCoreból származik le. Az egész játék csupán felhasználói felületelemekből épül fel - mint korábban írtam - a Nim játéknak ténylegesen csak egy másfajta megjelenítése.\ujsor
 
 A három panel itt is ugyan úgy megtalálható: NorthcottMainPanel, NorthCottSettingsPanel, és NorthcottStatusPanel. Itt is a főpanel látja el az összefogó szerepét. Sok szempontból analóg a viselkedése a Nim játék főpaneljével, így részletesen ezt nem is tárgyalom.\ujsor
 
-Akad azonban egy érdekes probléma. Az igaz ugyan, hogy a Northcott-sakkot vissza lehet vezetni a Nim játékra, ez fordítva azonban nem teljesen igaz. A nim játékban a halmok elemszáma megfeleltethető ugyan a Northcott-sakkban a bábuk közt lévő távolságnak, azonban a bábuk pozíciójára vonatkozóan a Nim játék nem hordoz információt. Ezt a problémát áthidalandó az oszlopok nyilvántartanak egy eltolás értéket, ami azt mutatja meg, hogy a felső játékos bábuja a tábla tetejéhez képest mennyivel van lejjebb. Ehhez az eltolási értékhez hozzáadva a halom elemszámát megkapjuk az alsó játékos bábujának a helyét.
+Akad azonban egy érdekes probléma. Az igaz ugyan, hogy a Northcott-sakkot vissza lehet vezetni a Nim játékra, ez fordítva azonban nem teljesen igaz. A Nim játékban a halmok elemszáma megfeleltethető ugyan a Northcott-sakkban a bábuk közt lévő távolságnak, azonban a bábuk pozíciójára vonatkozóan a Nim játék nem hordoz információt. Ezt a problémát áthidalandó az oszlopok nyilvántartanak egy eltolás értéket, ami azt mutatja meg, hogy a felső játékos bábuja a tábla tetejéhez képest mennyivel van lejjebb. Ehhez az eltolási értékhez hozzáadva a halom elemszámát megkapjuk az alsó játékos bábujának a helyét.
 
 \section{Nim nyerő stratégia gépi implementációja} \label{section:nim_impl_winning_strategy}
 A gépi játékost stratégiáját a AINimWinningStrategy osztály valósítja meg, amely implementálja a NimAI interfészt:
